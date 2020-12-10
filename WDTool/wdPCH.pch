@@ -1,0 +1,67 @@
+//
+//  wdPCH.pch
+//  BattleHeartNew
+//
+//  Created by Mac on 2020/12/7.
+//  Copyright © 2020 Macdddd. All rights reserved.
+//
+
+#ifndef wdPCH_pch
+#define wdPCH_pch
+
+
+
+#import <SpriteKit/SpriteKit.h>
+#import "WDTextureManager.h"
+
+//骑士
+#define kKinght @"Kinght"
+
+//NSLog
+#ifndef __OPTIMIZE__
+#define NSLog(...) NSLog(@"%s 第%d行 \n %@\n\n",__func__,__LINE__,[NSString stringWithFormat:__VA_ARGS__])
+#else
+#define NSLog(...) {}
+#endif
+
+
+
+#pragma mark 物理运算类别掩码
+//body.categoryBitMask = 0;  <类别掩码，为0时代表我谁也碰撞不了>
+//body.contactTestBitMask = 0; <碰撞检测掩码，为0时代表不触发检测>
+//body.collisionBitMask = 0;  <允许碰撞掩码，为0时代表谁也碰撞不了我>
+//想要发生碰撞，需要 categoryBitMask & collisionBitMask 运算，为非0，可以发生碰撞
+
+
+static const uint32_t PLAYER_CATEGORY = 0x03;  //0011
+static const uint32_t PLAYER_COLLISION = 0x04; //0100
+static const uint32_t PLAYER_CONTACT  = 0x01;  //0001
+
+static const uint32_t SHANA_CATEGORY = 0x04;
+static const uint32_t SHANA_COLLISION = 0x01; //0001
+static const uint32_t SHANA_CONTACT  = 0x01;  //0001
+
+
+static const uint32_t MONSTER_CATEGORY = 0x08; //1000
+static const uint32_t MONSTER_COLLISION = 0x08;//1000
+static const uint32_t MONSTER_CONTACT = 0x01;  //0001
+
+static const uint32_t WALL_CATEGORY  = 0x04; //0100
+static const uint32_t WALL_COLLISION = 0x00; //0011
+static const uint32_t WALL_CONTACT   = 0x00; //0001
+
+
+
+
+#define kScreenWidth [UIScreen mainScreen].bounds.size.width
+#define kScreenHeight [UIScreen mainScreen].bounds.size.height
+
+
+
+
+
+
+
+
+
+#endif /* wdPCH_pch */

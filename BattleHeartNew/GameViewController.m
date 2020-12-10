@@ -8,14 +8,18 @@
 
 #import "GameViewController.h"
 #import "GameScene.h"
+#import "BattleScene_1.h"
 
 @implementation GameViewController
+{
+    WDBaseScene *_selectScene;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
     // Load the SKScene from 'GameScene.sks'
-    GameScene *scene = (GameScene *)[SKScene nodeWithFileNamed:@"GameScene"];
+    BattleScene_1 *scene = (BattleScene_1 *)[BattleScene_1 nodeWithFileNamed:@"BattleScene_1"];
     
     // Set the scale mode to scale to fit the window
     scene.scaleMode = SKSceneScaleModeAspectFill;
@@ -27,7 +31,35 @@
     
     skView.showsFPS = YES;
     skView.showsNodeCount = YES;
+    skView.showsPhysics = YES;
+    
+    _selectScene = scene;
+    
+    [self createMiddleLine];
 }
+
+
+#pragma mark - 中线 -
+- (void)createMiddleLine
+{
+    UIView *middleLine = [[UIView alloc] initWithFrame:CGRectMake(kScreenWidth / 2.0 - 0.5, 0, 1, kScreenHeight)];
+    middleLine.backgroundColor = [UIColor orangeColor];
+    [self.view addSubview:middleLine];
+
+    UIView *middleLine2 = [[UIView alloc] initWithFrame:CGRectMake(0, kScreenHeight / 2.0 - 0.5, kScreenWidth, 1)];
+    middleLine2.backgroundColor = [UIColor orangeColor];
+    [self.view addSubview:middleLine2];
+}
+
+
+
+
+
+
+
+
+
+
 
 - (BOOL)shouldAutorotate {
     return YES;

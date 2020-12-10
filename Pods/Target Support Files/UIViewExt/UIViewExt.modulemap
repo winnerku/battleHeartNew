@@ -1,0 +1,6 @@
+framework module UIViewExt {
+  umbrella header "UIViewExt-umbrella.h"
+
+  export *
+  module * { export * }
+}

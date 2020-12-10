@@ -1,0 +1,6 @@
+framework module Pods_BattleHeartNew {
+  umbrella header "Pods-BattleHeartNew-umbrella.h"
+
+  export *
+  module * { export * }
+}
