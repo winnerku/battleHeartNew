@@ -10,11 +10,16 @@
 
 @implementation WDBaseNodeModel
 
+- (void)changeArr
+{
+    
+}
 - (void)setNormalTexturesWithName:(NSString *)name
                       standNumber:(int)standNumber
                         runNumber:(int)runNumber
                        walkNumber:(int)walkNumber
                        diedNumber:(int)diedNumber
+                    attack1Number:(int)attackNumber
 {
     
     
@@ -22,6 +27,7 @@
     self.runArr   = [self stateName:@"run" textureName:name number:runNumber];
     self.walkArr = [self stateName:@"walk" textureName:name number:walkNumber];
     self.diedArr = [self stateName:@"died" textureName:name number:diedNumber];
+    self.attackArr1 = [self stateName:@"attack1" textureName:name number:attackNumber];
 
 }
 

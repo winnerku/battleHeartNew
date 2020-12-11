@@ -23,33 +23,60 @@
 
 - (void)setChildNodeWithModel:(WDBaseNodeModel *)model
 {
-    _kinghtModel = (WDKinghtModel *)model;
-    self.model = model;
-    SKPhysicsBody *body = [SKPhysicsBody bodyWithRectangleOfSize:self.size center:CGPointMake(0, 0)];
+    NSLog(@"%lf %lf",self.size.width ,self.size.height);
+    self.xScale = 0.5;
+    self.yScale = 0.5;
+    NSLog(@"%lf %lf",self.size.width ,self.size.height);
+
+     _kinghtModel = (WDKinghtModel *)model;
+     self.model = model;
+     self.realSize = CGSizeMake(self.size.width - 150, self.size.height - 20);
+     SKPhysicsBody *body = [SKPhysicsBody bodyWithRectangleOfSize:self.realSize center:CGPointMake(0, 0)];
      self.physicsBody = body;
      self.physicsBody.affectedByGravity = NO;
      self.physicsBody.allowsRotation = NO;
      
      [self setBodyCanUse];
      
-     self.xScale = 0.5;
-     self.yScale = 0.5;
      
+      
+     self.name = kKinght;
+     self.moveSpeed = 300;
+     self.blood     = 100;
+     self.lastBlood = 100;
     
-    [self setShadowNodeWithPosition:CGPointMake(0, -self.size.height / 2.0 - 30) scale:0.5];
-    [self setArrowNodeWithPosition:CGPointMake(0, self.size.height / 2.0 + 200) scale:2];
+     [self setShadowNodeWithPosition:CGPointMake(0, -self.size.height / 2.0 - 30) scale:0.5];
+     [self setArrowNodeWithPosition:CGPointMake(0, self.size.height / 2.0 + 110) scale:1.5];
+     [self setBloodNodeWithAttackNumber:0];
     
-    self.name = kKinght;
-    self.moveSpeed = 300;
-     
-     SKAction *stand = [SKAction animateWithTextures:self.model.standArr timePerFrame:0.1];
-     SKAction *rep = [SKAction repeatActionForever:stand];
-     [self runAction:rep withKey:@"stand"];
+    
+//    SKSpriteNode *coloc = [SKSpriteNode spriteNodeWithColor:[UIColor orangeColor] size:self.size];
+//    [self addChild:coloc];
+    
+     [self standAction];
+
 }
 
 
 
+- (void)attackAction1WithNode:(WDBaseNode *)enemyNode
+{
+    [super attackAction1WithNode:enemyNode];
+    
+    CGFloat distance = enemyNode.position.x - self.position.x;
+    if (distance < 0) {
+        self.xScale = -fabs(self.xScale);
+    }else{
+        self.xScale = +fabs(self.xScale);
+    }
+   
+    [self removeAllActions];
+    SKAction *texture = [SKAction animateWithTextures:self.model.attackArr1 timePerFrame:0.1];
+    SKAction *rep = [SKAction repeatActionForever:texture];
+    rep.timingMode = SKActionTimingEaseIn;
+    [self runAction:rep withKey:@"attack1"];
 
+}
 
 
 

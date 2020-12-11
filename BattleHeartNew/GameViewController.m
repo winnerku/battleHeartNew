@@ -8,6 +8,9 @@
 
 #import "GameViewController.h"
 #import "GameScene.h"
+
+
+#import "LearnScene.h"
 #import "BattleScene_1.h"
 
 @implementation GameViewController
@@ -18,8 +21,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    WDTextureManager *manager = [WDTextureManager shareTextureManager];
+    [manager iceWizardModel];
+    [manager kinghtModel];
+    [manager redBatModel];
+    
     // Load the SKScene from 'GameScene.sks'
-    BattleScene_1 *scene = (BattleScene_1 *)[BattleScene_1 nodeWithFileNamed:@"BattleScene_1"];
+    LearnScene *scene = (LearnScene *)[LearnScene nodeWithFileNamed:@"LearnScene"];
     
     // Set the scale mode to scale to fit the window
     scene.scaleMode = SKSceneScaleModeAspectFill;

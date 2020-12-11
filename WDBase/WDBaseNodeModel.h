@@ -22,13 +22,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// 死亡
 @property (nonatomic,copy)NSArray <SKTexture *>*diedArr;
 
+/// 攻击1
+@property (nonatomic,copy)NSArray <SKTexture *>*attackArr1;
+
 
 /// 初始化
 - (void)setNormalTexturesWithName:(NSString *)name
                       standNumber:(int)standNumber
                         runNumber:(int)runNumber
                        walkNumber:(int)walkNumber
-                       diedNumber:(int)diedNumber;
+                       diedNumber:(int)diedNumber
+                    attack1Number:(int)attackNumber;
+
+
+/// 子类实现
+- (void)changeArr;
 
 @end
 

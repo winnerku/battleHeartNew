@@ -13,10 +13,29 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface WDBaseNode : SKSpriteNode
 
-@property (nonatomic,strong)WDBaseNodeModel *model;
 
+/// 图片真实的显示区域
+@property (nonatomic,assign)CGSize realSize;
+
+@property (nonatomic,strong)WDBaseNodeModel *model;
+/// 阴影
 @property (nonatomic,strong)WDBaseNode *shadowNode;
+/// 选中箭头
 @property (nonatomic,strong)WDBaseNode *arrowNode;
+/// 当前目标怪物
+@property (nonatomic,strong)WDBaseNode *targetMonster;
+/// 显示加血Node
+@property (nonatomic,strong)WDBaseNode *addBloodNode;
+
+
+@property (nonatomic,copy)void (^moveFinish)(void);
+@property (nonatomic,assign)BOOL isAttack;
+@property (nonatomic,assign)bool isMove;
+
+/// 血量
+@property (nonatomic,assign)int blood;
+/// 剩余血量
+@property (nonatomic,assign)int lastBlood;
 
 
 /// 移动速度
@@ -38,15 +57,30 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setArrowNodeWithPosition:(CGPoint)point
                            scale:(CGFloat)scale;
 
+/// 选中态，闪动一下
+- (void)setSelectAction;
 
 
+/// 设置攻击箭头
+- (void)setAttackArrow;
+
+/// 设置血条
+/// @param attackNumber 敌人攻击力，初始化传0
+- (void)setBloodNodeWithAttackNumber:(int)attackNumber;
+                        
 
 /// 移动
-- (void)moveActionWithPoint:(CGPoint)point;
+- (void)moveActionWithPoint:(CGPoint)point
+               moveComplete:(void (^)(void))moveFinish;
+/// 移动结束
+- (void)moveFinishAction;
 /// 站立
 - (void)standAction;
-/// 攻击
-- (void)attackAction;
+/// 攻击1
+- (void)attackAction1WithNode:(WDBaseNode *)enemyNode;
+
+/// 目标怪物
+- (void)setTragetMonster:(WDBaseNode *)enemNode;
 
 @end
 
