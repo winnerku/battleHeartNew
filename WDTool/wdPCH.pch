@@ -14,6 +14,8 @@
 #import <SpriteKit/SpriteKit.h>
 #import "WDTextureManager.h"
 #import "WDCalculateTool.h"
+#import "WDActionTool.h"
+#import "WDNumberManager.h"
 
 
 ///玩家
@@ -51,18 +53,23 @@
 //想要发生碰撞，需要 categoryBitMask & collisionBitMask 运算，为非0，可以发生碰撞
 
 
-static const uint32_t PLAYER_CATEGORY = 0x03;  //0011
-static const uint32_t PLAYER_COLLISION = 0x04; //0100
-static const uint32_t PLAYER_CONTACT  = 0x01;  //0001
+
+static const uint32_t PLAYER_CATEGORY  = 0x00;  //0001
+static const uint32_t PLAYER_COLLISION = 0x00;  //0001
+static const uint32_t PLAYER_CONTACT   = 0x00;  //0001
+
+static const uint32_t LINE_CATEGORY  = 0x00;  //0010
+static const uint32_t LINE_COLLISION = 0x00;  //0100
+static const uint32_t LINE_CONTACT   = 0x00;  //0010
 
 
-static const uint32_t MONSTER_CATEGORY = 0x08; //1000
-static const uint32_t MONSTER_COLLISION = 0x08;//1000
-static const uint32_t MONSTER_CONTACT = 0x01;  //0001
+static const uint32_t MONSTER_CATEGORY = 0x00;   //0011
+static const uint32_t MONSTER_COLLISION = 0x00;  //1000
+static const uint32_t MONSTER_CONTACT =   0x00;  //0011
 
-static const uint32_t WALL_CATEGORY  = 0x04; //0100
-static const uint32_t WALL_COLLISION = 0x00; //0011
-static const uint32_t WALL_CONTACT   = 0x00; //0001
+
+
+
 
 
 
@@ -72,7 +79,11 @@ static const uint32_t WALL_CONTACT   = 0x00; //0001
 
 
 //通知
+/// 移动结束
 #define kNotificationForMoveFinish @"kNotificationForMoveFinish"
+/// 死亡通知
+#define kNotificationForDied @"kNotificationForDied"
+
 
 
 

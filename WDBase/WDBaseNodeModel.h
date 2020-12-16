@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 攻击1
 @property (nonatomic,copy)NSArray <SKTexture *>*attackArr1;
+/// 被攻击硬直
+@property (nonatomic,copy)NSArray <SKTexture *>*beHurtArr;
 
 
 /// 初始化
@@ -34,6 +36,9 @@ NS_ASSUME_NONNULL_BEGIN
                        diedNumber:(int)diedNumber
                     attack1Number:(int)attackNumber;
 
+- (NSMutableArray *)stateName:(NSString *)stateName
+                  textureName:(NSString *)name
+                       number:(int)number;
 
 /// 子类实现
 - (void)changeArr;

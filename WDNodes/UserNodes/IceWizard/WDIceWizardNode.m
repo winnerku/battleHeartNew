@@ -11,6 +11,7 @@
 @implementation WDIceWizardNode
 {
     WDIceWizardModel *_iceModel;
+    SKAction         *_cureAction;
 }
 
 + (instancetype)initWithModel:(WDBaseNodeModel *)model
@@ -22,10 +23,11 @@
 
 - (void)setChildNodeWithModel:(WDBaseNodeModel *)model
 {
-    NSLog(@"%lf %lf",self.size.width ,self.size.height);
+
+    [super setChildNodeWithModel:model];
+    
     self.xScale = 0.5;
     self.yScale = 0.5;
-    NSLog(@"%lf %lf",self.size.width ,self.size.height);
 
      _iceModel = (WDIceWizardModel *)model;
     [_iceModel changeArr];
@@ -38,16 +40,13 @@
      
      [self setBodyCanUse];
      
-     
+     [WDNumberManager initNodeValueWithName:kIceWizard node:self];
       
-     self.name = kIceWizard;
-     self.moveSpeed = 300;
-     self.blood     = 100;
-     self.lastBlood = 100;
+     
     
-     [self setShadowNodeWithPosition:CGPointMake(0, -self.size.height / 2.0 - 30) scale:0.5];
+     [self setShadowNodeWithPosition:CGPointMake(0, -self.size.height / 2.0 - 30) scale:0.3];
      [self setArrowNodeWithPosition:CGPointMake(0, self.size.height / 2.0 + 110) scale:1.5];
-     [self setBloodNodeWithAttackNumber:0];
+     [self setBloodNodeNumber:0];
     
     
 //    SKSpriteNode *coloc = [SKSpriteNode spriteNodeWithColor:[UIColor orangeColor] size:self.size];
@@ -57,28 +56,82 @@
 }
 
 
+/// 加血状态
+- (void)addBuffActionWithNode:(WDBaseNode *)node
+{
+    //移动大于一切
+    if (self.isMove) {
+        return;
+    }
+    
+    [super addBuffActionWithNode:node];
+     
+    self.targetUser = node;
+    
+    if (![node.name isEqualToString:self.name]) {
+        
+        CGFloat distance = node.position.x - self.position.x;
+        if (distance < 0) {
+            self.xScale = -fabs(self.xScale);
+            self.direction = @"left";
+            self.isRight = NO;
+         
+            
+        }else{
+            self.xScale = +fabs(self.xScale);
+            self.direction = @"right";
+            self.isRight = YES;
+         
+        }
+    }
+    
+    
+    [self performSelector:@selector(addDeadFireWithNode:) withObject:node afterDelay:self.model.attackArr1.count * 0.1];
+    
+    
+    [self removeAllActions];
+    self.colorBlendFactor = 0;
+     
+    SKAction *texture = [SKAction animateWithTextures:self.model.attackArr1 timePerFrame:0.1];
+    SKAction *time = [SKAction waitForDuration:0.15];
+    SKAction *seq = [SKAction sequence:@[texture,time]];
+    seq.timingMode = SKActionTimingEaseIn;
+    _cureAction = seq;
+    __weak typeof(self)weakSelf = self;
+    [self runAction:seq completion:^{
+        [weakSelf addBuffActionWithNode:node];
+    }];
+}
 
+
+/// 加血动画
+/// @param node 被治愈者
+- (void)addDeadFireWithNode:(WDBaseNode *)node{
+    
+    if (self.isMove) {
+        return;
+    }
+    
+    SKEmitterNode *d = (SKEmitterNode *)[node.parent childNodeWithName:@"cureFire"];
+    if (d) {
+        [d removeFromParent];
+    }
+    
+    SKEmitterNode *deadFire = [SKEmitterNode nodeWithFileNamed:@"cureFire"];
+    deadFire.name = @"cureFire";
+    deadFire.position = node.position;
+    deadFire.zPosition = 100000;
+    [node.parent addChild:deadFire];
+    [node beCureActionWithCureNode:self];
+}
+
+
+/// 攻击动画
+/// @param enemyNode 被攻击者
 - (void)attackAction1WithNode:(WDBaseNode *)enemyNode
 {
      [super attackAction1WithNode:enemyNode];
      
-     self.targetMonster = enemyNode;
-     CGFloat distance = enemyNode.position.x - self.position.x;
-     if (distance < 0) {
-         self.xScale = -fabs(self.xScale);
-     }else{
-         self.xScale = +fabs(self.xScale);
-     }
-    
-     [self removeAllActions];
-     
-    
-     SKAction *texture = [SKAction animateWithTextures:self.model.attackArr1 timePerFrame:0.1];
-     SKAction *time = [SKAction waitForDuration:0.15];
-     SKAction *seq = [SKAction sequence:@[texture,time]];
-     SKAction *rep = [SKAction repeatActionForever:seq];
-     rep.timingMode = SKActionTimingEaseIn;
-     [self runAction:rep withKey:@"attack1"];
 }
 
 - (void)moveFinishAction
@@ -87,6 +140,10 @@
     
     if (self.isAttack) {
         [self attackAction1WithNode:self.targetMonster];
+    }
+    
+    if (self.isCure) {
+        [self addBuffActionWithNode:self.targetUser];
     }
 }
 

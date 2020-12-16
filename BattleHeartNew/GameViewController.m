@@ -25,6 +25,7 @@
     [manager iceWizardModel];
     [manager kinghtModel];
     [manager redBatModel];
+    [manager loadCommonTexture];
     
     // Load the SKScene from 'GameScene.sks'
     LearnScene *scene = (LearnScene *)[LearnScene nodeWithFileNamed:@"LearnScene"];
@@ -43,7 +44,7 @@
     
     _selectScene = scene;
     
-    [self createMiddleLine];
+    //[self createMiddleLine];
 }
 
 
@@ -58,8 +59,6 @@
     middleLine2.backgroundColor = [UIColor orangeColor];
     [self.view addSubview:middleLine2];
 }
-
-
 
 
 

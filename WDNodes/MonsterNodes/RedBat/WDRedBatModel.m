@@ -9,5 +9,9 @@
 #import "WDRedBatModel.h"
 
 @implementation WDRedBatModel
-
+- (void)changeArr
+{
+    self.beHurtArr = [self stateName:@"hurt" textureName:kRedBat number:8];
+    NSLog(@"%@",self.beHurtArr);
+}
 @end

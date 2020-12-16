@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface WDBaseNode : SKSpriteNode
 
 
+/// link
+@property (nonatomic,strong)CADisplayLink *nodeLink;
+
 /// 图片真实的显示区域
 @property (nonatomic,assign)CGSize realSize;
 
@@ -23,23 +26,62 @@ NS_ASSUME_NONNULL_BEGIN
 /// 选中箭头
 @property (nonatomic,strong)WDBaseNode *arrowNode;
 /// 当前目标怪物
-@property (nonatomic,strong)WDBaseNode *targetMonster;
-/// 显示加血Node
-@property (nonatomic,strong)WDBaseNode *addBloodNode;
+@property (nonatomic,strong)WDBaseNode *__nullable targetMonster;
+/// 当前目标玩家
+@property (nonatomic,strong)WDBaseNode *__nullable targetUser;
 
+/// 血条
+@property (nonatomic,strong)WDBaseNode *bloodBgNode;
+
+
+
+/// 方向: 左 又
+@property (nonatomic,strong)NSString *direction;
 
 @property (nonatomic,copy)void (^moveFinish)(void);
-@property (nonatomic,assign)BOOL isAttack;
-@property (nonatomic,assign)bool isMove;
 
+
+
+/// 人物与怪物之间的最小距离增加一个横向随机数，避免怪物重叠问题
+@property (nonatomic,assign)CGFloat randomDistanceX;
+@property (nonatomic,assign)CGFloat randomDistanceY;
+
+/// 初始化中(只有在创建时候有效)
+@property (nonatomic,assign)BOOL isInit;
+/// 正在攻击
+@property (nonatomic,assign)BOOL isAttack;
+/// 正在移动
+@property (nonatomic,assign)BOOL isMove;
+/// 正在治疗
+@property (nonatomic,assign)BOOL isCure;
+/// 死亡
+@property (nonatomic,assign)BOOL isDead;
+/// 朝向
+@property (nonatomic,assign)BOOL isRight;
+/// 硬直状态
+@property (nonatomic,assign)BOOL isStagger;
+
+
+/// 治愈量
+@property (nonatomic,assign)int cureNumber;
 /// 血量
 @property (nonatomic,assign)int blood;
 /// 剩余血量
 @property (nonatomic,assign)int lastBlood;
+/// 攻击距离
+@property (nonatomic,assign)CGFloat attackDistance;
+/// 攻击力
+@property (nonatomic,assign)int attackNumber;
+/// 增益或者驱散BUFF的职业(区别选中态)
+@property (nonatomic,assign)BOOL addBuff;
+/// 防御力 
+@property (nonatomic,assign)int defense;
 
 
-/// 移动速度
+/// 动画过程中的移动速度
 @property (nonatomic,assign)CGFloat moveSpeed;
+/// 实时的移动速度
+@property (nonatomic,assign)CGFloat moveCADisplaySpeed;
 
 
 + (instancetype)initWithModel:(WDBaseNodeModel *)model;
@@ -48,6 +90,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setBodyCanUse;
 
+- (void)createLinePhyBody;
+
+
+/// Link监视Node
+- (void)observedNode;
 
 /// 设置阴影
 - (void)setShadowNodeWithPosition:(CGPoint)point
@@ -57,17 +104,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setArrowNodeWithPosition:(CGPoint)point
                            scale:(CGFloat)scale;
 
-/// 选中态，闪动一下
-- (void)setSelectAction;
 
-
-/// 设置攻击箭头
-- (void)setAttackArrow;
+/// 选中动画 怪物和玩家实现不一样，如果特殊人物，可以定制
+- (void)selectSpriteAction;
 
 /// 设置血条
-/// @param attackNumber 敌人攻击力，初始化传0
-- (void)setBloodNodeWithAttackNumber:(int)attackNumber;
+/// @param bloodNumber 敌人攻击力,也可能是牧师加血量,初始化传0
+- (void)setBloodNodeNumber:(int)bloodNumber;
+
+/// 被攻击
+/// @param targetNode 攻击单位
+- (void)beAttackActionWithTargetNode:(WDBaseNode *)targetNode;
                         
+
 
 /// 移动
 - (void)moveActionWithPoint:(CGPoint)point
@@ -81,6 +130,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 目标怪物
 - (void)setTragetMonster:(WDBaseNode *)enemNode;
+
+/// 玩家独有的增强BUFF方法
+- (void)addBuffActionWithNode:(WDBaseNode *)node;
+
+/// 被治愈状态
+- (void)beCureActionWithCureNode:(WDBaseNode *)cureNode;
+
+/// 销毁
+- (void)releaseAction;
 
 @end
 

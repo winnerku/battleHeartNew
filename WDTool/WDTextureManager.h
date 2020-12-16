@@ -25,12 +25,43 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)WDIceWizardModel *iceWizardModel;
 
 #pragma mark - 怪物 -
+
+/// 蝙蝠
 @property (nonatomic,strong)WDRedBatModel *redBatModel;
 
+/** 小怪出场光效 */
+@property (nonatomic,copy)NSArray <SKTexture *>*lightArr;
+/** 小怪出场光效 */
+@property (nonatomic,copy)NSArray <SKTexture *>*smokeArr;
+/// 受伤效果
+@property (nonatomic,strong)SKTexture *demageTexture;
 
 
+#pragma mark - 场景 -
+/// 指示箭头
 @property (nonatomic,strong)WDBaseNode *arrowNode;
 @property (nonatomic,strong)WDBaseNode *locationNode;
+
+
+/// 设置怪物可以移动到玩家的位置
+- (void)setMonsterMovePointWithName:(NSString *)name
+                            monster:(WDBaseNode *)monster;
+
+/// 通用纹理
+- (void)loadCommonTexture;
+
+/// 指示箭头
+/// @param pos 位置
+- (void)arrowMoveActionWithPos:(CGPoint)pos;
+/// 隐藏指示箭头
+- (void)hiddenArrow;
+
+
+#pragma mark - 逻辑 -
+
+/// 根据左右控制小怪位置
+@property (nonatomic,assign)CGFloat redBatX;
+@property (nonatomic,assign)CGFloat redBatY;
 
 @end
 

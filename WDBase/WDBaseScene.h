@@ -8,9 +8,15 @@
 
 #import <SpriteKit/SpriteKit.h>
 #import "WDBaseNode.h"
+
+
+//玩家单位
 #import "WDKinghtNode.h"
 #import "WDIceWizardNode.h"
 
+
+//怪物单位
+#import "WDRedBatNode.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,14 +24,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,strong)WDBaseNode *selectNode;
 
+
+/// 纹理管理器
+@property (nonatomic,strong)WDTextureManager *textureManager;
+
 /// 怪物列表
 @property (nonatomic,strong)NSMutableArray *monsterArr;
 /// 玩家人物列表
 @property (nonatomic,strong)NSMutableArray *userArr;
 
-/// 检测周围时候有怪物需要攻击
-@property (nonatomic,strong)CADisplayLink *testAttackLink;
 
+
+
+/// 选中的线
+@property (nonatomic,strong)WDBaseNode *selectLine;
 
 /// 背景
 @property (nonatomic,strong)SKSpriteNode *bgNode;
@@ -41,9 +53,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)touchDownAtPoint:(CGPoint)pos;
 
-- (void)testAttackAction:(CADisplayLink *)link;
-
 - (void)releaseAction;
+
+- (void)createMonsterWithName:(NSString *)name
+                     position:(CGPoint)point;
 
 
 @end

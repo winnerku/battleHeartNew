@@ -24,6 +24,74 @@ static WDTextureManager *textureManager = nil;
     return textureManager;
 }
 
+
+- (void)arrowMoveActionWithPos:(CGPoint)pos
+{
+    WDBaseNode *arrow  = self.arrowNode;
+    WDBaseNode *location = self.locationNode;
+       
+    [arrow removeAllActions];
+    [location removeAllActions];
+
+    CGFloat y = pos.y;
+       
+    arrow.alpha = 1;
+    location.alpha = 1;
+    arrow.position = CGPointMake(pos.x, y);
+    location.position = CGPointMake(pos.x, y - 80);
+       
+    SKAction *move1 = [SKAction moveTo:CGPointMake(pos.x,y + 40) duration:0.3];
+    SKAction *move2 = [SKAction moveTo:CGPointMake(pos.x, y ) duration:0.3];
+    SKAction *seq = [SKAction sequence:@[move1,move2]];
+    SKAction *rep = [SKAction repeatActionForever:seq];
+    [arrow runAction:rep];
+       
+    SKAction *alpha1 = [SKAction fadeAlphaTo:0.6 duration:0.3];
+    SKAction *alpha2 = [SKAction fadeAlphaTo:1 duration:0.3];
+    SKAction *seq1 = [SKAction sequence:@[alpha1,alpha2]];
+    SKAction *rep2 = [SKAction repeatActionForever:seq1];
+    [location runAction:rep2];
+}
+
+- (void)hiddenArrow
+{
+     WDBaseNode *arrow  = self.arrowNode;
+     WDBaseNode *location = self.locationNode;
+            
+     [arrow removeAllActions];
+     [location removeAllActions];
+            
+     arrow.alpha = 0;
+     location.alpha = 0;
+}
+
+- (void)setMonsterMovePointWithName:(NSString *)name
+                            monster:(WDBaseNode *)monster
+{
+    if ([name isEqualToString:kRedBat]) {
+        [self setRedBatPosition:monster];
+    }
+}
+
+- (void)setRedBatPosition:(WDBaseNode *)monster
+{
+    CGFloat rY = 0;
+    CGFloat a = arc4random() % 15;
+    CGFloat rX = a + 30;
+
+    
+    if (self.redBatY == 20) {
+        self.redBatY = -20;
+        rY = -20 - a;
+    }else{
+        self.redBatY = 20;
+        rY = 20 + a;
+    }
+    
+    monster.randomDistanceX = rX;
+    monster.randomDistanceY = rY;
+}
+
 #pragma mark - 玩家人物 -
 /// - 骑士 texture -
 - (WDKinghtModel *)kinghtModel
@@ -37,6 +105,8 @@ static WDTextureManager *textureManager = nil;
     return _kinghtModel;
 }
 
+
+/// 冰女巫
 - (WDIceWizardModel *)iceWizardModel
 {
     if (!_iceWizardModel) {
@@ -73,6 +143,15 @@ static WDTextureManager *textureManager = nil;
     return _arrowNode;
 }
 
+- (SKTexture *)demageTexture
+{
+    if (!_demageTexture) {
+        _demageTexture = [SKTexture textureWithImage:[UIImage imageNamed:@"demage1"]];
+    }
+    
+    return _demageTexture;
+}
+
 - (WDBaseNode *)locationNode
 {
     if (!_locationNode) {
@@ -83,6 +162,25 @@ static WDTextureManager *textureManager = nil;
     }
     
     return _locationNode;
+}
+
+- (void)loadCommonTexture
+{
+    _smokeArr = [self loadWithImageName:@"smoke_" count:14];
+    _lightArr = [self loadWithImageName:@"light_" count:23];
+}
+
+- (NSMutableArray *)loadWithImageName:(NSString *)name
+                                count:(NSInteger)count
+{
+    NSMutableArray *muAr = [NSMutableArray array];
+    for (int i = 0; i < count; i ++) {
+        NSString *nameS = [NSString stringWithFormat:@"%@%d",name,i+1];
+        SKTexture *texture1 = [SKTexture textureWithImage:[UIImage imageNamed:nameS]];
+        [muAr addObject:texture1];
+    }
+    
+    return muAr;
 }
 
 @end
