@@ -83,7 +83,7 @@
         }
         
         SKAction *action = [SKAction animateWithTextures:self.model.beHurtArr timePerFrame:0.1];
-        SKAction *move = [SKAction moveTo:CGPointMake(self.position.x + 100 * direction, self.position.y) duration:0.3];
+        SKAction *move = [SKAction moveTo:CGPointMake(self.position.x + 60 * direction, self.position.y) duration:0.3];
         SKAction *gr = [SKAction group:@[action,move]];
         __weak typeof(self)weakSelf = self;
         [self runAction:gr completion:^{

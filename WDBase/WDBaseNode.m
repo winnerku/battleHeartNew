@@ -46,12 +46,14 @@ static CGFloat bloodHeight = 40;
         if (isRight) {
            self.bloodBgNode.xScale = 1;
            self.bloodBgNode.position = CGPointMake(-self.bloodBgNode.size.width / 2.0, self.bloodBgNode.position.y);
+            self.talkNode.xScale = fabs(self.talkNode.xScale);
         }else{
             if ([self.name isEqualToString:kRedBat]) {
                 //NSLog(@"1");
             }
             self.bloodBgNode.xScale = -1;
             self.bloodBgNode.position = CGPointMake(self.bloodBgNode.size.width / 2.0, self.bloodBgNode.position.y);
+            self.talkNode.xScale = -fabs(self.talkNode.xScale);
         }
     }
     
@@ -117,9 +119,6 @@ static CGFloat bloodHeight = 40;
     /// 没有血的状态
     if ( !isAddBlood && _lastBlood <= 0) {
         self.isDead = YES;
-        [self removeAllActions];
-        [self removeFromParent];
-        [self releaseAction];
         [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForDied object:nil];
         return;
     }
@@ -344,9 +343,7 @@ static CGFloat bloodHeight = 40;
 /// 移动结束
 - (void)moveFinishAction{
     
-    if (_moveFinish) {
-        _moveFinish();
-    }
+    
     self.isMove = NO;
    
     [[WDTextureManager shareTextureManager] hiddenArrow];
@@ -360,6 +357,10 @@ static CGFloat bloodHeight = 40;
     
     [self standAction];
     [self removeActionForKey:@"moveAnimation"];
+    
+    if (_moveFinish) {
+        _moveFinish();
+    }
 }
 
 
@@ -442,6 +443,18 @@ static CGFloat bloodHeight = 40;
     return _bloodNode;
 }
 
+
+- (WDTalkNode *)talkNode
+{
+    if (!_talkNode) {
+        _talkNode = [WDTalkNode spriteNodeWithTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"talk"]]];
+        _talkNode.zPosition = 1000;
+        _talkNode.hidden = YES;
+        [self addChild:_talkNode];
+    }
+    
+    return _talkNode;
+}
 
 //- (CGFloat)randomDistanceX
 //{

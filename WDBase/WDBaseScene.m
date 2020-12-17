@@ -41,13 +41,6 @@
 #pragma mark - 进入游戏界面 -
 - (void)didMoveToView:(SKView *)view
 {
-    
-    SKSpriteNode *widthNode = [SKSpriteNode spriteNodeWithColor:[UIColor blackColor] size:CGSizeMake(100, 50)];
-    
-    widthNode.position = CGPointMake(-300, -100);
-    
-    [self addChild:widthNode];
-    
     [self addObserveAction];
     
     self.physicsWorld.contactDelegate = self;
@@ -90,7 +83,9 @@
     NSLog(@"A: %@  b: %@",nodeA.name,nodeB.name);
     
 }
-- (void)didEndContact:(SKPhysicsContact *)contact{}
+- (void)didEndContact:(SKPhysicsContact *)contact{
+    
+}
 
 
 
@@ -137,7 +132,6 @@
     
     NSArray *nodes = [self nodesAtPoint:pos];
 
-    
     WDUserNode *userNode = nil;
     WDMonsterNode *monsterNode = nil;
     CGFloat distance = 100000;
@@ -167,21 +161,26 @@
    
     if (_selectNode.addBuff  && userNode && _selectLine.hidden == NO) {
         ///增益buff状态~
-        NSLog(@"我要加血啦~");
         canMove = NO;
         [userNode selectSpriteAction];
         [_selectNode addBuffActionWithNode:userNode];
          
     }else if (![_selectNode.name isEqualToString:userNode.name] && userNode) {
        
-        ///切换选中目标，不能移动
-        _selectNode.arrowNode.hidden = YES;
-        userNode.arrowNode.hidden    = NO;
-        canMove = NO;
-        _selectNode = userNode;
-        [_selectNode selectSpriteAction];
-        [[WDTextureManager shareTextureManager] hiddenArrow];
-
+        CGFloat distanceX = fabs(userNode.position.x - pos.x);
+        CGFloat distanceY = fabs(userNode.position.y - pos.y);
+        //实际显示图片比创建的图片要大
+        if (distanceX < userNode.realSize.width / 2.0 && distanceY < userNode.realSize.height / 2.0) {
+            ///切换选中目标，不能移动
+            _selectNode.arrowNode.hidden = YES;
+            userNode.arrowNode.hidden    = NO;
+            canMove = NO;
+            _selectNode = userNode;
+            [_selectNode selectSpriteAction];
+            [[WDTextureManager shareTextureManager] hiddenArrow];
+            NSLog(@"%lf",distanceX);
+        }
+        
         
     }else if(monsterNode){
         
@@ -194,7 +193,12 @@
             monsterNode.randomDistanceY = 0;
             
             //重置一下之前怪物的位置
-            [self.textureManager setMonsterMovePointWithName:_selectNode.targetMonster.name monster:_selectNode.targetMonster];
+            if (![_selectNode.targetMonster isEqualToNode:monsterNode]) {
+                [self.textureManager setMonsterMovePointWithName:_selectNode.targetMonster.name monster:_selectNode.targetMonster];
+            }else{
+                NSLog(@"同一个玩家点中我啦！");
+            }
+            
         }
         
         ///选中怪物的情况

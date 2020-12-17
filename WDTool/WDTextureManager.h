@@ -55,6 +55,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)arrowMoveActionWithPos:(CGPoint)pos;
 /// 隐藏指示箭头
 - (void)hiddenArrow;
+/// 只显示箭头
+/// @param pos
+- (void)onlyArrowWithPos:(CGPoint)pos;
 
 
 #pragma mark - 逻辑 -

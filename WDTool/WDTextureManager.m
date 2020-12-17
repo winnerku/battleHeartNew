@@ -24,6 +24,27 @@ static WDTextureManager *textureManager = nil;
     return textureManager;
 }
 
+- (void)onlyArrowWithPos:(CGPoint)pos
+{
+    WDBaseNode *arrow  = self.arrowNode;
+    WDBaseNode *location = self.locationNode;
+       
+    [arrow removeAllActions];
+    [location removeAllActions];
+
+    CGFloat y = pos.y;
+       
+    arrow.alpha = 1;
+    arrow.position = CGPointMake(pos.x, y);
+    arrow.zPosition = 1000;
+    SKAction *move1 = [SKAction moveTo:CGPointMake(pos.x,y + 40) duration:0.3];
+    SKAction *move2 = [SKAction moveTo:CGPointMake(pos.x, y ) duration:0.3];
+    SKAction *seq = [SKAction sequence:@[move1,move2]];
+    SKAction *rep = [SKAction repeatActionForever:seq];
+    [arrow runAction:rep];
+       
+   
+}
 
 - (void)arrowMoveActionWithPos:(CGPoint)pos
 {
@@ -123,7 +144,7 @@ static WDTextureManager *textureManager = nil;
 {
     if (!_redBatModel) {
         _redBatModel = [[WDRedBatModel alloc] init];
-        [_redBatModel setNormalTexturesWithName:kRedBat standNumber:12 runNumber:0 walkNumber:8 diedNumber:0 attack1Number:7];
+        [_redBatModel setNormalTexturesWithName:kRedBat standNumber:12 runNumber:0 walkNumber:8 diedNumber:8 attack1Number:7];
     }
     
     return _redBatModel;

@@ -15,7 +15,7 @@
 {
     
     
-    if (point.x != 0) {
+    if (point.x == 0) {
        
         CGFloat x = arc4random() % (int)kScreenWidth;
         CGFloat y = arc4random() % (int)kScreenHeight;

@@ -8,7 +8,7 @@
 
 #import <SpriteKit/SpriteKit.h>
 #import "WDBaseNodeModel.h"
-
+#import "WDTalkNode.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface WDBaseNode : SKSpriteNode
@@ -32,7 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 血条
 @property (nonatomic,strong)WDBaseNode *bloodBgNode;
-
+/// 对话框
+@property (nonatomic,strong)WDTalkNode *talkNode;
 
 
 /// 方向: 左 又

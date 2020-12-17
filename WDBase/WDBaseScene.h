@@ -52,6 +52,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 - (void)touchDownAtPoint:(CGPoint)pos;
+- (void)touchMovedToPoint:(CGPoint)pos;
+- (void)touchUpAtPoint:(CGPoint)pos;
+
+- (void)diedAction;
 
 - (void)releaseAction;
 
