@@ -1,16 +1,16 @@
 //
-//  BattleScene_1.h
+//  WDArcherNode.h
 //  BattleHeartNew
 //
-//  Created by Mac on 2020/12/7.
+//  Created by Mac on 2020/12/21.
 //  Copyright © 2020 Macdddd. All rights reserved.
 //
 
-#import "WDBaseScene.h"
+#import "WDBaseNode.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BattleScene_1 : WDBaseScene
+@interface WDArcherNode : WDUserNode
 
 @end
 

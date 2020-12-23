@@ -10,8 +10,19 @@
 
 @implementation WDTalkNode
 
+- (void)hiddenTime{
+    self.hidden = YES;
+}
+
+- (void)setText:(NSString *)text hiddenTime:(NSInteger)time
+{
+    [self setText:text];
+    [self performSelector:@selector(hiddenTime) withObject:nil afterDelay:time];
+}
+
 - (void)setText:(NSString *)text
 {
+    self.hidden = NO;
     SKLabelNode *last = (SKLabelNode *)[self childNodeWithName:@"text"];
     [last removeFromParent];
     //NSArray *fontArr = [UIFont familyNames];

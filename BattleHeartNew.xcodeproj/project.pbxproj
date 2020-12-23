@@ -7,6 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		042A93972592D26000F79BCD /* WDBaseScene+TouchLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 042A93962592D26000F79BCD /* WDBaseScene+TouchLogic.m */; };
+		042A939C2592F5A100F79BCD /* WDSkillView.m in Sources */ = {isa = PBXBuildFile; fileRef = 042A939B2592F5A100F79BCD /* WDSkillView.m */; };
+		042A939E2592FA8100F79BCD /* Archer_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 042A939D2592FA8100F79BCD /* Archer_0.png */; };
+		042A93A12592FC3000F79BCD /* WDSkillBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = 042A93A02592FC3000F79BCD /* WDSkillBtn.m */; };
+		042A93A3259341F600F79BCD /* Archer_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 042A93A2259341F600F79BCD /* Archer_1.png */; };
+		042A93A52593526100F79BCD /* Archer_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 042A93A42593526100F79BCD /* Archer_2.png */; };
+		042A93A7259354D300F79BCD /* IceWizard_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 042A93A6259354D300F79BCD /* IceWizard_0.png */; };
+		042A93B02593571D00F79BCD /* shana_miss_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 042A93A82593571C00F79BCD /* shana_miss_2.png */; };
+		042A93B12593571D00F79BCD /* shana_miss_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 042A93A92593571C00F79BCD /* shana_miss_3.png */; };
+		042A93B22593571D00F79BCD /* shana_miss_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 042A93AA2593571D00F79BCD /* shana_miss_4.png */; };
+		042A93B32593571D00F79BCD /* shana_miss_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 042A93AB2593571D00F79BCD /* shana_miss_5.png */; };
+		042A93B42593571D00F79BCD /* shana_miss_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 042A93AC2593571D00F79BCD /* shana_miss_6.png */; };
+		042A93B52593571D00F79BCD /* shana_miss_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 042A93AD2593571D00F79BCD /* shana_miss_1.png */; };
+		042A93B62593571D00F79BCD /* shana_miss_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 042A93AE2593571D00F79BCD /* shana_miss_7.png */; };
+		042A93B72593571D00F79BCD /* shana_miss_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 042A93AF2593571D00F79BCD /* shana_miss_8.png */; };
 		048025AA25874E6E00AE4D65 /* cureFire.sks in Resources */ = {isa = PBXBuildFile; fileRef = 048025A925874E6E00AE4D65 /* cureFire.sks */; };
 		048025AD25874FC200AE4D65 /* Fire.sks in Resources */ = {isa = PBXBuildFile; fileRef = 048025AB25874FC200AE4D65 /* Fire.sks */; };
 		048025AE25874FC200AE4D65 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 048025AC25874FC200AE4D65 /* Assets.xcassets */; };
@@ -31,8 +46,6 @@
 		0482422D257E2036006CE6BD /* WDBaseNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 0482422C257E2036006CE6BD /* WDBaseNode.m */; };
 		04824230257E206D006CE6BD /* WDTextureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0482422F257E206D006CE6BD /* WDTextureManager.m */; };
 		04824233257E2085006CE6BD /* WDBaseNodeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04824232257E2085006CE6BD /* WDBaseNodeModel.m */; };
-		04824238257E20C2006CE6BD /* BattleScene_1.m in Sources */ = {isa = PBXBuildFile; fileRef = 04824237257E20C2006CE6BD /* BattleScene_1.m */; };
-		0482423A257E20D1006CE6BD /* BattleScene_1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 04824239257E20D1006CE6BD /* BattleScene_1.sks */; };
 		04D3ED5D2588A63800AA0AE5 /* WDBaseScene+CreateMonster.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D3ED5C2588A63800AA0AE5 /* WDBaseScene+CreateMonster.m */; };
 		04D3ED842588A85E00AA0AE5 /* smoke_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D3ED5F2588A85C00AA0AE5 /* smoke_5.png */; };
 		04D3ED852588A85E00AA0AE5 /* light_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D3ED602588A85C00AA0AE5 /* light_8.png */; };
@@ -177,6 +190,10 @@
 		04D68FA8258375B2004B07C0 /* IceWizard_walk_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D68F9E258375B2004B07C0 /* IceWizard_walk_8.png */; };
 		04D68FAA25837A80004B07C0 /* addBlood.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D68FA925837A80004B07C0 /* addBlood.png */; };
 		04D68FAC25837DC8004B07C0 /* IceWizard_attack1_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D68FAB25837DC8004B07C0 /* IceWizard_attack1_0.png */; };
+		04D956D5258C61E90009CA01 /* Balloon.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D956D4258C61E90009CA01 /* Balloon.png */; };
+		04D956DB258C775D0009CA01 /* WDBalloonNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D956DA258C775D0009CA01 /* WDBalloonNode.m */; };
+		04D956F9258CADB70009CA01 /* PubScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D956F8258CADB70009CA01 /* PubScene.m */; };
+		04D956FB258CADC60009CA01 /* PubScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 04D956FA258CADC60009CA01 /* PubScene.sks */; };
 		04EADC782589FC2C007E85D0 /* WDActionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 04EADC772589FC2C007E85D0 /* WDActionTool.m */; };
 		04EADC7A2589FD1C007E85D0 /* demage1.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EADC792589FD1C007E85D0 /* demage1.png */; };
 		04EADC7D258A0947007E85D0 /* WDNumberManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 04EADC7C258A0947007E85D0 /* WDNumberManager.m */; };
@@ -188,10 +205,62 @@
 		04EADC9C258A1068007E85D0 /* RedBat_hurt_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EADC94258A1067007E85D0 /* RedBat_hurt_3.png */; };
 		04EADC9D258A1068007E85D0 /* RedBat_hurt_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EADC95258A1068007E85D0 /* RedBat_hurt_1.png */; };
 		04EADC9E258A1068007E85D0 /* RedBat_hurt_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EADC96258A1068007E85D0 /* RedBat_hurt_0.png */; };
+		04EF6943259044DF00D8E02D /* WDArcherNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 04EF6942259044DF00D8E02D /* WDArcherNode.m */; };
+		04EF6946259044FE00D8E02D /* WDArcherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04EF6945259044FE00D8E02D /* WDArcherModel.m */; };
+		04EF69552590464400D8E02D /* Archer_walk_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF694B2590464300D8E02D /* Archer_walk_1.png */; };
+		04EF69562590464400D8E02D /* Archer_walk_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF694C2590464300D8E02D /* Archer_walk_5.png */; };
+		04EF69572590464400D8E02D /* Archer_walk_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF694D2590464300D8E02D /* Archer_walk_3.png */; };
+		04EF69582590464400D8E02D /* Archer_walk_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF694E2590464300D8E02D /* Archer_walk_0.png */; };
+		04EF69592590464400D8E02D /* Archer_walk_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF694F2590464300D8E02D /* Archer_walk_4.png */; };
+		04EF695A2590464400D8E02D /* Archer_walk_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF69502590464300D8E02D /* Archer_walk_6.png */; };
+		04EF695B2590464400D8E02D /* Archer_walk_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF69512590464400D8E02D /* Archer_walk_7.png */; };
+		04EF695C2590464400D8E02D /* Archer_walk_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF69522590464400D8E02D /* Archer_walk_8.png */; };
+		04EF695D2590464400D8E02D /* Archer_walk_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF69532590464400D8E02D /* Archer_walk_2.png */; };
+		04EF695E2590464400D8E02D /* Archer_walk_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF69542590464400D8E02D /* Archer_walk_9.png */; };
+		04EF6969259046B000D8E02D /* Archer_stand_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF695F259046B000D8E02D /* Archer_stand_6.png */; };
+		04EF696A259046B000D8E02D /* Archer_stand_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF6960259046B000D8E02D /* Archer_stand_5.png */; };
+		04EF696B259046B100D8E02D /* Archer_stand_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF6961259046B000D8E02D /* Archer_stand_8.png */; };
+		04EF696C259046B100D8E02D /* Archer_stand_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF6962259046B000D8E02D /* Archer_stand_9.png */; };
+		04EF696D259046B100D8E02D /* Archer_stand_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF6963259046B000D8E02D /* Archer_stand_4.png */; };
+		04EF696E259046B100D8E02D /* Archer_stand_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF6964259046B000D8E02D /* Archer_stand_0.png */; };
+		04EF696F259046B100D8E02D /* Archer_stand_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF6965259046B000D8E02D /* Archer_stand_3.png */; };
+		04EF6970259046B100D8E02D /* Archer_stand_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF6966259046B000D8E02D /* Archer_stand_7.png */; };
+		04EF6971259046B100D8E02D /* Archer_stand_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF6967259046B000D8E02D /* Archer_stand_2.png */; };
+		04EF6972259046B100D8E02D /* Archer_stand_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF6968259046B000D8E02D /* Archer_stand_1.png */; };
+		04EF697D2590470F00D8E02D /* Archer_attack1_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF69732590470E00D8E02D /* Archer_attack1_8.png */; };
+		04EF697E2590470F00D8E02D /* Archer_attack1_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF69742590470E00D8E02D /* Archer_attack1_2.png */; };
+		04EF697F2590470F00D8E02D /* Archer_attack1_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF69752590470F00D8E02D /* Archer_attack1_5.png */; };
+		04EF69802590470F00D8E02D /* Archer_attack1_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF69762590470F00D8E02D /* Archer_attack1_9.png */; };
+		04EF69812590470F00D8E02D /* Archer_attack1_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF69772590470F00D8E02D /* Archer_attack1_0.png */; };
+		04EF69822590470F00D8E02D /* Archer_attack1_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF69782590470F00D8E02D /* Archer_attack1_4.png */; };
+		04EF69832590470F00D8E02D /* Archer_attack1_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF69792590470F00D8E02D /* Archer_attack1_1.png */; };
+		04EF69842590470F00D8E02D /* Archer_attack1_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF697A2590470F00D8E02D /* Archer_attack1_3.png */; };
+		04EF69852590470F00D8E02D /* Archer_attack1_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF697B2590470F00D8E02D /* Archer_attack1_6.png */; };
+		04EF69862590470F00D8E02D /* Archer_attack1_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF697C2590470F00D8E02D /* Archer_attack1_7.png */; };
+		04EF69882590473800D8E02D /* archerArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 04EF69872590473800D8E02D /* archerArrow.png */; };
+		04EF698B25904A4100D8E02D /* WDTouchEndLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 04EF698A25904A4100D8E02D /* WDTouchEndLogic.m */; };
 		160FAC7985065C9BC781F949 /* Pods_BattleHeartNew.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9D48C47AE6ADB46829E6C9A /* Pods_BattleHeartNew.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		042A93952592D26000F79BCD /* WDBaseScene+TouchLogic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WDBaseScene+TouchLogic.h"; sourceTree = "<group>"; };
+		042A93962592D26000F79BCD /* WDBaseScene+TouchLogic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "WDBaseScene+TouchLogic.m"; sourceTree = "<group>"; };
+		042A939A2592F5A100F79BCD /* WDSkillView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WDSkillView.h; sourceTree = "<group>"; };
+		042A939B2592F5A100F79BCD /* WDSkillView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WDSkillView.m; sourceTree = "<group>"; };
+		042A939D2592FA8100F79BCD /* Archer_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_0.png; sourceTree = "<group>"; };
+		042A939F2592FC3000F79BCD /* WDSkillBtn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WDSkillBtn.h; sourceTree = "<group>"; };
+		042A93A02592FC3000F79BCD /* WDSkillBtn.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WDSkillBtn.m; sourceTree = "<group>"; };
+		042A93A2259341F600F79BCD /* Archer_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_1.png; sourceTree = "<group>"; };
+		042A93A42593526100F79BCD /* Archer_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_2.png; sourceTree = "<group>"; };
+		042A93A6259354D300F79BCD /* IceWizard_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IceWizard_0.png; sourceTree = "<group>"; };
+		042A93A82593571C00F79BCD /* shana_miss_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shana_miss_2.png; sourceTree = "<group>"; };
+		042A93A92593571C00F79BCD /* shana_miss_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shana_miss_3.png; sourceTree = "<group>"; };
+		042A93AA2593571D00F79BCD /* shana_miss_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shana_miss_4.png; sourceTree = "<group>"; };
+		042A93AB2593571D00F79BCD /* shana_miss_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shana_miss_5.png; sourceTree = "<group>"; };
+		042A93AC2593571D00F79BCD /* shana_miss_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shana_miss_6.png; sourceTree = "<group>"; };
+		042A93AD2593571D00F79BCD /* shana_miss_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shana_miss_1.png; sourceTree = "<group>"; };
+		042A93AE2593571D00F79BCD /* shana_miss_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shana_miss_7.png; sourceTree = "<group>"; };
+		042A93AF2593571D00F79BCD /* shana_miss_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shana_miss_8.png; sourceTree = "<group>"; };
 		048025A925874E6E00AE4D65 /* cureFire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = cureFire.sks; sourceTree = "<group>"; };
 		048025AB25874FC200AE4D65 /* Fire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Fire.sks; sourceTree = "<group>"; };
 		048025AC25874FC200AE4D65 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -226,9 +295,6 @@
 		0482422F257E206D006CE6BD /* WDTextureManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WDTextureManager.m; sourceTree = "<group>"; };
 		04824231257E2085006CE6BD /* WDBaseNodeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WDBaseNodeModel.h; sourceTree = "<group>"; };
 		04824232257E2085006CE6BD /* WDBaseNodeModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WDBaseNodeModel.m; sourceTree = "<group>"; };
-		04824236257E20C2006CE6BD /* BattleScene_1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BattleScene_1.h; sourceTree = "<group>"; };
-		04824237257E20C2006CE6BD /* BattleScene_1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BattleScene_1.m; sourceTree = "<group>"; };
-		04824239257E20D1006CE6BD /* BattleScene_1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = BattleScene_1.sks; sourceTree = "<group>"; };
 		04D3ED5B2588A63800AA0AE5 /* WDBaseScene+CreateMonster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WDBaseScene+CreateMonster.h"; sourceTree = "<group>"; };
 		04D3ED5C2588A63800AA0AE5 /* WDBaseScene+CreateMonster.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "WDBaseScene+CreateMonster.m"; sourceTree = "<group>"; };
 		04D3ED5F2588A85C00AA0AE5 /* smoke_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smoke_5.png; sourceTree = "<group>"; };
@@ -383,6 +449,12 @@
 		04D68F9E258375B2004B07C0 /* IceWizard_walk_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IceWizard_walk_8.png; sourceTree = "<group>"; };
 		04D68FA925837A80004B07C0 /* addBlood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addBlood.png; sourceTree = "<group>"; };
 		04D68FAB25837DC8004B07C0 /* IceWizard_attack1_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IceWizard_attack1_0.png; sourceTree = "<group>"; };
+		04D956D4258C61E90009CA01 /* Balloon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Balloon.png; sourceTree = "<group>"; };
+		04D956D9258C775D0009CA01 /* WDBalloonNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WDBalloonNode.h; sourceTree = "<group>"; };
+		04D956DA258C775D0009CA01 /* WDBalloonNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WDBalloonNode.m; sourceTree = "<group>"; };
+		04D956F7258CADB70009CA01 /* PubScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PubScene.h; sourceTree = "<group>"; };
+		04D956F8258CADB70009CA01 /* PubScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PubScene.m; sourceTree = "<group>"; };
+		04D956FA258CADC60009CA01 /* PubScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PubScene.sks; sourceTree = "<group>"; };
 		04EADC762589FC2C007E85D0 /* WDActionTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WDActionTool.h; sourceTree = "<group>"; };
 		04EADC772589FC2C007E85D0 /* WDActionTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WDActionTool.m; sourceTree = "<group>"; };
 		04EADC792589FD1C007E85D0 /* demage1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = demage1.png; sourceTree = "<group>"; };
@@ -396,6 +468,43 @@
 		04EADC94258A1067007E85D0 /* RedBat_hurt_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RedBat_hurt_3.png; sourceTree = "<group>"; };
 		04EADC95258A1068007E85D0 /* RedBat_hurt_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RedBat_hurt_1.png; sourceTree = "<group>"; };
 		04EADC96258A1068007E85D0 /* RedBat_hurt_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RedBat_hurt_0.png; sourceTree = "<group>"; };
+		04EF6941259044DF00D8E02D /* WDArcherNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WDArcherNode.h; sourceTree = "<group>"; };
+		04EF6942259044DF00D8E02D /* WDArcherNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WDArcherNode.m; sourceTree = "<group>"; };
+		04EF6944259044FE00D8E02D /* WDArcherModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WDArcherModel.h; sourceTree = "<group>"; };
+		04EF6945259044FE00D8E02D /* WDArcherModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WDArcherModel.m; sourceTree = "<group>"; };
+		04EF694B2590464300D8E02D /* Archer_walk_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_walk_1.png; sourceTree = "<group>"; };
+		04EF694C2590464300D8E02D /* Archer_walk_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_walk_5.png; sourceTree = "<group>"; };
+		04EF694D2590464300D8E02D /* Archer_walk_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_walk_3.png; sourceTree = "<group>"; };
+		04EF694E2590464300D8E02D /* Archer_walk_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_walk_0.png; sourceTree = "<group>"; };
+		04EF694F2590464300D8E02D /* Archer_walk_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_walk_4.png; sourceTree = "<group>"; };
+		04EF69502590464300D8E02D /* Archer_walk_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_walk_6.png; sourceTree = "<group>"; };
+		04EF69512590464400D8E02D /* Archer_walk_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_walk_7.png; sourceTree = "<group>"; };
+		04EF69522590464400D8E02D /* Archer_walk_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_walk_8.png; sourceTree = "<group>"; };
+		04EF69532590464400D8E02D /* Archer_walk_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_walk_2.png; sourceTree = "<group>"; };
+		04EF69542590464400D8E02D /* Archer_walk_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_walk_9.png; sourceTree = "<group>"; };
+		04EF695F259046B000D8E02D /* Archer_stand_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_stand_6.png; sourceTree = "<group>"; };
+		04EF6960259046B000D8E02D /* Archer_stand_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_stand_5.png; sourceTree = "<group>"; };
+		04EF6961259046B000D8E02D /* Archer_stand_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_stand_8.png; sourceTree = "<group>"; };
+		04EF6962259046B000D8E02D /* Archer_stand_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_stand_9.png; sourceTree = "<group>"; };
+		04EF6963259046B000D8E02D /* Archer_stand_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_stand_4.png; sourceTree = "<group>"; };
+		04EF6964259046B000D8E02D /* Archer_stand_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_stand_0.png; sourceTree = "<group>"; };
+		04EF6965259046B000D8E02D /* Archer_stand_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_stand_3.png; sourceTree = "<group>"; };
+		04EF6966259046B000D8E02D /* Archer_stand_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_stand_7.png; sourceTree = "<group>"; };
+		04EF6967259046B000D8E02D /* Archer_stand_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_stand_2.png; sourceTree = "<group>"; };
+		04EF6968259046B000D8E02D /* Archer_stand_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_stand_1.png; sourceTree = "<group>"; };
+		04EF69732590470E00D8E02D /* Archer_attack1_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_attack1_8.png; sourceTree = "<group>"; };
+		04EF69742590470E00D8E02D /* Archer_attack1_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_attack1_2.png; sourceTree = "<group>"; };
+		04EF69752590470F00D8E02D /* Archer_attack1_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_attack1_5.png; sourceTree = "<group>"; };
+		04EF69762590470F00D8E02D /* Archer_attack1_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_attack1_9.png; sourceTree = "<group>"; };
+		04EF69772590470F00D8E02D /* Archer_attack1_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_attack1_0.png; sourceTree = "<group>"; };
+		04EF69782590470F00D8E02D /* Archer_attack1_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_attack1_4.png; sourceTree = "<group>"; };
+		04EF69792590470F00D8E02D /* Archer_attack1_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_attack1_1.png; sourceTree = "<group>"; };
+		04EF697A2590470F00D8E02D /* Archer_attack1_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_attack1_3.png; sourceTree = "<group>"; };
+		04EF697B2590470F00D8E02D /* Archer_attack1_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_attack1_6.png; sourceTree = "<group>"; };
+		04EF697C2590470F00D8E02D /* Archer_attack1_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Archer_attack1_7.png; sourceTree = "<group>"; };
+		04EF69872590473800D8E02D /* archerArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = archerArrow.png; sourceTree = "<group>"; };
+		04EF698925904A4100D8E02D /* WDTouchEndLogic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WDTouchEndLogic.h; sourceTree = "<group>"; };
+		04EF698A25904A4100D8E02D /* WDTouchEndLogic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WDTouchEndLogic.m; sourceTree = "<group>"; };
 		0E458EBA37DAEFC1231864DB /* Pods-BattleHeartNew.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BattleHeartNew.debug.xcconfig"; path = "Target Support Files/Pods-BattleHeartNew/Pods-BattleHeartNew.debug.xcconfig"; sourceTree = "<group>"; };
 		F2A82534D841765339E4BA01 /* Pods-BattleHeartNew.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BattleHeartNew.release.xcconfig"; path = "Target Support Files/Pods-BattleHeartNew/Pods-BattleHeartNew.release.xcconfig"; sourceTree = "<group>"; };
 		F9D48C47AE6ADB46829E6C9A /* Pods_BattleHeartNew.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BattleHeartNew.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -458,6 +567,10 @@
 				04824210257E1D03006CE6BD /* GameScene.m */,
 				04824212257E1D03006CE6BD /* GameViewController.h */,
 				04824213257E1D03006CE6BD /* GameViewController.m */,
+				042A939A2592F5A100F79BCD /* WDSkillView.h */,
+				042A939B2592F5A100F79BCD /* WDSkillView.m */,
+				042A939F2592FC3000F79BCD /* WDSkillBtn.h */,
+				042A93A02592FC3000F79BCD /* WDSkillBtn.m */,
 				04824215257E1D03006CE6BD /* Main.storyboard */,
 				04824218257E1D07006CE6BD /* Assets.xcassets */,
 				0482421A257E1D07006CE6BD /* LaunchScreen.storyboard */,
@@ -479,6 +592,8 @@
 				04EADC772589FC2C007E85D0 /* WDActionTool.m */,
 				04EADC7B258A0947007E85D0 /* WDNumberManager.h */,
 				04EADC7C258A0947007E85D0 /* WDNumberManager.m */,
+				04EF698925904A4100D8E02D /* WDTouchEndLogic.h */,
+				04EF698A25904A4100D8E02D /* WDTouchEndLogic.m */,
 			);
 			path = WDTool;
 			sourceTree = "<group>";
@@ -488,6 +603,8 @@
 			children = (
 				04824228257E2027006CE6BD /* WDBaseScene.h */,
 				04824229257E2027006CE6BD /* WDBaseScene.m */,
+				042A93952592D26000F79BCD /* WDBaseScene+TouchLogic.h */,
+				042A93962592D26000F79BCD /* WDBaseScene+TouchLogic.m */,
 				04D3ED5B2588A63800AA0AE5 /* WDBaseScene+CreateMonster.h */,
 				04D3ED5C2588A63800AA0AE5 /* WDBaseScene+CreateMonster.m */,
 				0482422B257E2036006CE6BD /* WDBaseNode.h */,
@@ -504,9 +621,9 @@
 				04D68E3325830458004B07C0 /* LearnScene.h */,
 				04D68E3425830458004B07C0 /* LearnScene.m */,
 				04D68E362583046B004B07C0 /* LearnScene.sks */,
-				04824236257E20C2006CE6BD /* BattleScene_1.h */,
-				04824237257E20C2006CE6BD /* BattleScene_1.m */,
-				04824239257E20D1006CE6BD /* BattleScene_1.sks */,
+				04D956F7258CADB70009CA01 /* PubScene.h */,
+				04D956F8258CADB70009CA01 /* PubScene.m */,
+				04D956FA258CADC60009CA01 /* PubScene.sks */,
 			);
 			path = WDScene;
 			sourceTree = "<group>";
@@ -543,6 +660,7 @@
 		0482423F257E239A006CE6BD /* UserNodes */ = {
 			isa = PBXGroup;
 			children = (
+				04EF6940259044CE00D8E02D /* Archer */,
 				04D68EAE25834BF6004B07C0 /* IceWizard */,
 				04D40A082581F3DD0065445A /* Knight */,
 			);
@@ -616,6 +734,7 @@
 			isa = PBXGroup;
 			children = (
 				04D3ED5E2588A82E00AA0AE5 /* 出场效果 */,
+				04D956D4258C61E90009CA01 /* Balloon.png */,
 				04EADC792589FD1C007E85D0 /* demage1.png */,
 				04D68FA925837A80004B07C0 /* addBlood.png */,
 				04D68E31258303DF004B07C0 /* selectArrow.png */,
@@ -634,6 +753,8 @@
 			children = (
 				04D47C70258B343500DDB61B /* WDTalkNode.h */,
 				04D47C71258B343500DDB61B /* WDTalkNode.m */,
+				04D956D9258C775D0009CA01 /* WDBalloonNode.h */,
+				04D956DA258C775D0009CA01 /* WDBalloonNode.m */,
 			);
 			path = CommonNode;
 			sourceTree = "<group>";
@@ -747,6 +868,7 @@
 		04D68EB525834C9E004B07C0 /* Users */ = {
 			isa = PBXGroup;
 			children = (
+				04EF6947259045DF00D8E02D /* Archer */,
 				04D68F5B2583742D004B07C0 /* IceWizard */,
 				04D68EB625834CB9004B07C0 /* Knight */,
 			);
@@ -817,6 +939,15 @@
 		04D68F5B2583742D004B07C0 /* IceWizard */ = {
 			isa = PBXGroup;
 			children = (
+				042A93AD2593571D00F79BCD /* shana_miss_1.png */,
+				042A93A82593571C00F79BCD /* shana_miss_2.png */,
+				042A93A92593571C00F79BCD /* shana_miss_3.png */,
+				042A93AA2593571D00F79BCD /* shana_miss_4.png */,
+				042A93AB2593571D00F79BCD /* shana_miss_5.png */,
+				042A93AC2593571D00F79BCD /* shana_miss_6.png */,
+				042A93AE2593571D00F79BCD /* shana_miss_7.png */,
+				042A93AF2593571D00F79BCD /* shana_miss_8.png */,
+				042A93A6259354D300F79BCD /* IceWizard_0.png */,
 				04D68F5E25837447004B07C0 /* Walk */,
 				04D68F5D2583743F004B07C0 /* Stand */,
 				04D68F5C25837438004B07C0 /* Attack */,
@@ -887,6 +1018,82 @@
 				04EADC91258A1067007E85D0 /* RedBat_hurt_7.png */,
 			);
 			path = Hurt;
+			sourceTree = "<group>";
+		};
+		04EF6940259044CE00D8E02D /* Archer */ = {
+			isa = PBXGroup;
+			children = (
+				04EF6941259044DF00D8E02D /* WDArcherNode.h */,
+				04EF6942259044DF00D8E02D /* WDArcherNode.m */,
+				04EF6944259044FE00D8E02D /* WDArcherModel.h */,
+				04EF6945259044FE00D8E02D /* WDArcherModel.m */,
+			);
+			path = Archer;
+			sourceTree = "<group>";
+		};
+		04EF6947259045DF00D8E02D /* Archer */ = {
+			isa = PBXGroup;
+			children = (
+				042A939D2592FA8100F79BCD /* Archer_0.png */,
+				042A93A2259341F600F79BCD /* Archer_1.png */,
+				042A93A42593526100F79BCD /* Archer_2.png */,
+				04EF69872590473800D8E02D /* archerArrow.png */,
+				04EF694A259045F600D8E02D /* Attack */,
+				04EF6949259045EF00D8E02D /* Stand */,
+				04EF6948259045E700D8E02D /* Walk */,
+			);
+			path = Archer;
+			sourceTree = "<group>";
+		};
+		04EF6948259045E700D8E02D /* Walk */ = {
+			isa = PBXGroup;
+			children = (
+				04EF694E2590464300D8E02D /* Archer_walk_0.png */,
+				04EF694B2590464300D8E02D /* Archer_walk_1.png */,
+				04EF69532590464400D8E02D /* Archer_walk_2.png */,
+				04EF694D2590464300D8E02D /* Archer_walk_3.png */,
+				04EF694F2590464300D8E02D /* Archer_walk_4.png */,
+				04EF694C2590464300D8E02D /* Archer_walk_5.png */,
+				04EF69502590464300D8E02D /* Archer_walk_6.png */,
+				04EF69512590464400D8E02D /* Archer_walk_7.png */,
+				04EF69522590464400D8E02D /* Archer_walk_8.png */,
+				04EF69542590464400D8E02D /* Archer_walk_9.png */,
+			);
+			path = Walk;
+			sourceTree = "<group>";
+		};
+		04EF6949259045EF00D8E02D /* Stand */ = {
+			isa = PBXGroup;
+			children = (
+				04EF6964259046B000D8E02D /* Archer_stand_0.png */,
+				04EF6968259046B000D8E02D /* Archer_stand_1.png */,
+				04EF6967259046B000D8E02D /* Archer_stand_2.png */,
+				04EF6965259046B000D8E02D /* Archer_stand_3.png */,
+				04EF6963259046B000D8E02D /* Archer_stand_4.png */,
+				04EF6960259046B000D8E02D /* Archer_stand_5.png */,
+				04EF695F259046B000D8E02D /* Archer_stand_6.png */,
+				04EF6966259046B000D8E02D /* Archer_stand_7.png */,
+				04EF6961259046B000D8E02D /* Archer_stand_8.png */,
+				04EF6962259046B000D8E02D /* Archer_stand_9.png */,
+			);
+			path = Stand;
+			sourceTree = "<group>";
+		};
+		04EF694A259045F600D8E02D /* Attack */ = {
+			isa = PBXGroup;
+			children = (
+				04EF69772590470F00D8E02D /* Archer_attack1_0.png */,
+				04EF69792590470F00D8E02D /* Archer_attack1_1.png */,
+				04EF69742590470E00D8E02D /* Archer_attack1_2.png */,
+				04EF697A2590470F00D8E02D /* Archer_attack1_3.png */,
+				04EF69782590470F00D8E02D /* Archer_attack1_4.png */,
+				04EF69752590470F00D8E02D /* Archer_attack1_5.png */,
+				04EF697B2590470F00D8E02D /* Archer_attack1_6.png */,
+				04EF697C2590470F00D8E02D /* Archer_attack1_7.png */,
+				04EF69732590470E00D8E02D /* Archer_attack1_8.png */,
+				04EF69762590470F00D8E02D /* Archer_attack1_9.png */,
+			);
+			path = Attack;
 			sourceTree = "<group>";
 		};
 		13F7838E8B5DA7F8987D4B39 /* Pods */ = {
@@ -966,12 +1173,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				04D68F8E25837561004B07C0 /* IceWizard_stand_2.png in Resources */,
-				0482423A257E20D1006CE6BD /* BattleScene_1.sks in Resources */,
 				04EADC9C258A1068007E85D0 /* RedBat_hurt_3.png in Resources */,
+				042A93A3259341F600F79BCD /* Archer_1.png in Resources */,
 				04D3ED992588A85E00AA0AE5 /* light_19.png in Resources */,
 				04D47C8D258B67D900DDB61B /* RedBat_died_4.png in Resources */,
 				04D3ED902588A85E00AA0AE5 /* light_14.png in Resources */,
+				04EF69802590470F00D8E02D /* Archer_attack1_9.png in Resources */,
 				04D68FA1258375B2004B07C0 /* IceWizard_walk_0.png in Resources */,
+				042A93A52593526100F79BCD /* Archer_2.png in Resources */,
+				042A93B22593571D00F79BCD /* shana_miss_4.png in Resources */,
+				042A93B12593571D00F79BCD /* shana_miss_3.png in Resources */,
 				04D3EDA42588A85E00AA0AE5 /* light_15.png in Resources */,
 				04D68F8F25837561004B07C0 /* IceWizard_stand_7.png in Resources */,
 				04D3ED8A2588A85E00AA0AE5 /* smoke_7.png in Resources */,
@@ -983,40 +1194,57 @@
 				04D47C8E258B67D900DDB61B /* RedBat_died_2.png in Resources */,
 				04D3ED8C2588A85E00AA0AE5 /* light_16.png in Resources */,
 				04D3ED8B2588A85E00AA0AE5 /* light_22.png in Resources */,
+				04EF695E2590464400D8E02D /* Archer_walk_9.png in Resources */,
 				04D3ED932588A85E00AA0AE5 /* smoke_9.png in Resources */,
 				04D68FA7258375B2004B07C0 /* IceWizard_walk_9.png in Resources */,
 				04D3ED8E2588A85E00AA0AE5 /* smoke_10.png in Resources */,
+				04EF69562590464400D8E02D /* Archer_walk_5.png in Resources */,
 				048025AD25874FC200AE4D65 /* Fire.sks in Resources */,
 				04D68FAA25837A80004B07C0 /* addBlood.png in Resources */,
 				048025AA25874E6E00AE4D65 /* cureFire.sks in Resources */,
 				04D68F2E25834F40004B07C0 /* Knight_stand_2.png in Resources */,
+				04EF69822590470F00D8E02D /* Archer_attack1_4.png in Resources */,
 				04D68F2A25834F40004B07C0 /* Knight_stand_6.png in Resources */,
 				04824217257E1D03006CE6BD /* Main.storyboard in Resources */,
+				04EF69862590470F00D8E02D /* Archer_attack1_7.png in Resources */,
 				04D47C91258B67D900DDB61B /* RedBat_died_7.png in Resources */,
+				04EF697D2590470F00D8E02D /* Archer_attack1_8.png in Resources */,
+				042A93B32593571D00F79BCD /* shana_miss_5.png in Resources */,
 				04D68E8125832548004B07C0 /* RedBat_stand_7.png in Resources */,
 				04D68F2F25834F40004B07C0 /* Knight_stand_0.png in Resources */,
 				04D68F3E25834F92004B07C0 /* Knight_attack1_8.png in Resources */,
 				04D3EDA72588A85E00AA0AE5 /* light_18.png in Resources */,
+				04EF69582590464400D8E02D /* Archer_walk_0.png in Resources */,
 				04D68E8325832548004B07C0 /* RedBat_stand_11.png in Resources */,
 				04EADC98258A1068007E85D0 /* RedBat_hurt_6.png in Resources */,
 				04D47C6E258B327600DDB61B /* talk.png in Resources */,
 				04D68F2C25834F40004B07C0 /* Knight_stand_1.png in Resources */,
+				04EF696B259046B100D8E02D /* Archer_stand_8.png in Resources */,
 				04D68FA6258375B2004B07C0 /* IceWizard_walk_7.png in Resources */,
 				04D68F8D25837561004B07C0 /* IceWizard_stand_1.png in Resources */,
+				04EF69812590470F00D8E02D /* Archer_attack1_0.png in Resources */,
 				04D3ED922588A85E00AA0AE5 /* smoke_4.png in Resources */,
 				04D68F522583503C004B07C0 /* Knight_walk_6.png in Resources */,
 				04D68E7D25832548004B07C0 /* RedBat_stand_8.png in Resources */,
 				0482420C257E1D03006CE6BD /* GameScene.sks in Resources */,
+				04EF69552590464400D8E02D /* Archer_walk_1.png in Resources */,
 				04D3ED942588A85E00AA0AE5 /* light_23.png in Resources */,
 				04824219257E1D07006CE6BD /* Assets.xcassets in Resources */,
+				04EF69832590470F00D8E02D /* Archer_attack1_1.png in Resources */,
+				04EF696C259046B100D8E02D /* Archer_stand_9.png in Resources */,
 				04D68FAC25837DC8004B07C0 /* IceWizard_attack1_0.png in Resources */,
 				04D68E68258324BC004B07C0 /* RedBat_attack1_3.png in Resources */,
+				04EF695D2590464400D8E02D /* Archer_walk_2.png in Resources */,
+				04EF696A259046B000D8E02D /* Archer_stand_5.png in Resources */,
+				04EF6972259046B100D8E02D /* Archer_stand_1.png in Resources */,
 				04D68F2825834F40004B07C0 /* Knight_stand_8.png in Resources */,
+				042A93B42593571D00F79BCD /* shana_miss_6.png in Resources */,
 				04D68E66258324BC004B07C0 /* RedBat_attack1_0.png in Resources */,
 				04EADC7A2589FD1C007E85D0 /* demage1.png in Resources */,
 				04D68F3025834F40004B07C0 /* Knight_stand_3.png in Resources */,
 				04D68E8025832548004B07C0 /* RedBat_stand_10.png in Resources */,
 				04D68F9025837561004B07C0 /* IceWizard_stand_8.png in Resources */,
+				04EF69882590473800D8E02D /* archerArrow.png in Resources */,
 				04D47C92258B67D900DDB61B /* RedBat_died_0.png in Resources */,
 				04D68F3C25834F92004B07C0 /* Knight_attack1_9.png in Resources */,
 				04D3EDA32588A85E00AA0AE5 /* light_7.png in Resources */,
@@ -1027,20 +1255,27 @@
 				04D68F7925837505004B07C0 /* IceWizard_attack1_1.png in Resources */,
 				04D68E7925832548004B07C0 /* RedBat_stand_0.png in Resources */,
 				04D68E7E25832548004B07C0 /* RedBat_stand_6.png in Resources */,
+				04D956D5258C61E90009CA01 /* Balloon.png in Resources */,
 				04D68E7B25832548004B07C0 /* RedBat_stand_4.png in Resources */,
 				04D68F9425837561004B07C0 /* IceWizard_stand_0.png in Resources */,
 				04D3ED972588A85E00AA0AE5 /* light_2.png in Resources */,
+				042A93A7259354D300F79BCD /* IceWizard_0.png in Resources */,
 				04D68F9325837561004B07C0 /* IceWizard_stand_5.png in Resources */,
 				04D68F9125837561004B07C0 /* IceWizard_stand_9.png in Resources */,
 				04D68F532583503C004B07C0 /* Knight_walk_3.png in Resources */,
 				04D68F9225837561004B07C0 /* IceWizard_stand_4.png in Resources */,
+				04EF695C2590464400D8E02D /* Archer_walk_8.png in Resources */,
+				042A93B02593571D00F79BCD /* shana_miss_2.png in Resources */,
+				04EF697F2590470F00D8E02D /* Archer_attack1_5.png in Resources */,
 				04D68F502583503C004B07C0 /* Knight_walk_5.png in Resources */,
 				04D68F3D25834F92004B07C0 /* Knight_attack1_1.png in Resources */,
 				04D68F7C25837505004B07C0 /* IceWizard_attack1_8.png in Resources */,
 				04D47C90258B67D900DDB61B /* RedBat_died_1.png in Resources */,
 				04D68E7A25832548004B07C0 /* RedBat_stand_9.png in Resources */,
+				04EF695B2590464400D8E02D /* Archer_walk_7.png in Resources */,
 				04D68E32258303DF004B07C0 /* selectArrow.png in Resources */,
 				04D68E372583046B004B07C0 /* LearnScene.sks in Resources */,
+				042A93B52593571D00F79BCD /* shana_miss_1.png in Resources */,
 				04EADC9B258A1068007E85D0 /* RedBat_hurt_2.png in Resources */,
 				04D68F8C25837561004B07C0 /* IceWizard_stand_3.png in Resources */,
 				04D3ED842588A85E00AA0AE5 /* smoke_5.png in Resources */,
@@ -1051,6 +1286,8 @@
 				048025BA25875CD500AE4D65 /* RedBat_walk_4.png in Resources */,
 				04D3EDA02588A85E00AA0AE5 /* smoke_11.png in Resources */,
 				04D3ED9C2588A85E00AA0AE5 /* smoke_3.png in Resources */,
+				04EF6970259046B100D8E02D /* Archer_stand_7.png in Resources */,
+				042A939E2592FA8100F79BCD /* Archer_0.png in Resources */,
 				0482421C257E1D07006CE6BD /* LaunchScreen.storyboard in Resources */,
 				048025B925875CD500AE4D65 /* RedBat_walk_0.png in Resources */,
 				04D68E8425832548004B07C0 /* RedBat_stand_1.png in Resources */,
@@ -1062,6 +1299,7 @@
 				04D3ED962588A85E00AA0AE5 /* light_10.png in Resources */,
 				04D68F582583503C004B07C0 /* Knight_walk_9.png in Resources */,
 				04D3ED8F2588A85E00AA0AE5 /* light_13.png in Resources */,
+				04EF69592590464400D8E02D /* Archer_walk_4.png in Resources */,
 				04D68F552583503C004B07C0 /* Knight_walk_7.png in Resources */,
 				04D68E6B258324BC004B07C0 /* RedBat_attack1_5.png in Resources */,
 				04D68F7E25837505004B07C0 /* IceWizard_attack1_7.png in Resources */,
@@ -1081,6 +1319,7 @@
 				04D68E7C25832548004B07C0 /* RedBat_stand_2.png in Resources */,
 				0482420E257E1D03006CE6BD /* Actions.sks in Resources */,
 				04D68FA4258375B2004B07C0 /* IceWizard_walk_1.png in Resources */,
+				04EF6971259046B100D8E02D /* Archer_stand_2.png in Resources */,
 				04D68F4225834F92004B07C0 /* Knight_attack1_4.png in Resources */,
 				048025C025875D1A00AE4D65 /* RedBat_walk_1.png in Resources */,
 				04D68FA0258375B2004B07C0 /* IceWizard_walk_3.png in Resources */,
@@ -1089,6 +1328,7 @@
 				048025B725875CD500AE4D65 /* RedBat_walk_6.png in Resources */,
 				04D3ED9A2588A85E00AA0AE5 /* light_21.png in Resources */,
 				04D3ED852588A85E00AA0AE5 /* light_8.png in Resources */,
+				042A93B62593571D00F79BCD /* shana_miss_7.png in Resources */,
 				048025B825875CD500AE4D65 /* RedBat_walk_3.png in Resources */,
 				04D68FA5258375B2004B07C0 /* IceWizard_walk_6.png in Resources */,
 				04D68E7F25832548004B07C0 /* RedBat_stand_5.png in Resources */,
@@ -1096,9 +1336,11 @@
 				04D68E69258324BC004B07C0 /* RedBat_attack1_1.png in Resources */,
 				04D68F8B25837561004B07C0 /* IceWizard_stand_6.png in Resources */,
 				04D68E64258324BC004B07C0 /* RedBat_attack1_2.png in Resources */,
+				04EF69572590464400D8E02D /* Archer_walk_3.png in Resources */,
 				04D68E67258324BC004B07C0 /* RedBat_attack1_7.png in Resources */,
 				04D3EDA82588A85E00AA0AE5 /* light_1.png in Resources */,
 				04D68F9F258375B2004B07C0 /* IceWizard_walk_4.png in Resources */,
+				04EF69852590470F00D8E02D /* Archer_attack1_6.png in Resources */,
 				04D3EDA52588A85E00AA0AE5 /* light_17.png in Resources */,
 				04D40A6625821F7A0065445A /* arrow.png in Resources */,
 				04D47C8C258B67D900DDB61B /* RedBat_died_3.png in Resources */,
@@ -1107,8 +1349,10 @@
 				04D68E6A258324BC004B07C0 /* RedBat_attack1_4.png in Resources */,
 				04D3ED872588A85E00AA0AE5 /* smoke_14.png in Resources */,
 				04D3ED9F2588A85E00AA0AE5 /* light_4.png in Resources */,
+				04EF69842590470F00D8E02D /* Archer_attack1_3.png in Resources */,
 				04EADC9D258A1068007E85D0 /* RedBat_hurt_1.png in Resources */,
 				04D68F4425834F92004B07C0 /* Knight_attack1_3.png in Resources */,
+				042A93B72593571D00F79BCD /* shana_miss_8.png in Resources */,
 				04D3EDA22588A85E00AA0AE5 /* smoke_6.png in Resources */,
 				04D68E3B25830522004B07C0 /* BattleScene_1.jpg in Resources */,
 				04D3ED9E2588A85E00AA0AE5 /* light_6.png in Resources */,
@@ -1116,13 +1360,20 @@
 				04D68F7F25837505004B07C0 /* IceWizard_attack1_2.png in Resources */,
 				04D68F2B25834F40004B07C0 /* Knight_stand_9.png in Resources */,
 				04EADC9A258A1068007E85D0 /* RedBat_hurt_4.png in Resources */,
+				04EF696E259046B100D8E02D /* Archer_stand_0.png in Resources */,
+				04EF6969259046B000D8E02D /* Archer_stand_6.png in Resources */,
 				048025BC25875CD500AE4D65 /* RedBat_walk_2.png in Resources */,
 				04D68FA8258375B2004B07C0 /* IceWizard_walk_8.png in Resources */,
+				04EF696D259046B100D8E02D /* Archer_stand_4.png in Resources */,
+				04EF695A2590464400D8E02D /* Archer_walk_6.png in Resources */,
 				048025BE25875CD500AE4D65 /* RedBat_walk_7.png in Resources */,
+				04D956FB258CADC60009CA01 /* PubScene.sks in Resources */,
+				04EF697E2590470F00D8E02D /* Archer_attack1_2.png in Resources */,
 				04D68F4025834F92004B07C0 /* Knight_attack1_0.png in Resources */,
 				04D68F7A25837505004B07C0 /* IceWizard_attack1_5.png in Resources */,
 				04D40A64258217690065445A /* shadow.png in Resources */,
 				04D68F572583503C004B07C0 /* Knight_walk_1.png in Resources */,
+				04EF696F259046B100D8E02D /* Archer_stand_3.png in Resources */,
 				04D68E65258324BC004B07C0 /* RedBat_attack1_6.png in Resources */,
 				04D47C93258B67D900DDB61B /* RedBat_died_5.png in Resources */,
 			);
@@ -1179,21 +1430,28 @@
 			files = (
 				0482422A257E2027006CE6BD /* WDBaseScene.m in Sources */,
 				04D40A4D2581F5710065445A /* WDKinghtModel.m in Sources */,
+				04EF6943259044DF00D8E02D /* WDArcherNode.m in Sources */,
+				04D956F9258CADB70009CA01 /* PubScene.m in Sources */,
 				04824233257E2085006CE6BD /* WDBaseNodeModel.m in Sources */,
 				04D68E3525830458004B07C0 /* LearnScene.m in Sources */,
-				04824238257E20C2006CE6BD /* BattleScene_1.m in Sources */,
 				04824211257E1D03006CE6BD /* GameScene.m in Sources */,
 				04D68EAD25833EDA004B07C0 /* WDCalculateTool.m in Sources */,
 				04D3ED5D2588A63800AA0AE5 /* WDBaseScene+CreateMonster.m in Sources */,
+				04D956DB258C775D0009CA01 /* WDBalloonNode.m in Sources */,
 				04824230257E206D006CE6BD /* WDTextureManager.m in Sources */,
 				04D68EB425834C19004B07C0 /* WDIceWizardModel.m in Sources */,
+				04EF698B25904A4100D8E02D /* WDTouchEndLogic.m in Sources */,
 				04824214257E1D03006CE6BD /* GameViewController.m in Sources */,
 				04D47C72258B343500DDB61B /* WDTalkNode.m in Sources */,
+				042A93972592D26000F79BCD /* WDBaseScene+TouchLogic.m in Sources */,
 				0482421F257E1D07006CE6BD /* main.m in Sources */,
+				042A93A12592FC3000F79BCD /* WDSkillBtn.m in Sources */,
 				0482420A257E1D03006CE6BD /* AppDelegate.m in Sources */,
 				04D68E54258322AC004B07C0 /* WDRedBatNode.m in Sources */,
 				0482422D257E2036006CE6BD /* WDBaseNode.m in Sources */,
+				042A939C2592F5A100F79BCD /* WDSkillView.m in Sources */,
 				04D68E57258322E0004B07C0 /* WDRedBatModel.m in Sources */,
+				04EF6946259044FE00D8E02D /* WDArcherModel.m in Sources */,
 				04EADC782589FC2C007E85D0 /* WDActionTool.m in Sources */,
 				04D40A4A2581F4C90065445A /* WDKinghtNode.m in Sources */,
 				04D68EB125834C08004B07C0 /* WDIceWizardNode.m in Sources */,

@@ -9,7 +9,9 @@
 #import "WDTextureManager.h"
 
 @implementation WDTextureManager
-
+{
+    NSDictionary *_balloonDic;
+}
 static WDTextureManager *textureManager = nil;
 
 + (WDTextureManager *)shareTextureManager
@@ -94,6 +96,8 @@ static WDTextureManager *textureManager = nil;
     }
 }
 
+
+
 - (void)setRedBatPosition:(WDBaseNode *)monster
 {
     CGFloat rY = 0;
@@ -111,6 +115,29 @@ static WDTextureManager *textureManager = nil;
     
     monster.randomDistanceX = rX;
     monster.randomDistanceY = rY;
+}
+
+- (NSArray *)balloonTexturesWithLine:(NSInteger)line
+{
+    if (!_balloonDic) {
+        UIImage *image = [UIImage imageNamed:@"Balloon"];
+        NSArray *arr = [WDCalculateTool arrWithLine:10 arrange:8 imageSize:CGSizeMake(image.size.width, 48 * 10) subImageCount:80 image:image curImageFrame:CGRectMake(0, 0, image.size.width, 48 * 10)];
+        
+
+        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithCapacity:80];
+        for (int i = 0; i < 10; i ++) {
+            
+            NSArray *subArr = [arr subarrayWithRange:NSMakeRange(i * 8, 8)];
+            NSString *key = [NSString stringWithFormat:@"%d",i+1];
+            [dic setValue:subArr forKey:key];
+        }
+        
+        _balloonDic = dic;
+    }
+    
+    
+    NSString *key = [NSString stringWithFormat:@"%ld",line];
+    return _balloonDic[key];
 }
 
 #pragma mark - 玩家人物 -
@@ -137,6 +164,18 @@ static WDTextureManager *textureManager = nil;
     }
     
     return _iceWizardModel;
+}
+
+
+/// 弓箭手
+- (WDArcherModel *)archerModel
+{
+    if (!_archerModel) {
+        _archerModel = [[WDArcherModel alloc] init];
+        [_archerModel setNormalTexturesWithName:kArcher standNumber:10 runNumber:0 walkNumber:10 diedNumber:0 attack1Number:10];
+    }
+    
+    return _archerModel;
 }
 
 #pragma mark - 怪物 -

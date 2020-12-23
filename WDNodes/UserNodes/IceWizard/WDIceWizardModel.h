@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface WDIceWizardModel : WDBaseNodeModel
-
+@property (nonatomic,copy)NSArray *doubleArr;
 @end
 
 NS_ASSUME_NONNULL_END

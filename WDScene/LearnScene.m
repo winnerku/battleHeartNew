@@ -11,15 +11,13 @@
 
 @implementation LearnScene
 {
-    BOOL _canTouch;
-    BOOL _firstTouch;
     int  _monsterNumber;
     BOOL _first;
     BOOL _iceAppear;
     BOOL _cure;
     BOOL _canPlay;
     int  _diedNumber;
-    
+    BOOL _learnOver; //剧情结束
     WDBaseNode *_handNode;
     WDRedBatNode *_redNode;
     int _i;
@@ -30,22 +28,17 @@
 - (void)didMoveToView:(SKView *)view
 {
     [super didMoveToView:view];
-    
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(moveFinish:) name:kNotificationForMoveFinish object:nil];
-    
+        
     [self addChild:self.kNightNode];
     
     self.bgNode.texture = [SKTexture textureWithImage:[UIImage imageNamed:@"BattleScene_1.jpg"]];
     
     self.kNightNode.position = CGPointMake(0, 0);
     self.kNightNode.zPosition = 10;
+    
+   
+    [self.kNightNode.talkNode setText:@"嘿，请点击他！"];
 
-    self.kNightNode.talkNode.hidden = NO;
-    self.kNightNode.talkNode.xScale = 3;
-    self.kNightNode.talkNode.yScale = 3;
-    self.kNightNode.talkNode.position = CGPointMake(0, self.kNightNode.realSize.height + 40);
-    [self.kNightNode.talkNode setText:@"嘿，请点击我！"];
-  
     /**
      教学关整体逻辑:
      先选中骑士
@@ -66,6 +59,10 @@
 
 - (void)touchMovedToPoint:(CGPoint)pos
 {
+    if (_learnOver) {
+           return;
+       }
+    
     if (_iceAppear || _cure) {
         [super touchMovedToPoint:pos];
     }
@@ -73,6 +70,9 @@
 
 - (void)touchUpAtPoint:(CGPoint)pos
 {
+    if (_learnOver) {
+        return;
+    }
     
     if (!self.selectNode) {
         WDBaseNode *node = (WDBaseNode *)[self nodeAtPoint:pos];
@@ -133,7 +133,8 @@
                 [_handNode removeAllActions];
                 _handNode = nil;
                 self.iceWizardNode.talkNode.hidden = YES;
-                [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
+               
+                
             }
         }
         
@@ -181,17 +182,19 @@
     self.iceWizardNode.talkNode.position = CGPointMake(0, self.iceWizardNode.realSize.height + 40);
 
     
-    [self.iceWizardNode.talkNode setText:@"请选中我，勇士！"];
+    [self.iceWizardNode.talkNode setText:@"点击选中我！"];
     
     _redNode.paused = YES;
     self.kNightNode.paused = YES;
     _first = NO;
     _iceAppear = YES;
-    
+    self.iceWizardNode.isCure = YES;
+
     [self addChild:self.iceWizardNode];
     self.iceWizardNode.position = CGPointMake(-200, 0);
     [self.textureManager onlyArrowWithPos:CGPointMake(self.iceWizardNode.position.x, self.iceWizardNode.realSize.height / 2.0 + 20)];
 
+    
 }
 
 /// 引导手势
@@ -261,12 +264,59 @@
             [self.monsterArr removeObject:node];
             
             _redNumber ++;
-            if (_redNumber <= 8) {
-                [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
+            if (_redNumber <= 1) {
+                [self createMonsterWithName:kRedBat position:CGPointMake(-500, arc4random() % 300)];
+            }else{
+                
+                
+                __weak typeof(self)weakSelf = self;
+                [self.kNightNode moveActionWithPoint:CGPointMake(-50, 0) moveComplete:^{
+                    weakSelf.kNightNode.xScale = fabs(weakSelf.iceWizardNode.xScale);
+                     weakSelf.kNightNode.isRight = YES;
+                    weakSelf.kNightNode.direction = @"right";
+                }];
+                
+                [self.iceWizardNode moveActionWithPoint:CGPointMake(200, 0) moveComplete:^{
+                    weakSelf.iceWizardNode.xScale = -fabs(weakSelf.iceWizardNode.xScale);
+                     weakSelf.iceWizardNode.isRight = NO;
+                    weakSelf.iceWizardNode.direction = @"left";
+                }];
+                
+                _learnOver = YES;
+                self.iceWizardNode.isCure = NO;
+                [self.iceWizardNode.talkNode setText:@"你是雇佣兵嘛？\n是的话请跟我来"];
+                [self performSelector:@selector(yaba) withObject:nil afterDelay:1.0];
+                self.iceWizardNode.bloodBgNode.hidden = YES;
+                self.kNightNode.bloodBgNode.hidden = YES;
             }
             break;
         }
     }
+}
+
+- (void)yaba{
+    [self.kNightNode.balloonNode setBalloonWithLine:8 hiddenTime:4];
+    [self performSelector:@selector(yaba2) withObject:nil afterDelay:2];
+}
+
+- (void)yaba2{
+    [self.iceWizardNode.talkNode setText:@"嘛，无所谓啦\n跟着我来吧！" hiddenTime:4];
+    [self performSelector:@selector(yaba3) withObject:nil afterDelay:2];
+}
+
+- (void)yaba3{
+    
+    [self.iceWizardNode moveActionWithPoint:CGPointMake(kScreenWidth + 100, 0) moveComplete:^{
+        
+    }];
+    
+    __weak typeof(self)weakSelf = self;
+    [self.kNightNode moveActionWithPoint:CGPointMake(kScreenWidth + 100, 0) moveComplete:^{
+        if (weakSelf.changeSceneWithNameBlock) {
+            weakSelf.changeSceneWithNameBlock(@"PubScene");
+        }
+    }];
+    [self.kNightNode.balloonNode setBalloonWithLine:6 hiddenTime:10];
 }
 
 
@@ -286,19 +336,11 @@
 
 
 
-
-
-- (void)moveFinish:(NSNotification *)notification
+- (void)dealloc
 {
-    if (_canTouch) {
-        return;
-    }
-    _firstTouch = NO;
-    _canTouch = YES;
-
+//    NSLog(@"%@",self.kNightNode);
+    NSLog(@"%@场景销毁了~",NSStringFromClass([self class]));
 }
-
-
 
 
 

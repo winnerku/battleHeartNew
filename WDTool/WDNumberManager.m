@@ -20,6 +20,8 @@
         [self initKknight:node];
     }else if([name isEqualToString:kIceWizard]){
         [self initIceWizard:node];
+    }else if([name isEqualToString:kArcher]){
+        [self initArcher:node];
     }
 }
 
@@ -29,11 +31,11 @@
 {
     node.name = kKinght;
     node.moveSpeed = 300;
-    node.blood     = 100;
-    node.lastBlood = 80;
+    node.blood     = 300;
+    node.lastBlood = 300;
     node.attackDistance = 0;
     node.moveCADisplaySpeed = 4;
-    node.attackNumber = 10;
+    node.attackNumber = 20;
     node.isRight = YES;
 }
 
@@ -43,11 +45,23 @@
     node.name = kIceWizard;
     node.moveSpeed = 300;
     node.moveCADisplaySpeed = 2.5;
-    node.blood     = 300;
-    node.lastBlood = 300;
+    node.blood     = 100;
+    node.lastBlood = 100;
     node.zPosition = 10;
     node.addBuff = YES;
     node.cureNumber = 50;
+}
+
+#pragma mark - 弓箭手 -
++ (void)initArcher:(WDBaseNode *)node
+{
+    node.name = kArcher;
+    node.moveSpeed = 300;
+    node.moveCADisplaySpeed = 2.5;
+    node.blood     = 100;
+    node.lastBlood = 100;
+    node.zPosition = 10;
+    node.attackNumber = 10;
 }
 
 ////////////////////// 怪物 ////////////////

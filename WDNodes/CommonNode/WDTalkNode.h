@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setText:(NSString *)text;
 
+- (void)setText:(NSString *)text hiddenTime:(NSInteger)time;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -17,6 +17,12 @@ NS_ASSUME_NONNULL_BEGIN
                   scale:(CGFloat)scale
               demagePic:(NSString *)imageName;
 
+
++ (void)reduceBloodLabelAnimation:(WDBaseNode *)node
+                      reduceCount:(CGFloat)count;
+
+
+
 @end
 
 NS_ASSUME_NONNULL_END

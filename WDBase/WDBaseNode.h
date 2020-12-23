@@ -9,6 +9,7 @@
 #import <SpriteKit/SpriteKit.h>
 #import "WDBaseNodeModel.h"
 #import "WDTalkNode.h"
+#import "WDBalloonNode.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface WDBaseNode : SKSpriteNode
@@ -34,10 +35,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)WDBaseNode *bloodBgNode;
 /// 对话框
 @property (nonatomic,strong)WDTalkNode *talkNode;
+/// 表情
+@property (nonatomic,strong)WDBalloonNode *balloonNode;
 
 
 /// 方向: 左 又
 @property (nonatomic,strong)NSString *direction;
+@property (nonatomic,assign)CGFloat directionNumber;
 
 @property (nonatomic,copy)void (^moveFinish)(void);
 
@@ -78,11 +82,27 @@ NS_ASSUME_NONNULL_BEGIN
 /// 防御力 
 @property (nonatomic,assign)int defense;
 
+- (void)skill1Action;
+- (void)skill2Action;
+- (void)skill3Action;
+- (void)skill4Action;
+- (void)skill5Action;
+
+/// 技能是否在释放状态
+@property (nonatomic,assign)BOOL skill1;
+@property (nonatomic,assign)BOOL skill2;
+@property (nonatomic,assign)BOOL skill3;
+@property (nonatomic,assign)BOOL skill4;
+@property (nonatomic,assign)BOOL skill5;
+
 
 /// 动画过程中的移动速度
 @property (nonatomic,assign)CGFloat moveSpeed;
 /// 实时的移动速度
 @property (nonatomic,assign)CGFloat moveCADisplaySpeed;
+
+
+
 
 
 + (instancetype)initWithModel:(WDBaseNodeModel *)model;
@@ -109,9 +129,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// 选中动画 怪物和玩家实现不一样，如果特殊人物，可以定制
 - (void)selectSpriteAction;
 
-/// 设置血条
-/// @param bloodNumber 敌人攻击力,也可能是牧师加血量,初始化传0
-- (void)setBloodNodeNumber:(int)bloodNumber;
+- (void)selectSpriteActionWithSelectNode:(WDBaseNode *)userNode;
+
+
+
+///  返回 YES 说明血量没了，返回NO说明还有血
+/// @param bloodNumber  敌人攻击力,也可能是牧师加血量,初始化传0
+- (BOOL)setBloodNodeNumber:(int)bloodNumber;
 
 /// 被攻击
 /// @param targetNode 攻击单位
@@ -140,6 +164,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 销毁
 - (void)releaseAction;
+
+
 
 @end
 

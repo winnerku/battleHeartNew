@@ -48,7 +48,7 @@
     CGPoint monsterPoint = monster.position;
     
     CGFloat minDistance = user.realSize.width / 2.0 + monster.realSize.width / 2.0 + monster.randomDistanceX;
-    CGFloat minY = monster.randomDistanceY;
+    //CGFloat minY = monster.randomDistanceY;
     
     //近战
     if (user.attackDistance == 0) {
@@ -71,13 +71,75 @@
             user.isRight = NO;
             user.xScale = -fabs(user.xScale);
         }
+        
+        y = monsterPoint.y;
+
+    }else{
+        //远程
+        //玩家在右边，怪物在左边
+        if (userPoint.x < monsterPoint.x) {
+        
+            
+            user.direction = @"right";
+            user.isRight = YES;
+            user.xScale =  fabs(user.xScale);
+            
+        }else{
+            
+            //玩家在左边，怪物在右边
+            
+            user.direction = @"left";
+            user.isRight = NO;
+            user.xScale = -fabs(user.xScale);
+        }
+        
+        x = user.position.x;
+        y = user.position.y;
+        
     }
     
     
-    y = monsterPoint.y;
     
     
     return CGPointMake(x, y);
+}
+
++ (WDBaseNode *)searchMonsterNearNode:(WDBaseNode *)node
+{
+    NSArray *childNodes = node.parent.children;
+    WDBaseNode *target = nil;
+    CGFloat distance = 10000;
+    for (WDBaseNode *nearN in childNodes) {
+        if ([nearN isKindOfClass:[WDMonsterNode class]]) {
+            CGFloat d = [WDCalculateTool distanceBetweenPoints:nearN.position seconde:node.position];
+            if (distance > d) {
+                distance = d;
+                target = nearN;
+            }
+        }
+    }
+    
+    
+    return target;
+}
+
++ (WDBaseNode *)searchUserNearNode:(WDBaseNode *)node
+{
+    NSArray *childNodes = node.parent.children;
+    WDBaseNode *target = nil;
+    CGFloat distance = 10000;
+    for (WDBaseNode *nearN in childNodes) {
+        if ([nearN isKindOfClass:[WDUserNode class]]) {
+            CGFloat d = [WDCalculateTool distanceBetweenPoints:nearN.position seconde:node.position];
+            if (distance > d) {
+                distance = d;
+                target = nearN;
+            }
+        }
+    }
+    
+    
+    return target;
 }
 
 
@@ -156,6 +218,48 @@
         rads = -rads;
     }
     return rads;
+}
+
++ (NSArray *)arrWithLine:(NSInteger)line
+                 arrange:(NSInteger)arrange
+               imageSize:(CGSize)imageSize
+           subImageCount:(NSInteger)count
+                   image:(UIImage *)image
+           curImageFrame:(CGRect)frame{
+    
+   // UIImage *passImage = [UIImage imageNamed:@"chest1"];
+    CGImageRef imageRef1 = [image CGImage];
+
+    
+    CGImageRef subImage = CGImageCreateWithImageInRect(imageRef1, frame);
+    UIImage *curImage = [UIImage imageWithCGImage:subImage];
+    
+    CGImageRef imageRef = [curImage CGImage];
+    
+    CGFloat width = imageSize.height / (CGFloat)line;
+    CGFloat height = imageSize.width / (CGFloat)arrange;
+    
+    NSMutableArray *imagesArr = [NSMutableArray arrayWithCapacity:count];
+    for (NSInteger i = 0; i < count; i ++) {
+           
+        CGFloat x = i % arrange * width;
+        CGFloat y = i / arrange * height;
+       
+        CGRect frame = CGRectMake(x, y, width, height);
+        CGImageRef subImage = CGImageCreateWithImageInRect(imageRef, frame);
+        UIImage *newImage = [UIImage imageWithCGImage:subImage];
+        SKTexture *texture = [SKTexture textureWithImage:newImage];
+        [imagesArr addObject:texture];
+           
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //CGImageRelease(subImage);
+        });
+
+    }
+    
+    
+    return imagesArr;
+    
 }
 
 @end

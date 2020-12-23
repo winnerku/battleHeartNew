@@ -26,6 +26,7 @@ static CGFloat bloodHeight = 40;
     return [[WDBaseNode alloc] init];
 }
 
+
 - (void)setChildNodeWithModel:(WDBaseNodeModel *)model{
     
     self.isRight = YES;
@@ -44,6 +45,7 @@ static CGFloat bloodHeight = 40;
     if ([keyPath isEqualToString:@"isRight"]) {
         BOOL isRight = [change[@"new"]boolValue];
         if (isRight) {
+            self.directionNumber = 1;
            self.bloodBgNode.xScale = 1;
            self.bloodBgNode.position = CGPointMake(-self.bloodBgNode.size.width / 2.0, self.bloodBgNode.position.y);
             self.talkNode.xScale = fabs(self.talkNode.xScale);
@@ -51,6 +53,7 @@ static CGFloat bloodHeight = 40;
             if ([self.name isEqualToString:kRedBat]) {
                 //NSLog(@"1");
             }
+            self.directionNumber = -1;
             self.bloodBgNode.xScale = -1;
             self.bloodBgNode.position = CGPointMake(self.bloodBgNode.size.width / 2.0, self.bloodBgNode.position.y);
             self.talkNode.xScale = -fabs(self.talkNode.xScale);
@@ -83,9 +86,20 @@ static CGFloat bloodHeight = 40;
 
 
 
-/// 加减血量
-- (void)setBloodNodeNumber:(int)bloodNumber
+- (void)beAttackActionWithTargetNode:(WDBaseNode *)targetNode
 {
+    NSLog(@"%@被%@攻击了",self.name,targetNode.name);
+}
+
+- (void)noBlood{
+    [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForDied object:nil];
+}
+
+/// 加减血量
+- (BOOL)setBloodNodeNumber:(int)bloodNumber
+{
+    [WDActionTool reduceBloodLabelAnimation:self reduceCount:bloodNumber];
+
     [self bloodNode];
     BOOL isAddBlood = NO;
     if (bloodNumber > 0) {
@@ -101,7 +115,7 @@ static CGFloat bloodHeight = 40;
     /// 满血状态
     if (isAddBlood && _lastBlood == _blood) {
         self.bloodBgNode.alpha = 0;
-        return;
+        return NO;
     }
     
     self.bloodBgNode.alpha = 1;
@@ -117,10 +131,12 @@ static CGFloat bloodHeight = 40;
     }
     
     /// 没有血的状态
-    if ( !isAddBlood && _lastBlood <= 0) {
+    if ( !isAddBlood && _lastBlood <= 0 && !self.isDead) {
         self.isDead = YES;
-        [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForDied object:nil];
-        return;
+        [self reduceAnimation:bloodNumber];
+        ///这里这样处理是因为先走了死亡的处理之后又走的通知
+        [self performSelector:@selector(noBlood) withObject:nil afterDelay:0];
+        return YES;
     }
     
     
@@ -148,7 +164,7 @@ static CGFloat bloodHeight = 40;
        
     }
     
-    
+    return NO;
 }
 
 
@@ -242,6 +258,7 @@ static CGFloat bloodHeight = 40;
 - (void)standAction
 {
     
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(moveFinishAction) object:nil];
     [self removeActionForKey:@"moveAnimation"];
     
     self.isAttack = NO;
@@ -249,8 +266,9 @@ static CGFloat bloodHeight = 40;
     SKAction *stand = [SKAction animateWithTextures:self.model.standArr timePerFrame:0.1];
     SKAction *rep = [SKAction repeatActionForever:stand];
     [self runAction:rep withKey:@"stand"];
+    
+    //NSLog(@"%@调用了站立方法",self.name);
 }
-
 
 
 
@@ -268,6 +286,7 @@ static CGFloat bloodHeight = 40;
 /// 攻击
 - (void)attackAction1WithNode:(WDBaseNode *)enemyNode
 {
+    self.colorBlendFactor = 0;
     self.isAttack = YES;
     self.isMove = NO;
     self.isCure = NO;
@@ -303,8 +322,6 @@ static CGFloat bloodHeight = 40;
     [self removeActionForKey:@"move"];
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(moveFinishAction) object:nil];
     
-    
-    
     //血条翻转
     if (point.x > self.position.x) {
         self.xScale = fabs(self.xScale);
@@ -319,18 +336,19 @@ static CGFloat bloodHeight = 40;
 
     }
     
-    
-
+   
     
     CGFloat distanceX = fabs(point.x - self.position.x);
     CGFloat distanceY = fabs(point.y - self.position.y);
     
     CGFloat distance = sqrt(distanceX * distanceX + distanceY * distanceY);
+    NSTimeInterval time = distance / self.moveSpeed;
+    SKAction *move = [SKAction moveTo:point duration:time];
     
-    SKAction *move = [SKAction moveTo:point duration:distance / self.moveSpeed];
+    NSLog(@"%f",time);
     
     [self runAction:move withKey:@"move"];
-    [self performSelector:@selector(moveFinishAction) withObject:nil afterDelay:distance / self.moveSpeed];
+    [self performSelector:@selector(moveFinishAction) withObject:nil afterDelay:time];
     
     SKAction *moveAnimation = [self actionForKey:@"moveAnimation"];
     if (!moveAnimation) {
@@ -349,7 +367,7 @@ static CGFloat bloodHeight = 40;
     [[WDTextureManager shareTextureManager] hiddenArrow];
 
 
-    [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForMoveFinish object:self.name];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForMoveFinish object:self.name];
     
     if (self.isAttack) {
         return;
@@ -357,10 +375,26 @@ static CGFloat bloodHeight = 40;
     
     [self standAction];
     [self removeActionForKey:@"moveAnimation"];
-    
+
     if (_moveFinish) {
         _moveFinish();
     }
+}
+
+- (void)skill1Action{
+    self.skill1 = YES;
+}
+- (void)skill2Action{
+    self.skill2 = YES;
+}
+- (void)skill3Action{
+    self.skill3 = YES;
+}
+- (void)skill4Action{
+    self.skill4 = YES;
+}
+- (void)skill5Action{
+    self.skill5 = YES;
 }
 
 
@@ -369,6 +403,24 @@ static CGFloat bloodHeight = 40;
     if (_nodeLink) {
         [_nodeLink invalidate];
         _nodeLink = nil;
+    }
+    
+    if (self.model.diedArr.count > 0) {
+        SKAction *diedAction = [SKAction animateWithTextures:self.model.diedArr timePerFrame:0.1];
+        SKAction *alpha = [SKAction fadeAlphaTo:0 duration:self.model.diedArr.count * 0.1];
+        SKAction *gr = [SKAction group:@[diedAction,alpha]];
+        SKAction *remo = [SKAction removeFromParent];
+        SKAction *seq = [SKAction sequence:@[gr,remo]];
+        [self runAction:seq completion:^{
+            
+        }];
+    }else{
+        SKAction *alpha = [SKAction fadeAlphaTo:0 duration:0.5];
+        SKAction *remo = [SKAction removeFromParent];
+        SKAction *seq = [SKAction sequence:@[alpha,remo]];
+        [self runAction:seq completion:^{
+            
+        }];
     }
 }
 
@@ -450,10 +502,29 @@ static CGFloat bloodHeight = 40;
         _talkNode = [WDTalkNode spriteNodeWithTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"talk"]]];
         _talkNode.zPosition = 1000;
         _talkNode.hidden = YES;
+        _talkNode.xScale = 3;
+        _talkNode.yScale = 3;
+        _talkNode.position = CGPointMake(0, self.realSize.height + 40);
         [self addChild:_talkNode];
     }
     
     return _talkNode;
+}
+
+- (WDBalloonNode *)balloonNode
+{
+    if (!_balloonNode) {
+        
+        NSArray *balloonArr = [[WDTextureManager shareTextureManager]balloonTexturesWithLine:1];
+        _balloonNode = [WDBalloonNode spriteNodeWithTexture:balloonArr[1]];
+        _balloonNode.position = CGPointMake(_balloonNode.position.x, self.size.height / 2.0 + _balloonNode.size.height / 2.0);
+        _balloonNode.xScale = 3.0;
+        _balloonNode.yScale = 3.0;
+        [_balloonNode setScaleAndPositionWithName:self.name];
+        [self addChild:_balloonNode];
+    }
+    
+    return _balloonNode;
 }
 
 //- (CGFloat)randomDistanceX
@@ -529,6 +600,12 @@ static CGFloat bloodHeight = 40;
     
 }
 
+- (void)selectSpriteActionWithSelectNode:(WDBaseNode *)userNode
+{
+    [self selectSpriteAction];
+    
+    
+}
 
 
 - (void)setBodyCanUse

@@ -158,7 +158,6 @@
     CGFloat distanceY = self.position.y - point.y;
     
     CGFloat mini = self.realSize.width / 2.0 + self.targetMonster.realSize.width / 2.0 + self.targetMonster.randomDistanceX;
-    NSLog(@"%lf",self.randomDistanceY);
     if (fabs(distanceX) < mini && fabs(distanceY) < fabs(self.randomDistanceY) + 10) {
         return YES;
     }else{
@@ -166,11 +165,28 @@
     }
 }
 
+
+
 - (void)observedNode
 {
     [super observedNode];
     
     if (self.isStagger) {
+        return;
+    }
+    
+    if (self.targetMonster.isDead) {
+        self.targetMonster = nil;
+        [self standAction];
+        return;
+    }
+    
+    
+    if (!self.targetMonster) {
+        WDBaseNode *target = [WDCalculateTool searchUserNearNode:self];
+        if (target) {
+            self.targetMonster = target;
+        }
         return;
     }
     

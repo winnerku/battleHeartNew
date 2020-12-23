@@ -39,6 +39,26 @@ NS_ASSUME_NONNULL_BEGIN
 + (CGPoint)calculateMonsterMovePointWithMonsterNode:(WDBaseNode *)monster
                                            userNode:(WDBaseNode *)user;
 
+
+/// frame:按区域切分,其他同上
++ (NSArray *)arrWithLine:(NSInteger)line
+                 arrange:(NSInteger)arrange
+               imageSize:(CGSize)imageSize
+           subImageCount:(NSInteger)count
+                   image:(UIImage *)image
+           curImageFrame:(CGRect)frame;
+
+
+
+/// 玩家搜索最近的怪物
+/// @param node 玩家
++ (WDBaseNode *)searchMonsterNearNode:(WDBaseNode *)node;
+
+
+/// 怪物搜索最近的玩家
+/// @param node 怪物
++ (WDBaseNode *)searchUserNearNode:(WDBaseNode *)node;
+
 @end
 
 NS_ASSUME_NONNULL_END

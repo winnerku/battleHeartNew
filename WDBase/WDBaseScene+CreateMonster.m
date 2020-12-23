@@ -25,15 +25,26 @@
     
     WDRedBatNode *node = [WDRedBatNode initWithModel:[WDTextureManager shareTextureManager].redBatModel];
     node.isInit = YES;
-   
+    node.position = point;
+
 
     ///追击最近的人
     WDBaseNode *nearNode = (WDBaseNode *)[self nodesAtPoint:point];
-    if (![nearNode isKindOfClass:[WDBaseNode class]]) {
-        nearNode = self.kNightNode;;
+    if ([nearNode isKindOfClass:[WDBaseNode class]] && nearNode) {
+        node.targetMonster = nearNode;
+    }else{
+        CGFloat distance = 100000;
+        for (int i = 0; i < self.userArr.count; i++) {
+            WDBaseNode *user = self.userArr[i];
+            CGFloat dis = [WDCalculateTool distanceBetweenPoints:node.position seconde:user.position];
+            if (dis < distance) {
+                distance = dis;
+                nearNode = user;
+            }
+        }
+        node.targetMonster = nearNode;
     }
 
-    node.position = point;
     node.alpha = 0;
     [self addChild:node];
     
@@ -41,7 +52,6 @@
     [self setSmokeWithMonster:node name:kRedBat];
     [self.monsterArr addObject:node];
     [self.textureManager setMonsterMovePointWithName:kRedBat monster:node];
-    node.targetMonster = nearNode;
 }
 
 

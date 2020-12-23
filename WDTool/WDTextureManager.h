@@ -10,6 +10,7 @@
 #import "WDKinghtModel.h"
 #import "WDRedBatModel.h"
 #import "WDIceWizardModel.h"
+#import "WDArcherModel.h"
 #import "WDBaseNode.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -23,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)WDKinghtModel *kinghtModel;
 /// 冰霜法师
 @property (nonatomic,strong)WDIceWizardModel *iceWizardModel;
+/// 弓箭手
+@property (nonatomic,strong)WDArcherModel *archerModel;
 
 #pragma mark - 怪物 -
 
@@ -43,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)WDBaseNode *locationNode;
 
 
-/// 设置怪物可以移动到玩家的位置
+/// 设置怪物可以移动到玩家的位置,只有玩家当前目标，设置的randomDistanceX和randomDistanceY为0
 - (void)setMonsterMovePointWithName:(NSString *)name
                             monster:(WDBaseNode *)monster;
 
@@ -56,8 +59,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// 隐藏指示箭头
 - (void)hiddenArrow;
 /// 只显示箭头
-/// @param pos
 - (void)onlyArrowWithPos:(CGPoint)pos;
+/// 人物头顶上的状态
+/// @param line 哪一行，参考Balloon图片
+- (NSArray *)balloonTexturesWithLine:(NSInteger)line;
 
 
 #pragma mark - 逻辑 -

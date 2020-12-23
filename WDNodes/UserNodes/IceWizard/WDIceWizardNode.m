@@ -12,6 +12,7 @@
 {
     WDIceWizardModel *_iceModel;
     SKAction         *_cureAction;
+    CGFloat           _addNumber;
 }
 
 + (instancetype)initWithModel:(WDBaseNodeModel *)model
@@ -49,18 +50,27 @@
      [self setBloodNodeNumber:0];
     
     
+    _addNumber = self.cureNumber;
 //    SKSpriteNode *coloc = [SKSpriteNode spriteNodeWithColor:[UIColor orangeColor] size:self.size];
 //    [self addChild:coloc];
     
     [self standAction];
 }
 
-
+- (void)beAttackActionWithTargetNode:(WDBaseNode *)targetNode
+{
+    [super beAttackActionWithTargetNode:targetNode];
+}
 /// 加血状态
 - (void)addBuffActionWithNode:(WDBaseNode *)node
 {
     //移动大于一切
     if (self.isMove) {
+        return;
+    }
+    
+    if (!self.isCure) {
+        [self standAction];
         return;
     }
     
@@ -108,6 +118,8 @@
 /// @param node 被治愈者
 - (void)addDeadFireWithNode:(WDBaseNode *)node{
     
+    self.targetUser = node;
+    
     if (self.isMove) {
         return;
     }
@@ -145,6 +157,34 @@
     if (self.isCure) {
         [self addBuffActionWithNode:self.targetUser];
     }
+}
+
+- (void)skill1Action
+{
+    self.skill1 = YES;
+    self.cureNumber = _addNumber + _addNumber;
+    [self performSelector:@selector(cd1) withObject:nil afterDelay:10];
+    
+    WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:_iceModel.doubleArr[0]];
+    node.zPosition = 1;
+    node.xScale = 3.0;
+    node.yScale = 3.0;
+    [self addChild:node];
+    
+    SKAction *action = [SKAction animateWithTextures:_iceModel.doubleArr timePerFrame:0.1];
+    int time = 10 / (_iceModel.doubleArr.count * 0.1);
+    SKAction *rep = [SKAction repeatAction:action count:time];
+    SKAction *remo = [SKAction removeFromParent];
+    SKAction *seq = [SKAction sequence:@[rep,remo]];
+    [node runAction:seq completion:^{
+        
+    }];
+}
+
+
+- (void)cd1{
+    self.cureNumber = _addNumber;
+    self.skill1 = NO;
 }
 
 @end

@@ -23,10 +23,17 @@
 #define kKinght @"Knight"
 //冰霜巫师
 #define kIceWizard @"IceWizard"
+//弓箭手
+#define kArcher @"Archer"
 
 
 ///敌人
+//红色蝙蝠
 #define kRedBat @"RedBat"
+
+
+//玩家流程
+#define kPassLearn @"kPassLearn"
 
 
 //NSLog
@@ -63,13 +70,13 @@ static const uint32_t LINE_COLLISION = 0x00;  //0100
 static const uint32_t LINE_CONTACT   = 0x00;  //0010
 
 
-static const uint32_t MONSTER_CATEGORY = 0x00;   //0011
+static const uint32_t MONSTER_CATEGORY = 0x01;   //0001
 static const uint32_t MONSTER_COLLISION = 0x00;  //1000
-static const uint32_t MONSTER_CONTACT =   0x00;  //0011
+static const uint32_t MONSTER_CONTACT =   0x02;  //0010
 
 
 
-
+static const uint32_t ARROW_CATEGORY = 0X02;
 
 
 
@@ -77,13 +84,17 @@ static const uint32_t MONSTER_CONTACT =   0x00;  //0011
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight [UIScreen mainScreen].bounds.size.height
 
+#define IS_IPHONEX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? (CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size)||CGSizeEqualToSize(CGSizeMake(828, 1792), [[UIScreen mainScreen] currentMode].size)||CGSizeEqualToSize(CGSizeMake(1242, 2688), [[UIScreen mainScreen] currentMode].size)||CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size)||CGSizeEqualToSize(CGSizeMake(1080, 2340), [[UIScreen mainScreen] currentMode].size)||CGSizeEqualToSize(CGSizeMake(1170, 2532), [[UIScreen mainScreen] currentMode].size)||CGSizeEqualToSize(CGSizeMake(1284, 2778), [[UIScreen mainScreen] currentMode].size)) : NO)
+
+
 
 //通知
 /// 移动结束
 #define kNotificationForMoveFinish @"kNotificationForMoveFinish"
 /// 死亡通知
 #define kNotificationForDied @"kNotificationForDied"
-
+/// 换人通知
+#define kNotificationForChangeUser @"kNotificationForChangeUser"
 
 
 

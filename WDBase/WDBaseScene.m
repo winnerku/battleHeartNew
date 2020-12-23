@@ -8,6 +8,8 @@
 
 #import "WDBaseScene.h"
 #import "WDBaseScene+CreateMonster.h"
+#import "WDTouchEndLogic.h"
+
 @implementation WDBaseScene
 
 
@@ -19,10 +21,9 @@
 
 - (void)diedAction{
     
-    
-    
     for (WDBaseNode *node in self.userArr) {
         if (node.isDead) {
+            [node releaseAction];
             [self.userArr removeObject:node];
             [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
             break;
@@ -31,6 +32,7 @@
     
     for (WDBaseNode *node in self.monsterArr) {
         if (node.isDead) {
+            [node releaseAction];
             [self.monsterArr removeObject:node];
             [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
             break;
@@ -64,8 +66,9 @@
     [self addChild:arrow];
     [self addChild:location];
     
-
-    //self.anchorPoint = CGPointMake(0, 0);
+    _selectNode = self.archerNode;
+    self.archerNode.arrowNode.hidden = NO;
+    [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForChangeUser object:self.selectNode.name];
 }
 
 
@@ -77,8 +80,26 @@
     WDBaseNode *nodeA = (WDBaseNode *)contact.bodyA.node;
     WDBaseNode *nodeB = (WDBaseNode *)contact.bodyB.node;
        
+    ///弓箭触碰
+    if ([nodeA.name isEqualToString:@"user_arrow"]) {
+        if ([nodeB isKindOfClass:[WDMonsterNode class]]) {
+            [nodeB selectSpriteAction];
+            [nodeB setBloodNodeNumber:nodeA.attackNumber];
+        }
+    }else if([nodeB.name isEqualToString:@"user_arrow"]){
+        if ([nodeA isKindOfClass:[WDMonsterNode class]]) {
+            [nodeA selectSpriteAction];
+            [nodeA setBloodNodeNumber:nodeA.attackNumber];
+        }
+    }
        
-       
+    
+    
+    if ([nodeA isKindOfClass:[WDMonsterNode class]] && [nodeB.name isEqualToString:@"user_arrow"]) {
+        //[nodeB removeFromParent];
+        [nodeA selectSpriteAction];
+        [nodeA setBloodNodeNumber:nodeB.attackNumber];
+    }
        
     NSLog(@"A: %@  b: %@",nodeA.name,nodeB.name);
     
@@ -102,128 +123,7 @@
 
 
 
-#pragma mark - 触碰 -
-- (void)touchDownAtPoint:(CGPoint)pos {
-    NSLog(@"点中的坐标为: x = %lf  y = %lf",pos.x,pos.y);
-}
 
-// 移动
-- (void)touchMovedToPoint:(CGPoint)pos {
-    
-    /// 玩家在移动状态，不显示指引线
-    if (!_selectNode.isMove) {
-        self.selectLine.hidden = NO;
-        self.selectLine.position = CGPointMake(_selectNode.position.x, _selectNode.position.y - _selectNode.realSize.height / 2.0 + 35);
-    }
-    
-    ///引导线
-    //斜边
-    CGFloat width = [WDCalculateTool distanceBetweenPoints:pos seconde:self.selectLine.position];
-    self.selectLine.size = CGSizeMake(width, 10);
-    //角度
-    self.selectLine.zRotation = [WDCalculateTool angleForStartPoint:self.selectLine.position EndPoint:pos];
-    
-    [self.selectLine createLinePhyBody];
-
-}
-
-// 触碰结束
-- (void)touchUpAtPoint:(CGPoint)pos {
-    
-    NSArray *nodes = [self nodesAtPoint:pos];
-
-    WDUserNode *userNode = nil;
-    WDMonsterNode *monsterNode = nil;
-    CGFloat distance = 100000;
-    ///点击区域角色
-    for (WDBaseNode *n in nodes) {
-           
-        CGFloat dis = [WDCalculateTool distanceBetweenPoints:pos seconde:n.position];
-        if ([n isKindOfClass:[WDUserNode class]]) {
-           
-            if (dis < distance) {
-                userNode = (WDUserNode *)n;
-                monsterNode = nil;
-                distance = dis;
-            }
-            
-        }else if ([n isKindOfClass:[WDMonsterNode class]]) {
-            if (dis < distance) {
-                monsterNode = (WDMonsterNode *)n;
-                userNode = nil;
-                distance = dis;
-            }
-        }
-    }
-    
-    
-    BOOL canMove = YES;
-   
-    if (_selectNode.addBuff  && userNode && _selectLine.hidden == NO) {
-        ///增益buff状态~
-        canMove = NO;
-        [userNode selectSpriteAction];
-        [_selectNode addBuffActionWithNode:userNode];
-         
-    }else if (![_selectNode.name isEqualToString:userNode.name] && userNode) {
-       
-        CGFloat distanceX = fabs(userNode.position.x - pos.x);
-        CGFloat distanceY = fabs(userNode.position.y - pos.y);
-        //实际显示图片比创建的图片要大
-        if (distanceX < userNode.realSize.width / 2.0 && distanceY < userNode.realSize.height / 2.0) {
-            ///切换选中目标，不能移动
-            _selectNode.arrowNode.hidden = YES;
-            userNode.arrowNode.hidden    = NO;
-            canMove = NO;
-            _selectNode = userNode;
-            [_selectNode selectSpriteAction];
-            [[WDTextureManager shareTextureManager] hiddenArrow];
-            NSLog(@"%lf",distanceX);
-        }
-        
-        
-    }else if(monsterNode){
-        
-        [monsterNode selectSpriteAction];
-        
-        ///玩家当前选中人物和怪物选中的攻击人物
-        if ([monsterNode.targetMonster.name isEqualToString:_selectNode.name]) {
-            
-            monsterNode.randomDistanceY = 0;
-            monsterNode.randomDistanceY = 0;
-            
-            //重置一下之前怪物的位置
-            if (![_selectNode.targetMonster isEqualToNode:monsterNode]) {
-                [self.textureManager setMonsterMovePointWithName:_selectNode.targetMonster.name monster:_selectNode.targetMonster];
-            }else{
-                NSLog(@"同一个玩家点中我啦！");
-            }
-            
-        }
-        
-        ///选中怪物的情况
-        _selectNode.targetMonster = monsterNode;
-        [[WDTextureManager shareTextureManager] hiddenArrow];
-        canMove = NO;
-        
-    }
-    
-    
-    
-    /// 非切换目标可以移动
-    if (canMove) {
-        _selectNode.targetMonster = nil;
-        [_selectNode moveActionWithPoint:pos moveComplete:^{
-        }];
-        [self arrowAction:pos];
-
-    }
-
-    
-    self.selectLine.hidden = YES;
-    self.selectLine.size = CGSizeMake(0, 0);
-
-}
 
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -255,9 +155,39 @@
 
 }
 
+- (void)skill1Action{
+    [_selectNode skill1Action];
+}
+- (void)skill2Action{
+    [_selectNode skill2Action];
+}
+- (void)skill3Action{
+    [_selectNode skill3Action];
+}
+- (void)skill4Action{
+    [_selectNode skill4Action];
+}
+- (void)skill5Action{
+    [_selectNode skill5Action];
+}
+
+
 
 - (void)releaseAction
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    for (WDBaseNode *node in self.userArr) {
+        [node releaseAction];
+    }
+    
+    for (WDBaseNode *node in self.monsterArr) {
+        [node releaseAction];
+    }
+    
+    [self.textureManager.arrowNode removeFromParent];
+    [self.textureManager.locationNode removeFromParent];
+  
+    
     [[NSNotificationCenter defaultCenter]removeObserver:self name:kNotificationForDied object:nil];
 }
 
@@ -287,7 +217,6 @@
     return _kNightNode;
 }
 
-
 /// 冰法师
 - (WDIceWizardNode *)iceWizardNode
 {
@@ -297,6 +226,18 @@
     }
     
     return _iceWizardNode;
+}
+
+
+/// 弓箭手
+- (WDArcherNode *)archerNode
+{
+    if (!_archerNode) {
+        _archerNode = [WDArcherNode initWithModel:[WDTextureManager shareTextureManager].archerModel];
+        [self.userArr addObject:_archerNode];
+    }
+    
+    return _archerNode;
 }
 
 

@@ -96,7 +96,7 @@
    
     NSArray *att = [self.model.attackArr1 subarrayWithRange:NSMakeRange(0, 6)];
     NSArray *last = [self.model.attackArr1 subarrayWithRange:NSMakeRange(6, self.model.attackArr1.count - 6)];
-    [self removeAllActions];
+    //[self removeAllActions];
     self.colorBlendFactor = 0;
     SKAction *texture = [SKAction animateWithTextures:att timePerFrame:0.1];
     texture.timingMode = SKActionTimingEaseIn;
@@ -107,12 +107,31 @@
             return ;
         }
         
-         if ([self canReduceTargetBlood]) {
-            [weakSelf.targetMonster setBloodNodeNumber:weakSelf.attackNumber];
-         }
+        BOOL isDead = NO;
+        if ([self canReduceTargetBlood]) {
+           isDead = [weakSelf.targetMonster setBloodNodeNumber:weakSelf.attackNumber];
+            if (isDead) {
+                weakSelf.targetMonster = nil;
+                weakSelf.isAttack = NO;
+                [weakSelf standAction];
+                return;
+            }
+        }
+        
+        //如果之前怪物目标不是玩家，切换下
+        if (![weakSelf.targetMonster.targetMonster.name isEqualToString:weakSelf.name] && !isDead) {
+            
+            [weakSelf.balloonNode setBalloonWithLine:7 hiddenTime:2];
+            //吸引仇恨
+            weakSelf.targetMonster.targetMonster = weakSelf;
+            weakSelf.targetMonster.randomDistanceX = 0;
+            weakSelf.targetMonster.randomDistanceY = 0;
+            [weakSelf.targetMonster.balloonNode setBalloonWithLine:5 hiddenTime:2];
+        }
         
         [weakSelf runAction:[SKAction animateWithTextures:last timePerFrame:0.1] completion:^{
             weakSelf.isAttack = NO;
+            
         }];
     }];
 
@@ -121,8 +140,8 @@
 - (void)beAttackActionWithTargetNode:(WDBaseNode *)targetNode
 {
     
-    NSLog(@"%@",self.targetMonster);
-    NSLog(@"%d",self.isMove);
+    [super beAttackActionWithTargetNode:targetNode];
+
     if (!self.targetMonster && !self.isMove) {
         self.targetMonster = targetNode;
         targetNode.randomDistanceY = 0;
@@ -132,11 +151,14 @@
 
 - (void)moveToEnemy{
    
+    
+    if (self.targetMonster.isDead) {
+        self.targetMonster = nil;
+        [self standAction];
+        return;
+    }
+    
     if (self.isAttack) {
-        if (self.targetMonster.isDead) {
-            self.targetMonster = nil;
-            [self standAction];
-        }
         return;
     }
     
@@ -145,7 +167,8 @@
         return;
     }
     
-    if (self.targetMonster.isAttack) {
+    //攻击的对象是自己
+    if (self.targetMonster.isAttack && [self.targetMonster.targetMonster.name isEqualToString:self.name]) {
         return;
     }
     

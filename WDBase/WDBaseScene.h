@@ -13,6 +13,7 @@
 //玩家单位
 #import "WDKinghtNode.h"
 #import "WDIceWizardNode.h"
+#import "WDArcherNode.h"
 
 
 //怪物单位
@@ -32,7 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)NSMutableArray *monsterArr;
 /// 玩家人物列表
 @property (nonatomic,strong)NSMutableArray *userArr;
-
+/// 跳转
+@property (nonatomic,copy)void (^changeSceneWithNameBlock)(NSString *sceneName);
 
 
 
@@ -42,12 +44,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// 背景
 @property (nonatomic,strong)SKSpriteNode *bgNode;
 
+
 /// 骑士
 @property (nonatomic,strong)WDKinghtNode *kNightNode;
-
 /// 冰法师
 @property (nonatomic,strong)WDIceWizardNode *iceWizardNode;
-
+/// 弓箭手
+@property (nonatomic,strong)WDArcherNode *archerNode;
 
 
 
@@ -61,6 +64,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)createMonsterWithName:(NSString *)name
                      position:(CGPoint)point;
+
+- (void)arrowAction:(CGPoint)pos;
+
+
+
+/// 技能
+- (void)skill1Action;
+- (void)skill2Action;
+- (void)skill3Action;
+- (void)skill4Action;
+- (void)skill5Action;
 
 
 @end
