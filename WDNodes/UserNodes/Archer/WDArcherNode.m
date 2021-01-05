@@ -224,6 +224,14 @@
 {
     [super observedNode];
     
+    if (self.isLearn) {
+        return;
+    }
+    
+    if (self.isInit) {
+        return;
+    }
+    
     if (self.targetMonster.isDead) {
         self.targetMonster = nil;
         [self standAction];
@@ -289,4 +297,15 @@
     self.moveSpeed = _speed;
 }
 
+- (void)skill4Action
+{
+    self.skill4 = YES;
+    [self performSelector:@selector(cd4) withObject:nil afterDelay:5];
+
+}
+
+- (void)cd4{
+    self.skill4 = NO;
+   
+}
 @end

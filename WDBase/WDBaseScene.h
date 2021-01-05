@@ -26,6 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)WDBaseNode *selectNode;
 
 
+/// 停止一切互动
+@property (nonatomic,assign)BOOL isPauseClick;
+
 /// 纹理管理器
 @property (nonatomic,strong)WDTextureManager *textureManager;
 
@@ -36,7 +39,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// 跳转
 @property (nonatomic,copy)void (^changeSceneWithNameBlock)(NSString *sceneName);
 
+/// 显示地图选择
+@property (nonatomic,copy)void (^showMapSelectBlock)();
 
+/// 设置对话
+@property (nonatomic,copy)void (^talkBlock)(NSString *text,NSString *name);
 
 /// 选中的线
 @property (nonatomic,strong)WDBaseNode *selectLine;

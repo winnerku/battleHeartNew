@@ -20,6 +20,11 @@ static CGFloat bloodHeight = 40;
 
 @implementation WDBaseNode
 
+- (void)dealloc
+{
+//    NSLog(@"%@",self.kNightNode);
+    NSLog(@"%@销毁了~",self.name);
+}
 
 + (instancetype)initWithModel:(WDBaseNodeModel *)model
 {
@@ -64,7 +69,12 @@ static CGFloat bloodHeight = 40;
 
 /// 目前只监测zPosition,血条
 - (void)observedNode{
-    self.zPosition = [WDCalculateTool calculateZposition:self];
+    if (self.isPubScene) {
+        int z = 2 * kScreenHeight - self.position.y;
+        self.zPosition = z;
+    }else{
+        self.zPosition = [WDCalculateTool calculateZposition:self];
+    }
 }
 
 - (void)setBodyCanUse
@@ -88,7 +98,7 @@ static CGFloat bloodHeight = 40;
 
 - (void)beAttackActionWithTargetNode:(WDBaseNode *)targetNode
 {
-    NSLog(@"%@被%@攻击了",self.name,targetNode.name);
+    //NSLog(@"%@被%@攻击了",self.name,targetNode.name);
 }
 
 - (void)noBlood{
@@ -306,6 +316,12 @@ static CGFloat bloodHeight = 40;
 }
 
 
+/// 牧师技能
+- (void)skillCureAction
+{
+    [self setBloodNodeNumber:-self.blood / 2.0];
+}
+
 /// 被治愈
 - (void)beCureActionWithCureNode:(WDBaseNode *)cureNode
 {
@@ -345,7 +361,7 @@ static CGFloat bloodHeight = 40;
     NSTimeInterval time = distance / self.moveSpeed;
     SKAction *move = [SKAction moveTo:point duration:time];
     
-    NSLog(@"%f",time);
+    //NSLog(@"%f",time);
     
     [self runAction:move withKey:@"move"];
     [self performSelector:@selector(moveFinishAction) withObject:nil afterDelay:time];
@@ -357,6 +373,7 @@ static CGFloat bloodHeight = 40;
         [self runAction:rep withKey:@"moveAnimation"];
     }
 }
+
 
 /// 移动结束
 - (void)moveFinishAction{

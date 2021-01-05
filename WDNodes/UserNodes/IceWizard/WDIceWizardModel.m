@@ -18,15 +18,15 @@
     
     self.attackArr1 = attack1;
     
-    NSMutableArray *a = [NSMutableArray array];
-    for (int i = 0; i < 8; i ++) {
-        NSString *name = [NSString stringWithFormat:@"shana_miss_%d",i+1];
-        UIImage *image = [UIImage imageNamed:name];
-        SKTexture *texture = [SKTexture textureWithImage:image];
-        [a addObject:texture];
-    }
-    
-    self.doubleArr = a;
+//    NSMutableArray *a = [NSMutableArray array];
+//    for (int i = 0; i < 8; i ++) {
+//        NSString *name = [NSString stringWithFormat:@"shana_miss_%d",i+1];
+//        UIImage *image = [UIImage imageNamed:name];
+//        SKTexture *texture = [SKTexture textureWithImage:image];
+//        [a addObject:texture];
+//    }
+//    
+//    self.doubleArr = a;
 }
 
 @end

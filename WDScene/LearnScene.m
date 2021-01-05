@@ -31,14 +31,16 @@
         
     [self addChild:self.kNightNode];
     
-    self.bgNode.texture = [SKTexture textureWithImage:[UIImage imageNamed:@"BattleScene_1.jpg"]];
     
     self.kNightNode.position = CGPointMake(0, 0);
     self.kNightNode.zPosition = 10;
-    
+    self.kNightNode.isLearn = YES;
+    self.bgNode.texture = [SKTexture textureWithImage:[UIImage imageNamed:@"LearnScene.jpg"]];
    
     [self.kNightNode.talkNode setText:@"嘿，请点击他！"];
 
+    self.talkBlock(@"嘿，勇士！请点击我！", kKinght);
+    
     /**
      教学关整体逻辑:
      先选中骑士
@@ -80,7 +82,9 @@
             self.selectNode = self.kNightNode;
             self.selectNode.arrowNode.hidden = NO;
             [self.textureManager arrowMoveActionWithPos:CGPointMake(self.kNightNode.position.x + 400, 0)];
+            self.selectNode.talkNode.hidden = YES;
             [self.selectNode.talkNode setText:@"点击绿色箭头\n移动到指定位置"];
+            //self.talkBlock(@"点击绿色箭头，移动到指定位置", kKinght);
         }
         return;
     }
@@ -133,7 +137,8 @@
                 [_handNode removeAllActions];
                 _handNode = nil;
                 self.iceWizardNode.talkNode.hidden = YES;
-               
+                self.talkBlock(@"", kIceWizard);
+
                 
             }
         }
@@ -161,6 +166,8 @@
 - (void)redNode{
     
     [self.selectNode.talkNode setText:@"选中蝙蝠怪物\n进行普通攻击"];
+//    self.talkBlock(@"选中蝙蝠怪物，进行普通攻击", kKinght);
+
     [self createMonsterWithName:kRedBat position:CGPointMake(-100, 0)];
     _redNode = self.monsterArr[0];
     _redNode.isStagger = YES;
@@ -183,7 +190,8 @@
 
     
     [self.iceWizardNode.talkNode setText:@"点击选中我！"];
-    
+    //self.talkBlock(@"点击选中我！", kIceWizard);
+
     _redNode.paused = YES;
     self.kNightNode.paused = YES;
     _first = NO;
@@ -201,6 +209,7 @@
 - (void)createHandNode{
     
     [self.iceWizardNode.talkNode setText:@"拖动手指到骑士\n为伙伴疗伤"];
+    //self.talkBlock(@"拖动手指到骑士，为伙伴疗伤", kIceWizard);
 
     
     _handNode = [WDBaseNode spriteNodeWithTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"hand"]]];
@@ -301,10 +310,10 @@
 
 - (void)yaba2{
     [self.iceWizardNode.talkNode setText:@"嘛，无所谓啦\n跟着我来吧！" hiddenTime:4];
-    [self performSelector:@selector(yaba3) withObject:nil afterDelay:2];
+    [self performSelector:@selector(nextScene) withObject:nil afterDelay:2];
 }
 
-- (void)yaba3{
+- (void)nextScene{
     
     [self.iceWizardNode moveActionWithPoint:CGPointMake(kScreenWidth + 100, 0) moveComplete:^{
         
@@ -312,8 +321,9 @@
     
     __weak typeof(self)weakSelf = self;
     [self.kNightNode moveActionWithPoint:CGPointMake(kScreenWidth + 100, 0) moveComplete:^{
+        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:kPassLearn1];
         if (weakSelf.changeSceneWithNameBlock) {
-            weakSelf.changeSceneWithNameBlock(@"PubScene");
+            weakSelf.changeSceneWithNameBlock(@"LearnScene2");
         }
     }];
     [self.kNightNode.balloonNode setBalloonWithLine:6 hiddenTime:10];
@@ -336,11 +346,7 @@
 
 
 
-- (void)dealloc
-{
-//    NSLog(@"%@",self.kNightNode);
-    NSLog(@"%@场景销毁了~",NSStringFromClass([self class]));
-}
+
 
 
 

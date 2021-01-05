@@ -14,13 +14,21 @@
 - (void)redBatWithPosition:(CGPoint)point
 {
     
-    
     if (point.x == 0) {
-       
-        CGFloat x = arc4random() % (int)kScreenWidth;
-        CGFloat y = arc4random() % (int)kScreenHeight;
+        
+        int ax = 1;
+        int ay = 1;
+        if (arc4random() % 2 == 0) {
+            ax = -1;
+        }
+        if (arc4random() % 2 == 0) {
+            ay = -1;
+        }
+        
+        CGFloat x = (arc4random() % (int)kScreenWidth) ;
+        CGFloat y = (arc4random() % (int)kScreenHeight) ;
 
-        point = CGPointMake(x, y);
+        point = CGPointMake(x * ax, y * ay);
     }
     
     WDRedBatNode *node = [WDRedBatNode initWithModel:[WDTextureManager shareTextureManager].redBatModel];
@@ -42,7 +50,9 @@
                 nearNode = user;
             }
         }
-        node.targetMonster = nearNode;
+        //if ([nearNode isKindOfClass:[WDBaseNode class]]) {
+            node.targetMonster = nearNode;
+        //}
     }
 
     node.alpha = 0;

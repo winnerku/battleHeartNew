@@ -178,6 +178,19 @@ static WDTextureManager *textureManager = nil;
     return _archerModel;
 }
 
+/// 石头人
+- (WDStoneModel *)stoneModel
+{
+    if (!_stoneModel) {
+        _stoneModel = [[WDStoneModel alloc] init];
+        [_stoneModel setNormalTexturesWithName:kStone standNumber:0 runNumber:0 walkNumber:6 diedNumber:0 attack1Number:6];
+        _stoneModel.appearArr = [self loadWithImageName:@"appear_" count:15];
+        _stoneModel.stoneDiedArr = [self loadWithImageName:@"die_" count:7];
+    }
+    
+    return _stoneModel;
+}
+
 #pragma mark - 怪物 -
 - (WDRedBatModel *)redBatModel
 {
@@ -228,7 +241,11 @@ static WDTextureManager *textureManager = nil;
 {
     _smokeArr = [self loadWithImageName:@"smoke_" count:14];
     _lightArr = [self loadWithImageName:@"light_" count:23];
+    _greenArr = [self loadWithImageName:@"green_light_" count:16];
+    _passDoorArr = [WDCalculateTool curImageWithImage:[UIImage imageNamed:@"passDoor"] line:5 arrange:1 itemSize:CGSizeMake(256, 128) count:5];;
+    _clickArr = [WDCalculateTool curImageWithImage:[UIImage imageNamed:@"hand2"] line:1 arrange:2 itemSize:CGSizeMake(128, 128) count:2];
 }
+
 
 - (NSMutableArray *)loadWithImageName:(NSString *)name
                                 count:(NSInteger)count

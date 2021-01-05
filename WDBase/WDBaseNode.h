@@ -51,6 +51,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign)CGFloat randomDistanceX;
 @property (nonatomic,assign)CGFloat randomDistanceY;
 
+
+/// 教学状态
+@property (nonatomic,assign)BOOL isLearn;
 /// 初始化中(只有在创建时候有效)
 @property (nonatomic,assign)BOOL isInit;
 /// 正在攻击
@@ -65,7 +68,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign)BOOL isRight;
 /// 硬直状态
 @property (nonatomic,assign)BOOL isStagger;
-
+/// 初始地方Z坐标不一样
+@property (nonatomic,assign)BOOL isPubScene;
 
 /// 治愈量
 @property (nonatomic,assign)int cureNumber;
@@ -161,6 +165,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 被治愈状态
 - (void)beCureActionWithCureNode:(WDBaseNode *)cureNode;
+
+
+/// 牧师只能治愈，直接加当前最大血量的一半
+- (void)skillCureAction;
 
 /// 销毁
 - (void)releaseAction;

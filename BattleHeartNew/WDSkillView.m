@@ -19,8 +19,50 @@
     self = [super initWithFrame:frame];
     if (self) {
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeUser:) name:kNotificationForChangeUser object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(canUse:) name:kNotificationForSkillCanUse object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(show:) name:kNotificationForShowSkill object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(isHiddenOrShow:) name:kNotificationForHiddenSkill object:nil];
+
     }
     return self;
+}
+
+- (void)isHiddenOrShow:(NSNotification *)notifiaction
+{
+    int a = [notifiaction.object intValue];
+    if (a == 0) {
+        self.hidden = YES;
+    }else{
+        self.hidden = NO;
+    }
+}
+
+- (void)show:(NSNotification *)notifiaction
+{
+    UIImageView *imageVV = [self viewWithTag:1000];
+    [imageVV removeFromSuperview];
+    
+    
+    int tag = [notifiaction.object intValue];
+    if (tag == 5) {
+        return;
+    }
+    NSArray *arr = self.skillViewDic[@"Archer_arr"];
+    CGFloat width1 = 67 / 2.0;
+    CGFloat height = 152 / 2.0;
+       
+    UIButton *btn = arr[tag];
+    UIImageView *imageV = [[UIImageView alloc] initWithFrame:CGRectMake(0, -height, width1, height)];
+    imageV.center = CGPointMake(btn.center.x, imageV.center.y);
+    imageV.image = [UIImage imageNamed:@"arrow"];
+    imageV.tag = 1000;
+    [self addSubview:imageV];
+       
+}
+
+- (void)canUse:(NSNotification *)notification
+{
+    self.userInteractionEnabled = YES;
 }
 
 - (void)createSubViewsWithName:(NSString *)name{
@@ -41,6 +83,9 @@
         [bgView addSubview:btn];
         btn.backgroundColor = UICOLOR_RANDOM;
         [arr addObject:btn];
+        if (!image) {
+            btn.hidden = YES;
+        }
         
     }
     

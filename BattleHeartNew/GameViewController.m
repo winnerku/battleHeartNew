@@ -7,41 +7,73 @@
 //
 
 #import "GameViewController.h"
+#import "MapSelectViewController.h"
 #import "GameScene.h"
 
 #import "WDSkillView.h"
+#import "WDTalkView.h"
 
 #import "LearnScene.h"
-#import "PubScene.h"
+#import "LearnScene2.h"
 
 @implementation GameViewController
 {
     WDBaseScene *_selectScene;
     WDSkillView *_skillView;
+    WDTalkView  *_talkView;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     [self createSkillView];
+    //[self createTalkView];
 
 
     WDTextureManager *manager = [WDTextureManager shareTextureManager];
+    manager.goText = @"点击传送门\n选择出发地点";
     [manager iceWizardModel];
     [manager kinghtModel];
     [manager archerModel];
     
     [manager redBatModel];
     [manager loadCommonTexture];
-    
-    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:kPassLearn];
-    
-    if([[NSUserDefaults standardUserDefaults]boolForKey:kPassLearn]){
+ //   [self createSceneWithName:@"LearnScene"];
+
+    NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
+    if (![d boolForKey:kPassLearn1]) {
+        [self createSceneWithName:@"LearnScene"];
+    }else if(![d boolForKey:kPassLearn2]){
+        [self createSceneWithName:@"LearnScene2"];
+    }else if(![d boolForKey:kPassLearn3]){
         [self createSceneWithName:@"PubScene"];
     }else{
-        [self createSceneWithName:@"LearnScene"];
+        [self createSceneWithName:@"RealPubScene"];
     }
 
+//    [self createSceneWithName:@"TestScene"];
+}
+
+- (void)createTalkView
+{
+    _talkView = [[WDTalkView alloc] initWithFrame:CGRectMake(0, kScreenHeight - kScreenHeight / 2.0, kScreenWidth, kScreenHeight / 2.0)];
+    _talkView.hidden = YES;
+    [self.view addSubview:_talkView];
+    
+   
+}
+
+- (void)showMapSelectViewController
+{
+    MapSelectViewController *vc = [[MapSelectViewController alloc] init];
+    [self presentViewController:vc animated:YES completion:^{
+        
+    }];
+    
+    __weak typeof(self)weakSelf = self;
+    [vc setSelectSceneBlock:^(NSString * _Nonnull sceneName) {
+        [weakSelf createSceneWithName:sceneName];
+    }];
 }
 
 - (void)createSkillView
@@ -57,11 +89,15 @@
     
     _skillView = [[WDSkillView alloc] initWithFrame:CGRectMake(x,kScreenHeight - 50 - page, width , 50)];
     //_skillView.backgroundColor = [UIColor orangeColor];
+    _skillView.hidden = YES;
     [self.view addSubview:_skillView];
     __weak typeof(self)weakSelf = self;
     [_skillView setSkillActionBlock:^(NSInteger tag) {
         [weakSelf skillActionWithTag:tag];
     }];
+   
+   
+    
 }
 
 
@@ -115,7 +151,6 @@
     SKTransition *tr = [SKTransition fadeWithDuration:1];
 
     // Present the scene
-    [skView presentScene:scene transition:tr];
   
        
     skView.showsFPS = YES;
@@ -128,6 +163,26 @@
         [weakSelf createSceneWithName:sceneName];
     }];
     
+    [_selectScene setTalkBlock:^(NSString * _Nonnull text, NSString * _Nonnull name) {
+        [weakSelf setTextWithName:name text:text];
+    }];
+    
+    [_selectScene setShowMapSelectBlock:^{
+        [weakSelf showMapSelectViewController];
+    }];
+    
+    [skView presentScene:scene transition:tr];
+    
+}
+
+- (void)setTextWithName:(NSString *)name text:(NSString *)text
+{
+    if ([name isEqualToString:@""]) {
+        _talkView.hidden = YES;
+    }else{
+        _talkView.hidden = NO;
+        [_talkView setText:text name:name];
+    }
 }
 
 #pragma mark - 中线 -

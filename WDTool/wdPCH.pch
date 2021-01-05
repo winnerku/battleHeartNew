@@ -16,6 +16,7 @@
 #import "WDCalculateTool.h"
 #import "WDActionTool.h"
 #import "WDNumberManager.h"
+#import <UIViewExt/UIViewExt.h>
 
 
 ///玩家
@@ -25,6 +26,8 @@
 #define kIceWizard @"IceWizard"
 //弓箭手
 #define kArcher @"Archer"
+//石头人
+#define kStone @"Stone"
 
 
 ///敌人
@@ -33,7 +36,10 @@
 
 
 //玩家流程
-#define kPassLearn @"kPassLearn"
+#define kPassLearn1 @"kPassLearn1"
+#define kPassLearn2 @"kPassLearn2"
+#define kPassLearn3 @"kPassLearn3"
+
 
 
 //NSLog
@@ -95,9 +101,12 @@ static const uint32_t ARROW_CATEGORY = 0X02;
 #define kNotificationForDied @"kNotificationForDied"
 /// 换人通知
 #define kNotificationForChangeUser @"kNotificationForChangeUser"
-
-
-
+/// 基本只有教学关卡有用
+#define kNotificationForSkillCanUse @"kNotificationForSkillCanUse"
+/// 介绍技能通知
+#define kNotificationForShowSkill @"kNotificationForShowSkill"
+/// 隐藏或显示技能栏
+#define kNotificationForHiddenSkill @"kNotificationForHiddenSkill"
 
 
 

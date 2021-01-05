@@ -56,9 +56,7 @@
 {
     [super observedNode];
     
-    if ([self.targetMonster isKindOfClass:[WDMonsterNode class]] && self.targetMonster) {
-        [self removeActionForKey:@"move"];
-        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(moveFinishAction) object:nil];
+    if (self.targetMonster) {
         [self moveToEnemy];
     }
 }
@@ -69,7 +67,7 @@
     CGFloat distanceX = self.position.x - point.x;
     CGFloat distanceY = self.position.y - point.y;
     
-    if (fabs(distanceX) < 10 && fabs(distanceY) < 10) {
+    if (fabs(distanceX) < 10 && fabs(distanceY) < 30) {
         return YES;
     }else{
         return NO;
@@ -142,7 +140,7 @@
     
     [super beAttackActionWithTargetNode:targetNode];
 
-    if (!self.targetMonster && !self.isMove) {
+    if (!self.targetMonster && !self.isMove && !self.isInit) {
         self.targetMonster = targetNode;
         targetNode.randomDistanceY = 0;
         targetNode.randomDistanceX = 0;
@@ -157,6 +155,7 @@
         [self standAction];
         return;
     }
+    
     
     if (self.isAttack) {
         return;
@@ -220,7 +219,13 @@
 }
 
 
-
+#pragma mark - 技能 -
+- (void)skill1Action
+{
+    if (self.mockBlock) {
+        self.mockBlock();
+    }
+}
 
 
 @end

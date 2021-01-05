@@ -171,7 +171,23 @@
 {
     [super observedNode];
     
+    if (self.isLearn) {
+        return;
+    }
+    
+    if (self.isInit) {
+        return;
+    }
+    
     if (self.isStagger) {
+        return;
+    }
+    
+    if (!self.targetMonster) {
+        WDBaseNode *target = [WDCalculateTool searchUserNearNode:self];
+        if (target) {
+            self.targetMonster = target;
+        }
         return;
     }
     
@@ -182,17 +198,9 @@
     }
     
     
-    if (!self.targetMonster) {
-        WDBaseNode *target = [WDCalculateTool searchUserNearNode:self];
-        if (target) {
-            self.targetMonster = target;
-        }
-        return;
-    }
     
-    if (self.isInit) {
-        return;
-    }
+    
+   
    
     if (self.isAttack) {
         return;

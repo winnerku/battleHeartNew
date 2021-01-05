@@ -12,6 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface WDCalculateTool : NSObject
 
+
+/// 最大可移动范围，不能出地图
++ (CGPoint)calculateBigPoint:(CGPoint)pos;
+
 + (CGFloat)distanceBetweenPoints:(CGPoint)first
                          seconde:(CGPoint)second;
 
@@ -48,7 +52,18 @@ NS_ASSUME_NONNULL_BEGIN
                    image:(UIImage *)image
            curImageFrame:(CGRect)frame;
 
++ (NSArray *)curImageWithImage:(UIImage *)image
+                          line:(NSInteger)line
+                       arrange:(NSInteger)arrange
+                      itemSize:(CGSize)imageSize
+                         count:(NSInteger)count;
 
+
+/// 计算最终减血量
+/// @param attack 攻击力
+/// @param floatNumber 浮动数据
++ (CGFloat)calculateReduceNumberWithAttack:(int)attack
+                               floatNumber:(int)floatNumber;
 
 /// 玩家搜索最近的怪物
 /// @param node 玩家

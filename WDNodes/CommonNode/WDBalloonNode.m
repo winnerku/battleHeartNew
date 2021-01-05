@@ -10,9 +10,16 @@
 
 @implementation WDBalloonNode
 
+
 - (void)hiddenTime{
+    
     [self removeAllActions];
     self.hidden = YES;
+    
+    if (self.complete) {
+        self.complete();
+    }
+    
 }
 
 
@@ -29,7 +36,17 @@
     SKAction *rep = [SKAction repeatActionForever:action];
   
     [self runAction:rep withKey:@"balloon"];
-    [self performSelector:@selector(hiddenTime) withObject:nil afterDelay:time];
+    if (time != 0) {
+        [self performSelector:@selector(hiddenTime) withObject:nil afterDelay:time];
+    }
+}
+
+- (void)setBalloonWithLine:(NSInteger)line
+                hiddenTime:(NSInteger)time
+             completeBlock:(void (^)(void))completeBlock
+{
+    self.complete = completeBlock;
+    [self setBalloonWithLine:line hiddenTime:time];
 }
 
 - (void)setScaleAndPositionWithName:(NSString *)parentName

@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface WDKinghtNode : WDUserNode
 
 
-
+/// 嘲讽技能
+@property (nonatomic,copy)void (^mockBlock)(void );
 
 @end
 

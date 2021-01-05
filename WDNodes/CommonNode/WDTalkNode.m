@@ -12,6 +12,17 @@
 
 - (void)hiddenTime{
     self.hidden = YES;
+    if (self.complete) {
+        self.complete();
+    }
+}
+
+- (void)setText:(NSString *)text
+     hiddenTime:(NSInteger)time
+  completeBlock:(void (^)(void))completeBlock
+{
+    self.complete = completeBlock;
+    [self setText:text hiddenTime:time];
 }
 
 - (void)setText:(NSString *)text hiddenTime:(NSInteger)time
@@ -43,9 +54,9 @@
     
     CGFloat height = node.frame.size.height;
     
-    while (self.size.width / 3.0 < node.frame.size.width) {
-        node.fontSize -- ;
-    }
+//    while (self.size.width / 3.0 < node.frame.size.width) {
+//        node.fontSize -- ;
+//    }
     
     node.position = CGPointMake(0, -height / 2.0 + 10);
    

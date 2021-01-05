@@ -14,11 +14,15 @@
 
 #pragma mark - 触碰 -
 - (void)touchDownAtPoint:(CGPoint)pos {
-    NSLog(@"点中的坐标为: x = %lf  y = %lf",pos.x,pos.y);
+   // NSLog(@"点中的坐标为: x = %lf  y = %lf",pos.x,pos.y);
 }
 
 // 移动
 - (void)touchMovedToPoint:(CGPoint)pos {
+    
+    if (self.isPauseClick) {
+        return;
+    }
     
     /// 玩家在移动状态，不显示指引线
     if (!self.selectNode.isMove) {
@@ -40,9 +44,14 @@
 // 触碰结束
 - (void)touchUpAtPoint:(CGPoint)pos {
     
+    if (self.isPauseClick) {
+        return;
+    }
     
     NSArray *nodes = [self nodesAtPoint:pos];
 
+    pos = [WDCalculateTool calculateBigPoint:pos];
+    
     WDUserNode *userNode = nil;
     WDMonsterNode *monsterNode = nil;
     CGFloat distance = 100000;
@@ -80,6 +89,9 @@
         [monsterNode selectSpriteAction];
         [self selectMonster:monsterNode];
         canMove = NO;
+        if (self.selectNode.attackDistance == 0) {
+            [self.selectNode removeActionForKey:@"move"];
+        }
         
     }else if(userNode){
         
@@ -98,6 +110,7 @@
     
     /// 非切换目标可以移动
     if (canMove) {
+      
         self.selectNode.targetMonster = nil;
         [self.selectNode moveActionWithPoint:pos moveComplete:^{
         }];

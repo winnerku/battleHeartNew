@@ -12,10 +12,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface WDBalloonNode : SKSpriteNode
 
+@property (nonatomic,copy)void (^complete)(void);
 
 /// 显示时间和样式
 - (void)setBalloonWithLine:(NSInteger)line
                 hiddenTime:(NSInteger)time;
+
+- (void)setBalloonWithLine:(NSInteger)line
+                hiddenTime:(NSInteger)time
+             completeBlock:(void (^)(void))completeBlock;
+
 
 
 /// 设置缩放和位置

@@ -11,7 +11,9 @@
 #import "WDRedBatModel.h"
 #import "WDIceWizardModel.h"
 #import "WDArcherModel.h"
+#import "WDStoneModel.h"
 #import "WDBaseNode.h"
+
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,11 +28,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)WDIceWizardModel *iceWizardModel;
 /// 弓箭手
 @property (nonatomic,strong)WDArcherModel *archerModel;
+///NPC 石头人
+@property (nonatomic,strong)WDStoneModel *stoneModel;
 
 #pragma mark - 怪物 -
 
 /// 蝙蝠
 @property (nonatomic,strong)WDRedBatModel *redBatModel;
+
+
 
 /** 小怪出场光效 */
 @property (nonatomic,copy)NSArray <SKTexture *>*lightArr;
@@ -38,7 +44,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,copy)NSArray <SKTexture *>*smokeArr;
 /// 受伤效果
 @property (nonatomic,strong)SKTexture *demageTexture;
+/// 群体治疗绿光
+@property (nonatomic,copy)NSArray <SKTexture *>*greenArr;
+/// 点击指示
+@property (nonatomic,copy)NSArray <SKTexture *>*clickArr;
+/// 传送门
+@property (nonatomic,copy)NSArray <SKTexture *>*passDoorArr;
 
+
+/// 出发宣言。。。
+@property (nonatomic,copy)NSString *goText;
 
 #pragma mark - 场景 -
 /// 指示箭头
@@ -66,6 +81,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 #pragma mark - 逻辑 -
+
+
+/// 根据地图，设置人物最高可以移动的范围Y
+@property (nonatomic,assign)CGFloat mapBigY_Up;
+@property (nonatomic,assign)CGFloat mapBigY_down;
+
 
 /// 根据左右控制小怪位置
 @property (nonatomic,assign)CGFloat redBatX;

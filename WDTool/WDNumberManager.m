@@ -22,6 +22,8 @@
         [self initIceWizard:node];
     }else if([name isEqualToString:kArcher]){
         [self initArcher:node];
+    }else if([name isEqualToString:kStone]){
+        
     }
 }
 
@@ -64,12 +66,25 @@
     node.attackNumber = 10;
 }
 
+
+/// 石头人
++ (void)initStone:(WDBaseNode *)node
+{
+    node.name = kArcher;
+    node.moveSpeed = 300;
+    node.moveCADisplaySpeed = 2.5;
+    node.blood     = 100;
+    node.lastBlood = 100;
+    node.zPosition = 10;
+    node.attackNumber = 10;
+}
+
 ////////////////////// 怪物 ////////////////
 #pragma mark - 红色蝙蝠 -
 + (void)initRedBat:(WDBaseNode *)node
 {
     node.name = kRedBat;
-    node.moveSpeed = 2;
+    node.moveSpeed = 250;
     node.moveCADisplaySpeed = 2;
     node.blood     = 100;
     node.lastBlood = 100;

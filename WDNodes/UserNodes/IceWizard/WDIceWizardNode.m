@@ -69,6 +69,10 @@
         return;
     }
     
+    if (self.lastBlood <= 0) {
+        return;
+    }
+    
     if (!self.isCure) {
         [self standAction];
         return;
@@ -164,21 +168,6 @@
     self.skill1 = YES;
     self.cureNumber = _addNumber + _addNumber;
     [self performSelector:@selector(cd1) withObject:nil afterDelay:10];
-    
-    WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:_iceModel.doubleArr[0]];
-    node.zPosition = 1;
-    node.xScale = 3.0;
-    node.yScale = 3.0;
-    [self addChild:node];
-    
-    SKAction *action = [SKAction animateWithTextures:_iceModel.doubleArr timePerFrame:0.1];
-    int time = 10 / (_iceModel.doubleArr.count * 0.1);
-    SKAction *rep = [SKAction repeatAction:action count:time];
-    SKAction *remo = [SKAction removeFromParent];
-    SKAction *seq = [SKAction sequence:@[rep,remo]];
-    [node runAction:seq completion:^{
-        
-    }];
 }
 
 
@@ -186,5 +175,18 @@
     self.cureNumber = _addNumber;
     self.skill1 = NO;
 }
+
+- (void)skill2Action
+{
+    NSArray *nodes = self.parent.children;
+    for (WDBaseNode *node in nodes) {
+        if ([node isKindOfClass:[WDUserNode class]]) {
+            [node skillCureAction];
+        }
+    }
+    
+}
+
+
 
 @end

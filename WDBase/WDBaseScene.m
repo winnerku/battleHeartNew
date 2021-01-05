@@ -7,8 +7,9 @@
 //
 
 #import "WDBaseScene.h"
-#import "WDBaseScene+CreateMonster.h"
 #import "WDTouchEndLogic.h"
+#import "WDBaseScene+CreateMonster.h"
+#import "WDBaseScene+SkillLogic.h"
 
 @implementation WDBaseScene
 
@@ -46,28 +47,31 @@
     [self addObserveAction];
     
     self.physicsWorld.contactDelegate = self;
-        
+    
+   
     //屏幕适配
     CGFloat screenWidth = kScreenWidth * 2.0;
     CGFloat screenHeight = kScreenHeight * 2.0;
     
-    _bgNode = (SKSpriteNode *)[self childNodeWithName:@"bgNode"];
-    NSString *mapName = [NSString stringWithFormat:@"%@.jpg",NSStringFromClass([self class])];
-    _bgNode.texture = [SKTexture textureWithImage:[UIImage imageNamed:mapName]];
-    _bgNode.zPosition = -10;
     //这里选取的背景图片都是长远远大于宽，所以只适配高度即可
     self.size = CGSizeMake(screenWidth, screenHeight);
-    CGFloat scale = screenHeight / _bgNode.size.height;
-    _bgNode.size = CGSizeMake(_bgNode.size.width * scale, screenHeight);
+   
+    self.bgNode = (SKSpriteNode *)[self childNodeWithName:@"bgNode"];
+    CGFloat yScale = self.size.height / self.bgNode.size.height;
+    self.bgNode.yScale = yScale;
+    self.bgNode.xScale = yScale;
+//    
     
     WDTextureManager *manager = [WDTextureManager shareTextureManager];
     WDBaseNode *arrow  = manager.arrowNode;
     WDBaseNode *location = manager.locationNode;
+    manager.mapBigY_Up = 350.f;
+    manager.mapBigY_down = 100;
     [self addChild:arrow];
     [self addChild:location];
     
-    _selectNode = self.archerNode;
-    self.archerNode.arrowNode.hidden = NO;
+    //_selectNode = self.archerNode;
+    //self.archerNode.arrowNode.hidden = NO;
     [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForChangeUser object:self.selectNode.name];
 }
 
@@ -82,14 +86,27 @@
        
     ///弓箭触碰
     if ([nodeA.name isEqualToString:@"user_arrow"]) {
+        CGFloat numer = [WDCalculateTool calculateReduceNumberWithAttack:nodeA.attackNumber floatNumber:2];
         if ([nodeB isKindOfClass:[WDMonsterNode class]]) {
             [nodeB selectSpriteAction];
-            [nodeB setBloodNodeNumber:nodeA.attackNumber];
+            [nodeB setBloodNodeNumber:numer];
+            WDArcherNode *node = (WDArcherNode *)[self childNodeWithName:kArcher];
+            //弓箭手吸血技能
+            if (node.skill4) {
+                [node setBloodNodeNumber:-numer];
+            }
         }
     }else if([nodeB.name isEqualToString:@"user_arrow"]){
+       
+        CGFloat numer = [WDCalculateTool calculateReduceNumberWithAttack:nodeB.attackNumber floatNumber:2];
         if ([nodeA isKindOfClass:[WDMonsterNode class]]) {
             [nodeA selectSpriteAction];
-            [nodeA setBloodNodeNumber:nodeA.attackNumber];
+            [nodeA setBloodNodeNumber:numer];
+            WDArcherNode *node = (WDArcherNode *)[self childNodeWithName:kArcher];
+            //弓箭手吸血技能
+            if (node.skill4) {
+                [node setBloodNodeNumber:-numer];
+            }
         }
     }
        
@@ -151,8 +168,6 @@
         //红蝙蝠
         [self redBatWithPosition:point];
     }
-    
-
 }
 
 - (void)skill1Action{
@@ -191,6 +206,11 @@
     [[NSNotificationCenter defaultCenter]removeObserver:self name:kNotificationForDied object:nil];
 }
 
+- (void)dealloc
+{
+//    NSLog(@"%@",self.kNightNode);
+    NSLog(@"%@场景销毁了~",NSStringFromClass([self class]));
+}
 
 #pragma mark - getter -
 /// 操作线
@@ -212,6 +232,11 @@
     if (!_kNightNode) {
         _kNightNode = [WDKinghtNode initWithModel:[WDTextureManager shareTextureManager].kinghtModel];
         [self.userArr addObject:_kNightNode];
+        
+        __weak typeof(self)weakSelf = self;
+        [_kNightNode setMockBlock:^{
+            [weakSelf mockSkill];
+        }];
     }
     
     return _kNightNode;
@@ -265,5 +290,6 @@
     
     return _textureManager;
 }
+
 
 @end
