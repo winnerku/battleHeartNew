@@ -74,7 +74,7 @@
         self.isAttack = NO;
         self.isMove = NO;
         self.isStagger = YES;
-        
+        self.colorBlendFactor = 0;
         CGFloat direction = 1;
         if (self.isRight) {
             direction = -1;
@@ -170,6 +170,17 @@
 - (void)observedNode
 {
     [super observedNode];
+    if (self.isBoss) {
+        
+        if (self.isPubScene) {
+            int z = 2 * kScreenHeight - self.position.y;
+            self.zPosition = z;
+        }else{
+            self.zPosition = [WDCalculateTool calculateZposition:self];
+            self.zPosition = self.zPosition + 100;
+        }
+    }
+    
     
     if (self.isLearn) {
         return;

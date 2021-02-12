@@ -39,6 +39,8 @@
     node.moveCADisplaySpeed = 4;
     node.attackNumber = 20;
     node.isRight = YES;
+    
+
 }
 
 #pragma mark - 冰女巫 -
@@ -57,6 +59,26 @@
 #pragma mark - 弓箭手 -
 + (void)initArcher:(WDBaseNode *)node
 {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSInteger skill1 = [defaults integerForKey:kArcher_skill_1];
+    if (skill1 == 0) {
+        [defaults setInteger:10 forKey:kArcher_skill_1];
+    }
+    NSInteger skill2 = [defaults integerForKey:kArcher_skill_2];
+    if (skill2 == 0) {
+        [defaults setInteger:8 forKey:kArcher_skill_2];
+    }
+    NSInteger skill3 = [defaults integerForKey:kArcher_skill_3];
+    if (skill3 == 0) {
+        [defaults setInteger:5 forKey:kArcher_skill_3];
+    }
+    
+    NSInteger skill4 = [defaults integerForKey:kArcher_skill_4];
+    if (skill4 == 0) {
+        [defaults setInteger:5 forKey:kArcher_skill_4];
+    }
+    
     node.name = kArcher;
     node.moveSpeed = 300;
     node.moveCADisplaySpeed = 2.5;

@@ -29,4 +29,9 @@
 //    self.doubleArr = a;
 }
 
+- (void)dealloc
+{
+    NSLog(@"IceWizardModel销毁了");
+}
+
 @end

@@ -40,7 +40,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,copy)void (^changeSceneWithNameBlock)(NSString *sceneName);
 
 /// 显示地图选择
-@property (nonatomic,copy)void (^showMapSelectBlock)();
+@property (nonatomic,copy)void (^showMapSelectBlock)(void);
+
+/// 显示技能选择
+@property (nonatomic,copy)void (^showSkillSelectBlock)(NSString *userName);
 
 /// 设置对话
 @property (nonatomic,copy)void (^talkBlock)(NSString *text,NSString *name);

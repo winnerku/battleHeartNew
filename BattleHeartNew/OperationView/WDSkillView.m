@@ -72,6 +72,7 @@
     UIView *bgView = [[UIView alloc] initWithFrame:self.bounds];
     bgView.hidden = YES;
     [self addSubview:bgView];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     for (int i = 0; i < 5; i ++) {
        
         WDSkillBtn *btn = [[WDSkillBtn alloc] initWithFrame:CGRectMake(i * width + i * 10, 0, width, width)];
@@ -83,7 +84,7 @@
         [bgView addSubview:btn];
         btn.backgroundColor = UICOLOR_RANDOM;
         [arr addObject:btn];
-        if (!image) {
+        if (!image || ![defaults boolForKey:skillName]) {
             btn.hidden = YES;
         }
         
@@ -92,7 +93,7 @@
     NSArray *timeArr = @[];
     ///射手时间轴
     if ([name isEqualToString:kArcher]) {
-        timeArr = @[@(30),@(15),@(10),@(10),@(10)];
+        timeArr = @[@(30),@(15),@(10),@(20),@(20)];
     }else if([name isEqualToString:kIceWizard]){
         timeArr = @[@(30),@(15),@(10),@(10),@(10)];
     }else{

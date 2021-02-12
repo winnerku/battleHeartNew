@@ -140,6 +140,35 @@ static WDTextureManager *textureManager = nil;
     return _balloonDic[key];
 }
 
+- (void)releaseKinghtModel
+{
+    _kinghtModel = nil;
+}
+
+- (void)releaseIceModel{
+    _iceWizardModel = nil;
+}
+
+- (void)releaseArcherModel
+{
+    _archerModel = nil;
+}
+
+- (void)releaseRedBatModel
+{
+    _redBatModel = nil;
+}
+
+- (void)releaseStoneModel
+{
+    _stoneModel = nil;
+}
+
+- (void)releasePassWordModel
+{
+    _passDoorArr = nil;
+}
+
 #pragma mark - 玩家人物 -
 /// - 骑士 texture -
 - (WDKinghtModel *)kinghtModel
@@ -203,6 +232,8 @@ static WDTextureManager *textureManager = nil;
 }
 
 
+
+
 #pragma mark - 点击位置 -
 - (WDBaseNode *)arrowNode
 {
@@ -237,14 +268,24 @@ static WDTextureManager *textureManager = nil;
     return _locationNode;
 }
 
+- (NSArray<SKTexture *> *)passDoorArr
+{
+    if (!_passDoorArr) {
+        _passDoorArr = [WDCalculateTool curImageWithImage:[UIImage imageNamed:@"passDoor"] line:5 arrange:1 itemSize:CGSizeMake(256, 128) count:5];
+    }
+    
+    return _passDoorArr;
+}
+
 - (void)loadCommonTexture
 {
     _smokeArr = [self loadWithImageName:@"smoke_" count:14];
-    _lightArr = [self loadWithImageName:@"light_" count:23];
-    _greenArr = [self loadWithImageName:@"green_light_" count:16];
-    _passDoorArr = [WDCalculateTool curImageWithImage:[UIImage imageNamed:@"passDoor"] line:5 arrange:1 itemSize:CGSizeMake(256, 128) count:5];;
+//    _lightArr = [self loadWithImageName:@"light_" count:23];
+//    _greenArr = [self loadWithImageName:@"green_light_" count:16];
+ 
     _clickArr = [WDCalculateTool curImageWithImage:[UIImage imageNamed:@"hand2"] line:1 arrange:2 itemSize:CGSizeMake(128, 128) count:2];
 }
+
 
 
 - (NSMutableArray *)loadWithImageName:(NSString *)name
@@ -259,5 +300,7 @@ static WDTextureManager *textureManager = nil;
     
     return muAr;
 }
+
+
 
 @end

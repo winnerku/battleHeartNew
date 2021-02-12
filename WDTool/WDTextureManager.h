@@ -32,7 +32,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)WDStoneModel *stoneModel;
 
 #pragma mark - 怪物 -
-
 /// 蝙蝠
 @property (nonatomic,strong)WDRedBatModel *redBatModel;
 
@@ -80,6 +79,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray *)balloonTexturesWithLine:(NSInteger)line;
 
 
+- (NSMutableArray *)loadWithImageName:(NSString *)name
+                                count:(NSInteger)count;
+
+
 #pragma mark - 逻辑 -
 
 
@@ -91,6 +94,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// 根据左右控制小怪位置
 @property (nonatomic,assign)CGFloat redBatX;
 @property (nonatomic,assign)CGFloat redBatY;
+
+
+/// 释放内存
+//人物
+- (void)releaseKinghtModel;
+- (void)releaseIceModel;
+- (void)releaseArcherModel;
+- (void)releaseStoneModel;
+- (void)releasePassWordModel;
+
+//怪物
+- (void)releaseRedBatModel;
 
 @end
 

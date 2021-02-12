@@ -12,7 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RealPubScene : WDBaseScene
 @property (nonatomic,strong)WDBaseNode *passDoorNode;
-@property (nonatomic,strong)WDBaseNode *clickNode;
+
+/// 选择地图
+@property (nonatomic,strong)WDBaseNode *clickMapNode;
+
+/// 学习技能
+@property (nonatomic,strong)WDBaseNode *clickLearnSkillNode;
 @end
 
 NS_ASSUME_NONNULL_END

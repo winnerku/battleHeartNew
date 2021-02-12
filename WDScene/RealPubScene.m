@@ -8,17 +8,22 @@
 //
 
 #import "RealPubScene.h"
-
+#import "LearnSkillNode.h"
+#import "WDBaseScene+TouchLogic.h"
 @implementation RealPubScene
 {
     NSArray *_xArr;
     NSArray *_yArr;
     CADisplayLink *_mapLink;
+    LearnSkillNode *_skillNode;
 }
 
 - (void)didMoveToView:(SKView *)view
 {
     [super didMoveToView:view];
+    
+    self.textureManager.mapBigY_Up = 0;
+    self.textureManager.mapBigY_down = 230;
     
     [self createMapPosArr];
     
@@ -43,15 +48,55 @@
     self.kNightNode.xScale = -fabs(self.kNightNode.xScale);
     self.kNightNode.isRight = NO;
     
+    
     self.archerNode.position = CGPointMake(300, 300);
     self.selectNode = self.archerNode;
+    self.archerNode.arrowNode.hidden = NO;
     
     self.passDoorNode.position = CGPointMake(300, 200);
     self.passDoorNode.zPosition = 10;
     
     self.archerNode.physicsBody.categoryBitMask = 1;
+    self.kNightNode.physicsBody.categoryBitMask = 1;
+    self.iceWizardNode.physicsBody.categoryBitMask = 1;
+    
     [self.archerNode.talkNode setText:self.textureManager.goText hiddenTime:3 completeBlock:^{
    }];
+    
+    self.kNightNode.isPubScene = YES;
+    self.iceWizardNode.isPubScene = YES;
+    self.archerNode.isPubScene = YES;
+    
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:kSkillNPC]) {
+        [self createSkillNPC];
+    }
+}
+
+#pragma mark - 学习技能的NPC（打过第一关BOSS激活）-
+/// 学习技能的NPC
+- (void)createSkillNPC
+{
+    SkillModel *model = [[SkillModel alloc] init];
+    [model changeArr];
+    
+    _skillNode = [LearnSkillNode spriteNodeWithTexture:model.standArr[0]];
+    _skillNode.model = model;
+    _skillNode.isStand = YES;
+    _skillNode.name = @"learnSkill";
+    _skillNode.xScale = 1.8;
+    _skillNode.yScale = 1.8;
+    _skillNode.position = CGPointMake(1600, 400);
+    _skillNode.zPosition = 650 - _skillNode.position.y;
+    [self.bgNode addChild:_skillNode];
+       
+    [_skillNode stayAction];
+    
+    SKPhysicsBody *body = [SKPhysicsBody bodyWithRectangleOfSize:_skillNode.size center:CGPointMake(0, 0)];
+    _skillNode.physicsBody = body;
+    _skillNode.physicsBody.affectedByGravity = NO;
+    _skillNode.physicsBody.allowsRotation = NO;
+    _skillNode.physicsBody.contactTestBitMask = 1;
+    _skillNode.physicsBody.collisionBitMask = 0;
 }
 
 - (void)mapMove{
@@ -96,22 +141,29 @@
         SKAction *an = [SKAction animateWithTextures:arr timePerFrame:0.1];
         SKAction *re = [SKAction repeatActionForever:an];
         [nodeB runAction:re];
-        self.clickNode.position = CGPointMake(nodeB.position.x, nodeB.position.y - 50);
-        self.clickNode.hidden = NO;
-//        self.userInteractionEnabled = NO;
-//        [self performSelector:@selector(show) withObject:nil afterDelay:1];
+        self.clickMapNode.position = CGPointMake(nodeB.position.x, nodeB.position.y - 50);
+        self.clickMapNode.hidden = NO;
+    }
+    
+    if ([nodeA isKindOfClass:[WDUserNode class]] && [nodeB.name isEqualToString:@"learnSkill"]) {
+        CGFloat xScale = fabs(_skillNode.xScale);
+        if (nodeA.position.x < nodeB.position.x) {
+            xScale = -1 * xScale;
+        }else{
+            xScale = xScale;
+        }
+               
+        _skillNode.xScale = xScale;
+        [_skillNode standAction];
+        self.clickLearnSkillNode.position = CGPointMake(nodeB.position.x, nodeB.position.y - 80);
+        self.clickLearnSkillNode.hidden = NO;
     }
     
     NSLog(@"A: %@  b: %@",nodeA.name,nodeB.name);
 
 }
 
-- (void)show{
-    self.userInteractionEnabled = YES;
-    if (self.showMapSelectBlock) {
-        self.showMapSelectBlock();
-    }
-}
+
 
 - (void)didEndContact:(SKPhysicsContact *)contact
 {
@@ -120,8 +172,23 @@
     if ([nodeA isKindOfClass:[WDUserNode class]] && [nodeB.name isEqualToString:@"passDoor"]) {
         [nodeB removeAllActions];
         nodeB.texture = self.textureManager.passDoorArr[0];
-        self.clickNode.hidden = YES;
+        self.clickMapNode.hidden = YES;
     }
+    
+    if ([nodeA isKindOfClass:[WDUserNode class]] && [nodeB.name isEqualToString:@"learnSkill"]) {
+        CGFloat xScale = fabs(_skillNode.xScale);
+        if (nodeA.position.x < nodeB.position.x) {
+            xScale = -1 * xScale;
+        }else{
+            xScale = xScale;
+        }
+               
+        _skillNode.xScale = xScale;
+        [_skillNode stayAction];
+        self.clickLearnSkillNode.hidden = YES;
+    }
+    
+    
 }
 
 - (void)touchMovedToPoint:(CGPoint)pos
@@ -131,15 +198,30 @@
 
 - (void)touchUpAtPoint:(CGPoint)pos
 {
-    CGFloat clickDistance = [WDCalculateTool distanceBetweenPoints:pos seconde:self.clickNode.position];
-    
-    if (self.clickNode.hidden == NO && clickDistance < 100) {
-        [self show];
-        return;
+    CGFloat clickDistance = 0;
+    if (self.clickMapNode.hidden == NO) {
+        ///地图选择
+        clickDistance = [WDCalculateTool distanceBetweenPoints:pos seconde:self.clickMapNode.position];
+        if (clickDistance < 100) {
+            [self showMapSelectAction];
+            return;
+        }
+    }else if(self.clickLearnSkillNode.hidden == NO){
+        ///技能选择
+        clickDistance = [WDCalculateTool distanceBetweenPoints:pos seconde:self.clickLearnSkillNode.position];
+        if (clickDistance < 100) {
+            [self learnSkillAction];
+            return;
+        }
     }
+    
+    
+    
+    
+    
 
-    if (pos.y > kScreenHeight * 2.0 - 450) {
-        pos = CGPointMake(pos.x, kScreenHeight * 2.0 - 450);
+    if (pos.y > kScreenHeight * 2.0 - kScreenHeight) {
+        pos = CGPointMake(pos.x, kScreenHeight * 2.0 - kScreenHeight);
     }else if(pos.y < 100){
         pos = CGPointMake(pos.x, 100);
     }
@@ -170,23 +252,21 @@
          }
      }
      
-     
     BOOL canMove = YES;
-     
-  
-     
-     ///首先判断是否选中的为monster
-     if(userNode){
-         
-         //如果引导线没隐藏，添加buff效果
-//         if(![self.selectNode.name isEqualToString:userNode.name] && ![userNode.name isEqualToString:kStone]){
-//             //切换选中的玩家
-//             canMove = [self changeSelectNode:userNode pos:pos];
-//         }
-         
-     }
-     
 
+    /// 切换
+    if (![userNode isEqualToNode:self.selectNode] && userNode) {
+       canMove = [self changeSelectNode:userNode pos:pos];
+        if (!canMove) {
+            //如果换人了，切换下
+            self.clickLearnSkillNode.hidden = YES;
+            self.clickMapNode.hidden = YES;
+            [_skillNode stayAction];
+            [_passDoorNode removeAllActions];
+            _passDoorNode.texture = self.textureManager.passDoorArr[0];
+        }
+    }
+     
      
      /// 非切换目标可以移动
      if (canMove) {
@@ -196,6 +276,21 @@
          [self arrowAction:pos];
 
      }
+}
+
+
+/// 选择地图
+- (void)showMapSelectAction{
+    if (self.showMapSelectBlock) {
+        self.showMapSelectBlock();
+    }
+}
+
+/// 学习技能
+- (void)learnSkillAction{
+    if (self.showSkillSelectBlock) {
+        self.showSkillSelectBlock(self.selectNode.name);
+    }
 }
 
 - (void)releaseAction
@@ -240,18 +335,32 @@
     return _passDoorNode;
 }
 
-- (WDBaseNode *)clickNode{
-    if (!_clickNode) {
-        _clickNode = [WDBaseNode spriteNodeWithTexture:self.textureManager.clickArr[0]];
-        _clickNode.hidden = YES;
-        [self.bgNode addChild:_clickNode];
-        _clickNode.zPosition = 10000;
+- (WDBaseNode *)clickMapNode{
+    if (!_clickMapNode) {
+        _clickMapNode = [WDBaseNode spriteNodeWithTexture:self.textureManager.clickArr[0]];
+        _clickMapNode.hidden = YES;
+        [self.bgNode addChild:_clickMapNode];
+        _clickMapNode.zPosition = 10000;
         SKAction *an = [SKAction animateWithTextures:self.textureManager.clickArr timePerFrame:0.5];
         SKAction *re = [SKAction repeatActionForever:an];
-        [_clickNode runAction:re];
+        [_clickMapNode runAction:re];
     }
     
-    return _clickNode;
+    return _clickMapNode;
+}
+
+- (WDBaseNode *)clickLearnSkillNode{
+    if (!_clickLearnSkillNode) {
+        _clickLearnSkillNode = [WDBaseNode spriteNodeWithTexture:self.textureManager.clickArr[0]];
+        _clickLearnSkillNode.hidden = YES;
+        [self.bgNode addChild:_clickLearnSkillNode];
+        _clickLearnSkillNode.zPosition = 10000;
+        SKAction *an = [SKAction animateWithTextures:self.textureManager.clickArr timePerFrame:0.5];
+        SKAction *re = [SKAction repeatActionForever:an];
+        [_clickLearnSkillNode runAction:re];
+    }
+    
+    return _clickLearnSkillNode;
 }
 
 @end

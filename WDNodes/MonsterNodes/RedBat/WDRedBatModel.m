@@ -12,6 +12,11 @@
 - (void)changeArr
 {
     self.beHurtArr = [self stateName:@"hurt" textureName:kRedBat number:8];
-    NSLog(@"%@",self.beHurtArr);
 }
+
+- (void)dealloc
+{
+    NSLog(@"蝙蝠model销毁了");
+}
+
 @end

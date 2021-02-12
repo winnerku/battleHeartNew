@@ -400,4 +400,17 @@
     return _passDoorNode;
 }
 
+- (void)releaseAction
+{
+    [super releaseAction];
+    _stoneNode = nil;
+    _passDoorNode = nil;
+    [self.textureManager releaseRedBatModel];
+    [self.textureManager releaseKinghtModel];
+    [self.textureManager releaseIceModel];
+    [self.textureManager releaseArcherModel];
+    [self.textureManager releaseStoneModel];
+    [self.textureManager releasePassWordModel];
+}
+
 @end

@@ -26,6 +26,12 @@
 #define kIceWizard @"IceWizard"
 //弓箭手
 #define kArcher @"Archer"
+#define kArcher_skill_1 @"Archer_skill_1" //射手第1个技能，增加攻速时间
+#define kArcher_skill_2 @"Archer_skill_2" //射手第2个技能，三连发
+#define kArcher_skill_3 @"Archer_skill_3" //射手第3个技能，增加移动速度
+#define kArcher_skill_4 @"Archer_skill_4" //射手第4个技能，攻击增加吸血
+#define kArcher_skill_5 @"Archer_skill_5" //射手第5个技能，待定
+
 //石头人
 #define kStone @"Stone"
 
@@ -36,11 +42,10 @@
 
 
 //玩家流程
-#define kPassLearn1 @"kPassLearn1"
-#define kPassLearn2 @"kPassLearn2"
-#define kPassLearn3 @"kPassLearn3"
-
-
+#define kPassLearn1 @"kPassLearn1" //教学1
+#define kPassLearn2 @"kPassLearn2" //教学2
+#define kPassLearn3 @"kPassLearn3" //教学3
+#define kSkillNPC @"kSkillNPC"     //解救了负责学习技能的NPC
 
 //NSLog
 #ifndef __OPTIMIZE__

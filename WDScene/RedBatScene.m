@@ -56,7 +56,7 @@
         if (node.isDead) {
             [node releaseAction];
             [self.userArr removeObject:node];
-            
+           
             if (self.userArr.count == 0) {
                 if (_boss) {
                     //被boss杀干净
@@ -94,7 +94,7 @@
             [node releaseAction];
             [self.monsterArr removeObject:node];
             _batNumber ++;
-            if (_batNumber <= 15) {
+            if (_batNumber <= 3) {
                 [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
             }
             
@@ -122,6 +122,7 @@
     _boss.blood = 1000;
     _boss.lastBlood = 1000;
     _boss.name = @"boss";
+    _boss.isBoss = YES;
     _boss.realSize = CGSizeMake(_boss.size.width - 80, _boss.size.height - 10);
     [self.monsterArr addObject:_boss];
     [self addChild:_boss];
@@ -149,6 +150,16 @@
         weakSelf.archerNode.isInit = NO;
         weakSelf.isPauseClick = NO;
     }];
+}
+
+- (void)releaseAction
+{
+    [super releaseAction];
+    
+    [self.textureManager releaseIceModel];
+    [self.textureManager releaseKinghtModel];
+    [self.textureManager releaseArcherModel];
+    [self.textureManager releaseRedBatModel];
 }
 
 @end

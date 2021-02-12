@@ -262,11 +262,13 @@
 
 
 #pragma mark - 技能 -
-//加速射击技能,持续5秒
+//加速射击技能,持续%d秒
 - (void)skill1Action
 {
+    
+    NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_1];
     self.skill1 = YES;
-    [self performSelector:@selector(cd1) withObject:nil afterDelay:10];
+    [self performSelector:@selector(cd1) withObject:nil afterDelay:time];
 }
 
 
@@ -277,7 +279,9 @@
 - (void)skill2Action
 {
     self.skill2 = YES;
-    [self performSelector:@selector(cd2) withObject:nil afterDelay:8];
+    NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_2];
+
+    [self performSelector:@selector(cd2) withObject:nil afterDelay:time];
 }
 
 - (void)cd2{
@@ -286,9 +290,10 @@
 
 - (void)skill3Action
 {
+    NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_3];
     self.skill3 = YES;
     self.moveSpeed = _speed + 200;
-    [self performSelector:@selector(cd3) withObject:nil afterDelay:5];
+    [self performSelector:@selector(cd3) withObject:nil afterDelay:time];
 
 }
 
@@ -299,8 +304,9 @@
 
 - (void)skill4Action
 {
+    NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_3];
     self.skill4 = YES;
-    [self performSelector:@selector(cd4) withObject:nil afterDelay:5];
+    [self performSelector:@selector(cd4) withObject:nil afterDelay:time];
 
 }
 

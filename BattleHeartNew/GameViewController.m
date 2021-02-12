@@ -8,7 +8,7 @@
 
 #import "GameViewController.h"
 #import "MapSelectViewController.h"
-#import "GameScene.h"
+#import "LearnSkillViewController.h"
 
 #import "WDSkillView.h"
 #import "WDTalkView.h"
@@ -23,8 +23,26 @@
     WDTalkView  *_talkView;
 }
 
+
+/// 初始化起始技能
+- (void)initUserSkill{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *key1 = [NSString stringWithFormat:@"%@_0",kKinght];
+    NSString *key2 = [NSString stringWithFormat:@"%@_0",kArcher];
+    NSString *key3 = [NSString stringWithFormat:@"%@_0",kIceWizard];
+
+    [defaults setBool:YES forKey:key1];
+    [defaults setBool:YES forKey:key2];
+    [defaults setBool:YES forKey:key3];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self initUserSkill];
+
+    CGFloat a = [UIScreen mainScreen].scale;
+    NSLog(@"%lf",a);
     
     [self createSkillView];
     //[self createTalkView];
@@ -32,13 +50,8 @@
 
     WDTextureManager *manager = [WDTextureManager shareTextureManager];
     manager.goText = @"点击传送门\n选择出发地点";
-    [manager iceWizardModel];
-    [manager kinghtModel];
-    [manager archerModel];
-    
-    [manager redBatModel];
+ 
     [manager loadCommonTexture];
- //   [self createSceneWithName:@"LearnScene"];
 
     NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
     if (![d boolForKey:kPassLearn1]) {
@@ -52,7 +65,10 @@
     }
 
 //    [self createSceneWithName:@"TestScene"];
+//    [self showLearnSkillViewControllerWithName:kArcher];
 }
+
+
 
 - (void)createTalkView
 {
@@ -63,6 +79,8 @@
    
 }
 
+
+/// 展示地图选择器
 - (void)showMapSelectViewController
 {
     MapSelectViewController *vc = [[MapSelectViewController alloc] init];
@@ -73,6 +91,17 @@
     __weak typeof(self)weakSelf = self;
     [vc setSelectSceneBlock:^(NSString * _Nonnull sceneName) {
         [weakSelf createSceneWithName:sceneName];
+    }];
+}
+
+
+/// 展示技能学习界面
+- (void)showLearnSkillViewControllerWithName:(NSString *)userName
+{
+    LearnSkillViewController *vc = [[LearnSkillViewController alloc] init];
+    vc.userName = userName;
+    [self presentViewController:vc animated:YES completion:^{
+        
     }];
 }
 
@@ -169,6 +198,10 @@
     
     [_selectScene setShowMapSelectBlock:^{
         [weakSelf showMapSelectViewController];
+    }];
+    
+    [_selectScene setShowSkillSelectBlock:^(NSString * _Nonnull userName) {
+        [weakSelf showLearnSkillViewControllerWithName:userName];
     }];
     
     [skView presentScene:scene transition:tr];

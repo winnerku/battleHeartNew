@@ -207,14 +207,26 @@ static CGFloat bloodHeight = 40;
     SKAction *seq = [SKAction sequence:@[size,remo]];
     [reduce runAction:seq];
     
+    if (!self.reduceBloodNow) {
+        self.reduceBloodNow = YES;
+        //减血闪动
+        SKAction *a = nil;
+        if ([self.name isEqualToString:kRedBat]) {
+           a = [SKAction colorizeWithColor:[UIColor blackColor] colorBlendFactor:0.7 duration:0.15];
+        }else{
+           a = [SKAction colorizeWithColor:[UIColor redColor] colorBlendFactor:0.7 duration:0.15];
+        }
+        
+        SKAction *b = [SKAction colorizeWithColorBlendFactor:0 duration:0.15];
+        SKAction *seq2 = [SKAction sequence:@[a,b]];
+        SKAction *rep = [SKAction repeatAction:seq2 count:1];
+               
+        __weak typeof(self)weakSelf = self;
+        [self runAction:rep completion:^{
+            weakSelf.reduceBloodNow = NO;
+        }];
+    }
     
-    //减血闪动
-    SKAction *a = [SKAction colorizeWithColor:[UIColor redColor] colorBlendFactor:0.7 duration:0.15];
-    SKAction *b = [SKAction colorizeWithColorBlendFactor:0 duration:0.15];
-    SKAction *seq2 = [SKAction sequence:@[a,b]];
-    SKAction *rep = [SKAction repeatAction:seq2 count:1];
-           
-    [self runAction:rep];
     
 }
 
@@ -267,6 +279,9 @@ static CGFloat bloodHeight = 40;
 /// 站立
 - (void)standAction
 {
+    if (self.lastBlood <= 0) {
+        return;
+    }
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(moveFinishAction) object:nil];
     [self removeActionForKey:@"moveAnimation"];
@@ -332,6 +347,10 @@ static CGFloat bloodHeight = 40;
 - (void)moveActionWithPoint:(CGPoint)point
                moveComplete:(void (^)(void))moveFinish
 {
+    if (self.lastBlood <= 0) {
+        return;
+    }
+    
     _moveFinish = moveFinish;
     self.isMove = YES;
     
@@ -428,10 +447,12 @@ static CGFloat bloodHeight = 40;
         SKAction *gr = [SKAction group:@[diedAction,alpha]];
         SKAction *remo = [SKAction removeFromParent];
         SKAction *seq = [SKAction sequence:@[gr,remo]];
+        //__block WDBaseNodeModel *model = _model;
         [self runAction:seq completion:^{
-            
+            //model = nil;
         }];
     }else{
+        _model = nil;
         SKAction *alpha = [SKAction fadeAlphaTo:0 duration:0.5];
         SKAction *remo = [SKAction removeFromParent];
         SKAction *seq = [SKAction sequence:@[alpha,remo]];

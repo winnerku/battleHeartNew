@@ -88,7 +88,6 @@
     if ([nodeA.name isEqualToString:@"user_arrow"]) {
         CGFloat numer = [WDCalculateTool calculateReduceNumberWithAttack:nodeA.attackNumber floatNumber:2];
         if ([nodeB isKindOfClass:[WDMonsterNode class]]) {
-            [nodeB selectSpriteAction];
             [nodeB setBloodNodeNumber:numer];
             WDArcherNode *node = (WDArcherNode *)[self childNodeWithName:kArcher];
             //弓箭手吸血技能
@@ -97,10 +96,8 @@
             }
         }
     }else if([nodeB.name isEqualToString:@"user_arrow"]){
-       
         CGFloat numer = [WDCalculateTool calculateReduceNumberWithAttack:nodeB.attackNumber floatNumber:2];
         if ([nodeA isKindOfClass:[WDMonsterNode class]]) {
-            [nodeA selectSpriteAction];
             [nodeA setBloodNodeNumber:numer];
             WDArcherNode *node = (WDArcherNode *)[self childNodeWithName:kArcher];
             //弓箭手吸血技能
@@ -111,13 +108,6 @@
     }
        
     
-    
-    if ([nodeA isKindOfClass:[WDMonsterNode class]] && [nodeB.name isEqualToString:@"user_arrow"]) {
-        //[nodeB removeFromParent];
-        [nodeA selectSpriteAction];
-        [nodeA setBloodNodeNumber:nodeB.attackNumber];
-    }
-       
     NSLog(@"A: %@  b: %@",nodeA.name,nodeB.name);
     
 }
@@ -199,9 +189,17 @@
         [node releaseAction];
     }
     
+    [self.userArr removeAllObjects];
+    [self.monsterArr removeAllObjects];
+    
     [self.textureManager.arrowNode removeFromParent];
     [self.textureManager.locationNode removeFromParent];
-  
+   
+    _selectNode    = nil;
+    _kNightNode    = nil;
+    _iceWizardNode = nil;
+    _archerNode    = nil;
+    
     
     [[NSNotificationCenter defaultCenter]removeObserver:self name:kNotificationForDied object:nil];
 }

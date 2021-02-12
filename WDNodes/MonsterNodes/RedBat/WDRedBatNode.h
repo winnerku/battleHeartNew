@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface WDRedBatNode : WDMonsterNode
-
+@property (nonatomic,assign)BOOL isBoss;
 @end
 
 NS_ASSUME_NONNULL_END

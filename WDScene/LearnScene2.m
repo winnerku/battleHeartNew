@@ -48,10 +48,10 @@
             [node releaseAction];
             [self.monsterArr removeObject:node];
             _batNumber ++;
-            if (_batNumber == 10) {
+            if (_batNumber == 6) {
                 [self.archerNode.talkNode setText:@"这破蝙蝠啊~\n是杀不完的嘛？"hiddenTime:3];
             }
-            if (_batNumber <=15) {
+            if (_batNumber <=8) {
                 [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
             }
             
@@ -89,7 +89,10 @@
 - (void)didMoveToView:(SKView *)view
 {
     [super didMoveToView:view];
- 
+    
+    [self.textureManager arrowNode];
+    [self.textureManager redBatModel];
+    
     [self addChild:self.archerNode];
     _foot3 = YES;
     _isLearn = YES;
@@ -202,19 +205,11 @@
         //[self performSelector:@selector(talkAction) withObject:nil afterDelay:3];
         [po postNotificationName:kNotificationForShowSkill object:@(0)];
     }else if(_foot == 5){
-        [self.archerNode.talkNode setText:@"第二个技能\n增加箭矢数量"];
+        [self.archerNode.talkNode setText:@"想要其它技能\n要找小姐姐学"];
         //[self performSelector:@selector(talkAction) withObject:nil afterDelay:3];
-        [po postNotificationName:kNotificationForShowSkill object:@(1)];
+        //[po postNotificationName:kNotificationForShowSkill object:@(1)];
     }else if(_foot == 6){
-        [self.archerNode.talkNode setText:@"第三个技能\n增加移动速度"];
-        //[self performSelector:@selector(talkAction) withObject:nil afterDelay:3];
-        [po postNotificationName:kNotificationForShowSkill object:@(2)];
-    }else if(_foot == 7){
-        [self.archerNode.talkNode setText:@"第四个技能\n攻击增加吸血"];
-        //[self performSelector:@selector(talkAction) withObject:nil afterDelay:3];
-        [po postNotificationName:kNotificationForShowSkill object:@(3)];
-    }else{
-        [self.archerNode.talkNode setText:@"具体如何使用\n在实战中体会吧~" hiddenTime:3];
+        [self.archerNode.talkNode setText:@"具体如何使用\n实战中体会吧~" hiddenTime:3];
         for (WDMonsterNode *node in self.monsterArr) {
             node.isLearn = NO;
         }
@@ -223,11 +218,7 @@
         self.archerNode.isInit = NO;
         [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForSkillCanUse object:nil];
         [po postNotificationName:kNotificationForShowSkill object:@(5)];
-        [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
-        [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
-        [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
         [self clickNode].hidden = YES;
-
     }
 }
 
@@ -245,5 +236,11 @@
     return _clickNode;
 }
 
+- (void)releaseAction
+{
+    [super releaseAction];
+    [self.textureManager releaseRedBatModel];
+    [self.textureManager releaseArcherModel];
+}
 
 @end

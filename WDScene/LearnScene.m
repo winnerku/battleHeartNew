@@ -29,6 +29,10 @@
 {
     [super didMoveToView:view];
         
+    [self.textureManager kinghtModel];
+    [self.textureManager iceWizardModel];
+    [self.textureManager redBatModel];
+    
     [self addChild:self.kNightNode];
     
     
@@ -345,10 +349,13 @@
 }
 
 
-
-
-
-
+- (void)releaseAction
+{
+    [super releaseAction];
+    [self.textureManager releaseKinghtModel];
+    [self.textureManager releaseIceModel];
+    [self.textureManager releaseRedBatModel];
+}
 
 
 

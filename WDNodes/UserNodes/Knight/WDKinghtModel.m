@@ -9,5 +9,8 @@
 #import "WDKinghtModel.h"
 
 @implementation WDKinghtModel
-
+- (void)dealloc
+{
+    NSLog(@"KnightModel销毁了");
+}
 @end

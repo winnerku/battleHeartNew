@@ -37,6 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)WDTalkNode *talkNode;
 /// 表情
 @property (nonatomic,strong)WDBalloonNode *balloonNode;
+/// 正在减血，不用再放动画了
+@property (nonatomic,assign)BOOL reduceBloodNow;
 
 
 /// 方向: 左 又
