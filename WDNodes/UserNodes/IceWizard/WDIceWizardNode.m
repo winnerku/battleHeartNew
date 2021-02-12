@@ -13,6 +13,7 @@
     WDIceWizardModel *_iceModel;
     SKAction         *_cureAction;
     CGFloat           _addNumber;
+    BOOL              _isDead;
 }
 
 + (instancetype)initWithModel:(WDBaseNodeModel *)model
@@ -69,6 +70,8 @@
         return;
     }
     
+    if (self.isDead) return;
+    
     if (self.lastBlood <= 0) {
         return;
     }
@@ -117,6 +120,11 @@
     }];
 }
 
+- (void)releaseAction
+{
+    [super releaseAction];
+    self.isDead = YES;
+}
 
 /// 加血动画
 /// @param node 被治愈者
@@ -188,5 +196,10 @@
 }
 
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    _iceModel = nil;
+}
 
 @end

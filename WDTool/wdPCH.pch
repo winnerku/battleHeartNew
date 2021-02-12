@@ -113,6 +113,7 @@ static const uint32_t ARROW_CATEGORY = 0X02;
 /// 隐藏或显示技能栏
 #define kNotificationForHiddenSkill @"kNotificationForHiddenSkill"
 
-
+/// 全局link
+#define kNotificationForDisplayLink @"kNotificationForDisplayLink"
 
 #endif /* wdPCH_pch */

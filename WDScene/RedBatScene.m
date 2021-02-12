@@ -16,6 +16,8 @@
     BOOL _bossDied;
 }
 
+
+
 - (void)didMoveToView:(SKView *)view
 {
     [super didMoveToView:view];
@@ -44,8 +46,6 @@
     [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
     [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
     [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
-    //[self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
-    //[self createBoss];
     
     _batNumber = 3;
 }
@@ -61,14 +61,11 @@
                 if (_boss) {
                     //被boss杀干净
                     __weak typeof(self)weakSelf = self;
-                    __block WDRedBatNode *bo = _boss;
                     self.textureManager.goText = @"BOSS攻击挺高\n试试风筝!";
                     [_boss.talkNode setText:@"小菜鸡们\n在练练吧!" hiddenTime:2 completeBlock:^{
                         if (weakSelf.changeSceneWithNameBlock) {
                             weakSelf.changeSceneWithNameBlock(@"RealPubScene");
                         }
-                        [bo releaseAction];
-                        [weakSelf.monsterArr removeObject:bo];
                     }];
                 }else{
                     //被小怪杀干净
@@ -155,6 +152,8 @@
 - (void)releaseAction
 {
     [super releaseAction];
+    
+    _boss = nil;
     
     [self.textureManager releaseIceModel];
     [self.textureManager releaseKinghtModel];

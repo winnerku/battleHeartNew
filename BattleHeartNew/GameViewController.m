@@ -52,6 +52,7 @@
     manager.goText = @"点击传送门\n选择出发地点";
  
     [manager loadCommonTexture];
+    [manager setLinker];
 
     NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
     if (![d boolForKey:kPassLearn1]) {

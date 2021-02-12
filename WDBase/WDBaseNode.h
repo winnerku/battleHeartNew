@@ -15,9 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface WDBaseNode : SKSpriteNode
 
 
-/// link
-@property (nonatomic,strong)CADisplayLink *nodeLink;
-
 /// 图片真实的显示区域
 @property (nonatomic,assign)CGSize realSize;
 

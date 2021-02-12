@@ -35,8 +35,8 @@ static CGFloat bloodHeight = 40;
 - (void)setChildNodeWithModel:(WDBaseNodeModel *)model{
     
     self.isRight = YES;
-    _nodeLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(observedNode)];
-    [_nodeLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(observedNode) name:kNotificationForDisplayLink object:nil];
     
     ///血条总是一个朝向
     [self addObserver:self forKeyPath:@"isRight" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
@@ -436,28 +436,19 @@ static CGFloat bloodHeight = 40;
 
 - (void)releaseAction
 {
-    if (_nodeLink) {
-        [_nodeLink invalidate];
-        _nodeLink = nil;
-    }
-    
     if (self.model.diedArr.count > 0) {
         SKAction *diedAction = [SKAction animateWithTextures:self.model.diedArr timePerFrame:0.1];
         SKAction *alpha = [SKAction fadeAlphaTo:0 duration:self.model.diedArr.count * 0.1];
         SKAction *gr = [SKAction group:@[diedAction,alpha]];
         SKAction *remo = [SKAction removeFromParent];
         SKAction *seq = [SKAction sequence:@[gr,remo]];
-        //__block WDBaseNodeModel *model = _model;
         [self runAction:seq completion:^{
-            //model = nil;
         }];
     }else{
-        _model = nil;
         SKAction *alpha = [SKAction fadeAlphaTo:0 duration:0.5];
         SKAction *remo = [SKAction removeFromParent];
         SKAction *seq = [SKAction sequence:@[alpha,remo]];
         [self runAction:seq completion:^{
-            
         }];
     }
 }

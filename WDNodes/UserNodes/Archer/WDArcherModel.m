@@ -13,4 +13,10 @@
 {
     _arrowTexture = [SKTexture textureWithImage:[UIImage imageNamed:@"archerArrow"]];
 }
+
+- (void)dealloc
+{
+    NSLog(@"WDArcherModel销毁了");
+}
+
 @end

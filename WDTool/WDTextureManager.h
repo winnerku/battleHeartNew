@@ -64,6 +64,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setMonsterMovePointWithName:(NSString *)name
                             monster:(WDBaseNode *)monster;
 
+
+/// 全局Link
+- (void)setLinker;
+
 /// 通用纹理
 - (void)loadCommonTexture;
 

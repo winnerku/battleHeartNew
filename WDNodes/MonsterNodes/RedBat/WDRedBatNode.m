@@ -209,9 +209,6 @@
     }
     
     
-    
-    
-   
    
     if (self.isAttack) {
         return;
@@ -265,6 +262,18 @@
         SKAction *rep = [SKAction repeatActionForever:texture];
         [self runAction:rep withKey:@"moveAnimation"];
     }
+}
+
+- (void)releaseAction
+{
+    [super releaseAction];
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    
+}
+
+- (void)dealloc
+{
+    _batModel = nil;
 }
 
 @end

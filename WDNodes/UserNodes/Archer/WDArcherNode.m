@@ -224,6 +224,11 @@
 {
     [super observedNode];
     
+    if (self.isDead) {
+        [self removeFromParent];
+        return;
+    }
+    
     if (self.isLearn) {
         return;
     }
@@ -312,6 +317,12 @@
 
 - (void)cd4{
     self.skill4 = NO;
-   
 }
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    _archerModel = nil;
+}
+
 @end

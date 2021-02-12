@@ -10,7 +10,8 @@
 
 @implementation WDTextureManager
 {
-    NSDictionary *_balloonDic;
+    NSDictionary  *_balloonDic;
+    CADisplayLink *_nodeLink;
 }
 static WDTextureManager *textureManager = nil;
 
@@ -24,6 +25,16 @@ static WDTextureManager *textureManager = nil;
     });
     
     return textureManager;
+}
+
+- (void)setLinker
+{
+    _nodeLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(observedNode)];
+    [_nodeLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+}
+
+- (void)observedNode{
+    [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForDisplayLink object:nil];
 }
 
 - (void)onlyArrowWithPos:(CGPoint)pos

@@ -227,5 +227,10 @@
     }
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    _kinghtModel = nil;
+}
 
 @end
