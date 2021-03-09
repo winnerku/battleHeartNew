@@ -12,6 +12,7 @@
 @implementation RedBatScene
 {
     int _batNumber;
+    int _bossNumber;
     WDRedBatNode *_boss;
     BOOL _bossDied;
 }
@@ -48,15 +49,16 @@
     [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
     
     _batNumber = 3;
+    _bossNumber = 40;
 }
 
 - (void)diedAction{
     
     for (WDBaseNode *node in self.userArr) {
-        if (node.isDead) {
+        if (node.state & SpriteState_dead) {
             [node releaseAction];
             [self.userArr removeObject:node];
-           
+            
             if (self.userArr.count == 0) {
                 if (_boss) {
                     //被boss杀干净
@@ -87,11 +89,11 @@
     }
     
     for (WDBaseNode *node in self.monsterArr) {
-        if (node.isDead) {
+        if (node.state & SpriteState_dead) {
             [node releaseAction];
             [self.monsterArr removeObject:node];
             _batNumber ++;
-            if (_batNumber <= 3) {
+            if (_batNumber <= _bossNumber) {
                 [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
             }
             

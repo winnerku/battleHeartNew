@@ -71,9 +71,7 @@
     if (self.lastBlood * 2 < self.blood && _stagger == 1) {
         _stagger = 0;
         [self removeAllActions];
-        self.isAttack = NO;
-        self.isMove = NO;
-        self.isStagger = YES;
+        self.state = SpriteState_stagger;
         self.colorBlendFactor = 0;
         CGFloat direction = 1;
         if (self.isRight) {
@@ -87,14 +85,14 @@
         SKAction *gr = [SKAction group:@[action,move]];
         __weak typeof(self)weakSelf = self;
         [self runAction:gr completion:^{
-            weakSelf.isStagger = NO;
+            weakSelf.state = SpriteState_stand;
         }];
     }
 }
 
-- (void)attackAction1WithNode:(WDBaseNode *)enemyNode
+- (void)attackActionWithEnemyNode:(WDBaseNode *)enemyNode
 {
-    [super attackAction1WithNode:enemyNode];
+    [super attackActionWithEnemyNode:enemyNode];
     
     CGFloat direction = 1;
     if (self.isRight) {
@@ -133,7 +131,7 @@
         }
         
         [weakSelf runAction:gr completion:^{
-            weakSelf.isAttack = NO;
+            weakSelf.state = SpriteState_stand;
         }];
         
     }];
@@ -170,8 +168,8 @@
 - (void)observedNode
 {
     [super observedNode];
+    
     if (self.isBoss) {
-        
         if (self.isPubScene) {
             int z = 2 * kScreenHeight - self.position.y;
             self.zPosition = z;
@@ -182,18 +180,11 @@
     }
     
     
-    if (self.isLearn) {
+    if (self.state & SpriteState_movie || self.state & SpriteState_init || self.state & SpriteState_stagger || self.state & SpriteState_attack || self.state & SpriteState_dead) {
         return;
     }
     
-    if (self.isInit) {
-        return;
-    }
-    
-    if (self.isStagger) {
-        return;
-    }
-    
+   
     if (!self.targetMonster) {
         WDBaseNode *target = [WDCalculateTool searchUserNearNode:self];
         if (target) {
@@ -202,20 +193,17 @@
         return;
     }
     
-    if (self.targetMonster.isDead) {
+    
+    /// 玩家死亡
+    if (self.targetMonster.state & SpriteState_dead) {
         self.targetMonster = nil;
         [self standAction];
         return;
     }
     
-    
    
-    if (self.isAttack) {
-        return;
-    }
-    
     if ([self canAttack]) {
-        [self attackAction1WithNode:self.targetMonster];
+        [self attackActionWithEnemyNode:self.targetMonster];
     }
     
     CGPoint point = [WDCalculateTool calculateMonsterMovePointWithMonsterNode:self userNode:self.targetMonster];

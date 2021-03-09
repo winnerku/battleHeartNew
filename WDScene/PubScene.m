@@ -57,9 +57,9 @@
     self.selectNode = self.archerNode;
     [self performSelector:@selector(move) withObject:nil afterDelay:1];
     
-    self.iceWizardNode.isLearn = YES;
-    self.kNightNode.isLearn = YES;
-    self.archerNode.isLearn = YES;
+    self.iceWizardNode.state = SpriteState_movie;
+    self.kNightNode.state = SpriteState_movie;
+    self.archerNode.state = SpriteState_movie;
 
     self.iceWizardNode.isPubScene = YES;
     self.kNightNode.isPubScene = YES;
@@ -119,7 +119,7 @@
     
     _red = [WDRedBatNode initWithModel:self.textureManager.redBatModel];
     _red.zPosition = 10000;
-    _red.isLearn = YES;
+    _red.state = SpriteState_movie;
     _red.isPubScene = YES;
     _red.xScale = 0.4;
     _red.yScale = 0.4;

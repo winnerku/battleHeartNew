@@ -15,6 +15,7 @@
 #pragma mark - 触碰 -
 - (void)touchDownAtPoint:(CGPoint)pos {
    // NSLog(@"点中的坐标为: x = %lf  y = %lf",pos.x,pos.y);
+    //self.selectNode.state = SpriteState_operation;
 }
 
 // 移动
@@ -36,7 +37,7 @@
     self.selectLine.size = CGSizeMake(width, 10);
     //角度
     self.selectLine.zRotation = [WDCalculateTool angleForStartPoint:self.selectLine.position EndPoint:pos];
-    NSLog(@"%lf",self.selectLine.zRotation);
+    //NSLog(@"%lf",self.selectLine.zRotation);
     [self.selectLine createLinePhyBody];
 
 }
@@ -48,6 +49,7 @@
         return;
     }
     
+   
     NSArray *nodes = [self nodesAtPoint:pos];
 
     pos = [WDCalculateTool calculateBigPoint:pos];
@@ -81,18 +83,18 @@
     
     BOOL canMove = YES;
     
-    
     ///首先判断是否选中的为monster
     if (monsterNode) {
         
         //选中动画
         [monsterNode selectSpriteAction];
         [self selectMonster:monsterNode];
-        canMove = NO;
-        if (self.selectNode.attackDistance == 0) {
-            [self.selectNode removeActionForKey:@"move"];
-        }
         
+        [self.selectNode removeAllActions];
+        self.selectNode.state = SpriteState_stand;
+        [NSObject cancelPreviousPerformRequestsWithTarget:self.selectNode selector:@selector(moveFinishAction) object:nil];
+        canMove = NO;
+       
     }else if(userNode){
         
         //如果引导线没隐藏，添加buff效果
@@ -107,21 +109,17 @@
     }
     
 
-    
     /// 非切换目标可以移动
     if (canMove) {
-      
         self.selectNode.targetMonster = nil;
         [self.selectNode moveActionWithPoint:pos moveComplete:^{
         }];
         [self arrowAction:pos];
-
     }
 
     
     self.selectLine.hidden = YES;
     self.selectLine.size = CGSizeMake(0, 0);
-
 }
 
 
@@ -131,7 +129,7 @@
 #pragma mark - 选中怪物的情况 -
 - (void)selectMonster:(WDBaseNode *)monsterNode
 {
-    NSLog(@"当前%@怪物选中的人物是%@",monsterNode.name,self.selectNode.name);
+    //NSLog(@"当前%@怪物选中的人物是%@",monsterNode.name,self.selectNode.name);
     ///玩家当前选中人物和怪物选中的攻击人物相同
     if ([monsterNode.targetMonster.name isEqualToString:self.selectNode.name]) {
         
@@ -156,17 +154,11 @@
         }
     }
     
-    
     ///选中怪物的情况
     self.selectNode.targetMonster = monsterNode;
     [[WDTextureManager shareTextureManager] hiddenArrow];
-    
-    if ([self.selectNode.name isEqualToString:kArcher] && self.selectNode.isMove) {
-        self.selectNode.isMove = NO;
-        [self.selectNode removeAllActions];
-    }
-    
-    NSLog(@"变换以后%@怪物选中的人物是%@",monsterNode.name,self.selectNode.name);
+        
+    //NSLog(@"变换以后%@怪物选中的人物是%@",monsterNode.name,self.selectNode.name);
 }
 
 #pragma mark - 选中玩家，添加增益效果 -

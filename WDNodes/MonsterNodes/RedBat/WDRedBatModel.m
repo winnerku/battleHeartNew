@@ -16,7 +16,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"蝙蝠model销毁了");
+    //NSLog(@"蝙蝠model销毁了");
 }
 
 @end

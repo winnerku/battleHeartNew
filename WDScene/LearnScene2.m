@@ -24,9 +24,9 @@
 - (void)diedAction{
     
     for (WDBaseNode *node in self.userArr) {
-        if (node.isDead) {
-            node.isDead = NO;
+        if (node.state & SpriteState_dead) {
             [node setBloodNodeNumber:-100];
+            [node standAction];
             NSString *text = @"";
             if (_diedNumber == 0) {
                 text = @"教学关卡的福利\n以后不要想啦~";
@@ -44,7 +44,9 @@
     }
     
     for (WDBaseNode *node in self.monsterArr) {
-        if (node.isDead) {
+        if (node.state & SpriteState_dead) {
+            [node removeAllActions];
+            [NSObject cancelPreviousPerformRequestsWithTarget:node];
             [node releaseAction];
             [self.monsterArr removeObject:node];
             _batNumber ++;
@@ -105,11 +107,12 @@
 
 - (void)a{
     [self.archerNode.talkNode setText:@"真是伤脑筋啊\n我是迷路了嘛？"];
-    self.archerNode.isInit = YES;
+    self.archerNode.state = SpriteState_movie;
     __weak typeof(self)weakSelf = self;
     [self.archerNode moveActionWithPoint:CGPointMake(-350, 0) moveComplete:^{
         [weakSelf clickNode].hidden = NO;
         [weakSelf clickNode].position = CGPointMake(weakSelf.archerNode.position.x, weakSelf.archerNode.position.y - 100);
+        weakSelf.archerNode.state = SpriteState_movie;
     }];
 }
 
@@ -153,7 +156,7 @@
                     [self createMonsterWithName:kRedBat position:CGPointMake(400, 0)];
 
                     for (WDMonsterNode *node in self.monsterArr) {
-                        node.isLearn = YES;
+                        node.state = SpriteState_movie;
                         _redNode = node;
                     }
                     
@@ -171,7 +174,8 @@
                     [_redNode selectSpriteAction];
                     _foot ++;
                     self.archerNode.targetMonster = _redNode;
-                    [self.archerNode attackAction1WithNode:_redNode];
+                    [self.archerNode attackActionWithEnemyNode:_redNode];
+                    self.archerNode.state = SpriteState_movie;
                     [self.textureManager hiddenArrow];
                     [self clickNode].hidden = NO;
                 }
@@ -211,7 +215,7 @@
     }else if(_foot == 6){
         [self.archerNode.talkNode setText:@"具体如何使用\n实战中体会吧~" hiddenTime:3];
         for (WDMonsterNode *node in self.monsterArr) {
-            node.isLearn = NO;
+            node.state = SpriteState_stand;
         }
         _isLearn = NO;
         self.archerNode.isLearn = NO;

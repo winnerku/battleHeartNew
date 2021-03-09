@@ -31,7 +31,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"IceWizardModel销毁了");
+    //NSLog(@"IceWizardModel销毁了");
 }
 
 @end

@@ -55,13 +55,12 @@
     [self standAction];
 }
 
-- (void)attackAction1WithNode:(WDBaseNode *)enemyNode
+- (void)attackActionWithEnemyNode:(WDBaseNode *)enemyNode
 {
     
-    [super attackAction1WithNode:enemyNode];
+    [super attackActionWithEnemyNode:enemyNode];
+   
     [self removeAllActions];
-    self.isAttack = YES;
-    self.isMove = NO;
     
     NSArray *a = _archerModel.attackArr1;
     NSArray *laArr = [a subarrayWithRange:NSMakeRange(0, 6)];
@@ -77,7 +76,7 @@
     __weak typeof(self)weakSelf = self;
     [self runAction:att completion:^{
         
-        if (weakSelf.isMove) {
+        if (weakSelf.state & SpriteState_move) {
             return ;
         }
   
@@ -85,7 +84,8 @@
             return;
         }
         
-        if (weakSelf.targetMonster.isDead) {
+        if (weakSelf.targetMonster.state & SpriteState_dead) {
+            [weakSelf standAction];
             return;
         }
        
@@ -98,7 +98,11 @@
         
         SKAction *att2 = [SKAction animateWithTextures:attackArr timePerFrame:0.05];
         [weakSelf runAction:att2 completion:^{
-            weakSelf.isAttack = NO;
+            if (weakSelf.state & SpriteState_movie) {
+                weakSelf.state = SpriteState_movie | SpriteState_stand;
+            }else{
+                weakSelf.state = SpriteState_stand;
+            }
         }];
         
     }];
@@ -157,13 +161,6 @@
     }
      
     
-    
-    
-     
-     
-     
-     
-    
 }
 
 - (void)createArrow{
@@ -215,44 +212,28 @@
      [weakSelf.parent addChild:blueFire];
 }
 
-- (BOOL)canAttack{
-   
-    return YES;
-}
 
 - (void)observedNode
 {
     [super observedNode];
     
-    if (self.isDead) {
-        [self removeFromParent];
+    if (self.state & SpriteState_move || self.state & SpriteState_movie || self.state & SpriteState_init || self.state & SpriteState_attack) {
         return;
     }
     
-    if (self.isLearn) {
-        return;
+    if (self.state & SpriteState_operation) {
+        return;;
     }
     
-    if (self.isInit) {
-        return;
-    }
-    
-    if (self.targetMonster.isDead) {
+    if (self.targetMonster.state & SpriteState_dead) {
         self.targetMonster = nil;
         [self standAction];
         return;
     }
     
-    if (self.isAttack) {
-        return;
-    }
-    
-    if (self.isMove) {
-        return;
-    }
-    
-    if (self.targetMonster && [self canAttack]) {
-        [self attackAction1WithNode:self.targetMonster];
+
+    if (self.targetMonster) {
+        [self attackActionWithEnemyNode:self.targetMonster];
         return;
     }
     
@@ -321,6 +302,7 @@
 
 - (void)dealloc
 {
+    NSLog(@"弓箭手销毁了");
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     _archerModel = nil;
 }

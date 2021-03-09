@@ -56,6 +56,10 @@
 {
     [super observedNode];
     
+    if (self.state & SpriteState_dead) {
+        return;
+    }
+    
     if (self.targetMonster) {
         [self moveToEnemy];
     }
@@ -87,11 +91,10 @@
     }
 }
 
-- (void)attackAction1WithNode:(WDBaseNode *)enemyNode
+- (void)attackActionWithEnemyNode:(WDBaseNode *)enemyNode
 {
-    [super attackAction1WithNode:enemyNode];
+    [super attackActionWithEnemyNode:enemyNode];
     
-   
     NSArray *att = [self.model.attackArr1 subarrayWithRange:NSMakeRange(0, 6)];
     NSArray *last = [self.model.attackArr1 subarrayWithRange:NSMakeRange(6, self.model.attackArr1.count - 6)];
     //[self removeAllActions];
@@ -101,7 +104,7 @@
     __weak typeof(self)weakSelf = self;
     [self runAction:texture completion:^{
         
-        if (weakSelf.isMove) {
+        if (weakSelf.state & SpriteState_move) {
             return ;
         }
         
@@ -110,7 +113,6 @@
            isDead = [weakSelf.targetMonster setBloodNodeNumber:weakSelf.attackNumber];
             if (isDead) {
                 weakSelf.targetMonster = nil;
-                weakSelf.isAttack = NO;
                 [weakSelf standAction];
                 return;
             }
@@ -128,8 +130,7 @@
         }
         
         [weakSelf runAction:[SKAction animateWithTextures:last timePerFrame:0.1] completion:^{
-            weakSelf.isAttack = NO;
-            
+            weakSelf.state = SpriteState_stand;
         }];
     }];
 
@@ -140,7 +141,7 @@
     
     [super beAttackActionWithTargetNode:targetNode];
 
-    if (!self.targetMonster && !self.isMove && !self.isInit) {
+    if (!self.targetMonster && !(self.state & SpriteState_move) && !(self.state & SpriteState_init)) {
         self.targetMonster = targetNode;
         targetNode.randomDistanceY = 0;
         targetNode.randomDistanceX = 0;
@@ -149,25 +150,23 @@
 
 - (void)moveToEnemy{
    
-    
-    if (self.targetMonster.isDead) {
+    if (self.targetMonster.state & SpriteState_dead) {
         self.targetMonster = nil;
         [self standAction];
         return;
     }
     
-    
-    if (self.isAttack) {
+    if (self.state & SpriteState_attack || self.state & SpriteState_move) {
         return;
     }
     
     if ([self canAttack]) {
-        [self attackAction1WithNode:self.targetMonster];
+        [self attackActionWithEnemyNode:self.targetMonster];
         return;
     }
     
     //攻击的对象是自己
-    if (self.targetMonster.isAttack && [self.targetMonster.targetMonster.name isEqualToString:self.name]) {
+    if ((self.targetMonster.state & SpriteState_attack) && [self.targetMonster.targetMonster.name isEqualToString:self.name]) {
         return;
     }
     
@@ -229,6 +228,7 @@
 
 - (void)dealloc
 {
+    NSLog(@"骑士销毁了");
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     _kinghtModel = nil;
 }

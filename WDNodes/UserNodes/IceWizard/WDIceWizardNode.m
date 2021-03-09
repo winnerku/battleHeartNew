@@ -58,6 +58,12 @@
     [self standAction];
 }
 
+- (void)observedNode
+{
+    [super observedNode];
+    NSLog(@"我是冰妹妹~");
+}
+
 - (void)beAttackActionWithTargetNode:(WDBaseNode *)targetNode
 {
     [super beAttackActionWithTargetNode:targetNode];
@@ -66,11 +72,11 @@
 - (void)addBuffActionWithNode:(WDBaseNode *)node
 {
     //移动大于一切
-    if (self.isMove) {
+    if (self.state & SpriteState_move) {
         return;
     }
     
-    if (self.isDead) return;
+    if (self.state & SpriteState_dead) return;
     
     if (self.lastBlood <= 0) {
         return;
@@ -123,7 +129,7 @@
 - (void)releaseAction
 {
     [super releaseAction];
-    self.isDead = YES;
+    self.state = SpriteState_dead;
 }
 
 /// 加血动画
@@ -132,7 +138,7 @@
     
     self.targetUser = node;
     
-    if (self.isMove) {
+    if (self.state & SpriteState_move) {
         return;
     }
     
@@ -152,9 +158,9 @@
 
 /// 攻击动画
 /// @param enemyNode 被攻击者
-- (void)attackAction1WithNode:(WDBaseNode *)enemyNode
+- (void)attackActionWithEnemyNode:(WDBaseNode *)enemyNode
 {
-     [super attackAction1WithNode:enemyNode];
+     [super attackActionWithEnemyNode:enemyNode];
      
 }
 
@@ -163,7 +169,7 @@
     [super moveFinishAction];
     
     if (self.isAttack) {
-        [self attackAction1WithNode:self.targetMonster];
+        [self attackActionWithEnemyNode:self.targetMonster];
     }
     
     if (self.isCure) {
@@ -198,6 +204,7 @@
 
 - (void)dealloc
 {
+    NSLog(@"冰女销毁了");
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     _iceModel = nil;
 }

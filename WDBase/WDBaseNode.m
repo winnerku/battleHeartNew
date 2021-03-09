@@ -23,7 +23,7 @@ static CGFloat bloodHeight = 40;
 - (void)dealloc
 {
 //    NSLog(@"%@",self.kNightNode);
-    NSLog(@"%@销毁了~",self.name);
+    //NSLog(@"%@销毁了~",self.name);
 }
 
 + (instancetype)initWithModel:(WDBaseNodeModel *)model
@@ -108,6 +108,11 @@ static CGFloat bloodHeight = 40;
 /// 加减血量
 - (BOOL)setBloodNodeNumber:(int)bloodNumber
 {
+    if (self.state & SpriteState_dead && bloodNumber > 0) {
+        [self performSelector:@selector(noBlood) withObject:nil afterDelay:0];
+        return YES;
+    }
+    
     [WDActionTool reduceBloodLabelAnimation:self reduceCount:bloodNumber];
 
     [self bloodNode];
@@ -130,7 +135,6 @@ static CGFloat bloodHeight = 40;
     
     self.bloodBgNode.alpha = 1;
 
-    
     CGFloat last = _lastBlood;
     _lastBlood = _lastBlood - bloodNumber;
     if (_lastBlood > _blood) {
@@ -141,8 +145,8 @@ static CGFloat bloodHeight = 40;
     }
     
     /// 没有血的状态
-    if ( !isAddBlood && _lastBlood <= 0 && !self.isDead) {
-        self.isDead = YES;
+    if ( !isAddBlood && _lastBlood <= 0) {
+        self.state = SpriteState_dead;
         [self reduceAnimation:bloodNumber];
         ///这里这样处理是因为先走了死亡的处理之后又走的通知
         [self performSelector:@selector(noBlood) withObject:nil afterDelay:0];
@@ -275,24 +279,25 @@ static CGFloat bloodHeight = 40;
 
 
 #pragma mark - 行为 -
-
 /// 站立
 - (void)standAction
 {
     if (self.lastBlood <= 0) {
         return;
     }
+    if (self.state & SpriteState_movie) {
+        self.state = SpriteState_stand | SpriteState_movie;
+    }else{
+        self.state = SpriteState_stand;
+    }
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(moveFinishAction) object:nil];
-    [self removeActionForKey:@"moveAnimation"];
-    
-    self.isAttack = NO;
-    self.isMove = NO;
+    [self removeAllActions];
+   
     SKAction *stand = [SKAction animateWithTextures:self.model.standArr timePerFrame:0.1];
     SKAction *rep = [SKAction repeatActionForever:stand];
     [self runAction:rep withKey:@"stand"];
     
-    //NSLog(@"%@调用了站立方法",self.name);
 }
 
 
@@ -309,14 +314,11 @@ static CGFloat bloodHeight = 40;
 
 
 /// 攻击
-- (void)attackAction1WithNode:(WDBaseNode *)enemyNode
+- (void)attackActionWithEnemyNode:(WDBaseNode *)enemyNode
 {
     self.colorBlendFactor = 0;
-    self.isAttack = YES;
-    self.isMove = NO;
-    self.isCure = NO;
-    //[self removeAllActions];
-    
+    self.state = SpriteState_attack | self.state;
+  
     CGFloat distance = enemyNode.position.x - self.position.x;
     if (distance < 0) {
         self.xScale = -fabs(self.xScale);
@@ -351,10 +353,21 @@ static CGFloat bloodHeight = 40;
         return;
     }
     
-    _moveFinish = moveFinish;
-    self.isMove = YES;
     
-    [self removeActionForKey:@"move"];
+    if (self.state & SpriteState_move) {
+        [self removeActionForKey:@"move"];
+    }else{
+        [self removeAllActions];
+    }
+    
+    _moveFinish = moveFinish;
+    if (self.state & SpriteState_movie) {
+        self.state = SpriteState_move | SpriteState_movie;
+    }else{
+        self.state = SpriteState_move;
+    }
+    
+    
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(moveFinishAction) object:nil];
     
     //血条翻转
@@ -397,18 +410,8 @@ static CGFloat bloodHeight = 40;
 /// 移动结束
 - (void)moveFinishAction{
     
-    
-    self.isMove = NO;
-   
     [[WDTextureManager shareTextureManager] hiddenArrow];
 
-
-//    [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForMoveFinish object:self.name];
-    
-    if (self.isAttack) {
-        return;
-    }
-    
     [self standAction];
     [self removeActionForKey:@"moveAnimation"];
 
@@ -436,6 +439,12 @@ static CGFloat bloodHeight = 40;
 
 - (void)releaseAction
 {
+    [self removeAllActions];
+    self.targetMonster = nil;
+    self.targetUser    = nil;
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+
     if (self.model.diedArr.count > 0) {
         SKAction *diedAction = [SKAction animateWithTextures:self.model.diedArr timePerFrame:0.1];
         SKAction *alpha = [SKAction fadeAlphaTo:0 duration:self.model.diedArr.count * 0.1];
@@ -451,6 +460,7 @@ static CGFloat bloodHeight = 40;
         [self runAction:seq completion:^{
         }];
     }
+    
 }
 
 #pragma mark - getter and setter-

@@ -12,8 +12,51 @@
 #import "WDBalloonNode.h"
 NS_ASSUME_NONNULL_BEGIN
 
-@interface WDBaseNode : SKSpriteNode
+/**
+ /// 教学状态
+ @property (nonatomic,assign)BOOL isLearn;
+ /// 初始化中(只有在创建时候有效)
+ @property (nonatomic,assign)BOOL isInit;
+ /// 正在攻击
+ @property (nonatomic,assign)BOOL isAttack;
+ /// 正在移动
+ @property (nonatomic,assign)BOOL isMove;
+ /// 正在治疗
+ @property (nonatomic,assign)BOOL isCure;
+ /// 死亡
+ @property (nonatomic,assign)BOOL isDead;
+ /// 朝向
+ @property (nonatomic,assign)BOOL isRight;
+ /// 硬直状态
+ @property (nonatomic,assign)BOOL isStagger;
+ /// 初始地方Z坐标不一样
+ @property (nonatomic,assign)BOOL isPubScene;
+ */
 
+typedef NS_ENUM(NSInteger,SpriteState) {
+     
+    /// 创建中
+    SpriteState_init       = 0,      /// 0000 0000
+    /// 教学or剧情状态
+    SpriteState_movie      = 1 << 0, /// 0000 0001
+    /// 攻击状态
+    SpriteState_attack     = 1 << 1, /// 0000 0010
+    /// 移动状态
+    SpriteState_move       = 1 << 2, /// 0000 0100
+    /// 死亡状态
+    SpriteState_dead       = 1 << 3, /// 0000 1000
+    /// 无敌状态
+    SpriteState_invincible = 1 << 4, /// 0001 0000
+    /// 站立状态
+    SpriteState_stand      = 1 << 5, /// 0010 0000
+    /// 硬直状态
+    SpriteState_stagger    = 1 << 6, /// 0100 0000
+    /// 操作中的状态
+    SpriteState_operation  = 1 << 7, /// 1000 0000
+};
+
+
+@interface WDBaseNode : SKSpriteNode
 
 /// 图片真实的显示区域
 @property (nonatomic,assign)CGSize realSize;
@@ -49,6 +92,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// 人物与怪物之间的最小距离增加一个横向随机数，避免怪物重叠问题
 @property (nonatomic,assign)CGFloat randomDistanceX;
 @property (nonatomic,assign)CGFloat randomDistanceY;
+
+
+/// 精灵状态
+@property (nonatomic,assign)SpriteState state;
 
 
 /// 教学状态
@@ -105,9 +152,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign)CGFloat moveCADisplaySpeed;
 
 
-
-
-
 + (instancetype)initWithModel:(WDBaseNodeModel *)model;
 - (void)setChildNodeWithModel:(WDBaseNodeModel *)model;
 
@@ -154,7 +198,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 站立
 - (void)standAction;
 /// 攻击1
-- (void)attackAction1WithNode:(WDBaseNode *)enemyNode;
+- (void)attackActionWithEnemyNode:(WDBaseNode *)enemyNode;
 
 /// 目标怪物
 - (void)setTragetMonster:(WDBaseNode *)enemNode;

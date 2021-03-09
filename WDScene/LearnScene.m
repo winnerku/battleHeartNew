@@ -108,7 +108,7 @@
         }
         
         self.kNightNode.talkNode.hidden = YES;
-        _redNode.isStagger = NO;
+        _redNode.state = SpriteState_stand;
         [super touchUpAtPoint:pos];
         [self performSelector:@selector(createIceNode) withObject:nil afterDelay:3];
     
@@ -174,7 +174,7 @@
 
     [self createMonsterWithName:kRedBat position:CGPointMake(-100, 0)];
     _redNode = self.monsterArr[0];
-    _redNode.isStagger = YES;
+    _redNode.state = SpriteState_stagger;
     [self.textureManager onlyArrowWithPos:CGPointMake(-100, _redNode.realSize.height / 2.0 + 80)];
     _first = YES;
 }
@@ -238,9 +238,9 @@
 - (void)diedAction
 {
     for (WDBaseNode *node in self.userArr) {
-        if (node.isDead) {
-            node.isDead = NO;
+        if (node.state & SpriteState_dead) {
             [node setBloodNodeNumber:-100];
+            node.state = SpriteState_stand;
             NSString *text = @"";
             if (_diedNumber == 0) {
                 text = @"教学关卡的福利\n以后不要想啦~";
@@ -259,7 +259,7 @@
     }
     
     for (WDBaseNode *node in self.monsterArr) {
-        if (node.isDead) {
+        if (node.state & SpriteState_dead) {
             
             [node removeAllActions];
 

@@ -108,7 +108,7 @@
     }
        
     
-    NSLog(@"A: %@  b: %@",nodeA.name,nodeB.name);
+    //NSLog(@"A: %@  b: %@",nodeA.name,nodeB.name);
     
 }
 - (void)didEndContact:(SKPhysicsContact *)contact{
@@ -206,7 +206,6 @@
 
 - (void)dealloc
 {
-//    NSLog(@"%@",self.kNightNode);
     NSLog(@"%@场景销毁了~",NSStringFromClass([self class]));
 }
 

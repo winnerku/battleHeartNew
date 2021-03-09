@@ -16,7 +16,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"WDArcherModel销毁了");
+    //NSLog(@"WDArcherModel销毁了");
 }
 
 @end
