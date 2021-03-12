@@ -32,7 +32,7 @@
      _archerModel = (WDArcherModel *)model;
     [_archerModel changeArr];
      self.model = model;
-     self.realSize = CGSizeMake(self.size.width - 150, self.size.height - 20);
+     self.realSize = CGSizeMake(self.size.width - 150, self.size.height - 60);
      SKPhysicsBody *body = [SKPhysicsBody bodyWithRectangleOfSize:self.realSize center:CGPointMake(0, 0)];
      self.physicsBody = body;
      self.physicsBody.affectedByGravity = NO;
@@ -217,12 +217,12 @@
 {
     [super observedNode];
     
-    if (self.state & SpriteState_move || self.state & SpriteState_movie || self.state & SpriteState_init || self.state & SpriteState_attack) {
+    if (self.state & SpriteState_move || self.state & SpriteState_movie || self.state & SpriteState_init || self.state & SpriteState_attack || self.state & SpriteState_stagger) {
         return;
     }
     
     if (self.state & SpriteState_operation) {
-        return;;
+        return;
     }
     
     if (self.targetMonster.state & SpriteState_dead) {
@@ -254,24 +254,15 @@
     
     NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_1];
     self.skill1 = YES;
-    [self performSelector:@selector(cd1) withObject:nil afterDelay:time];
-}
-
-
-- (void)cd1{
-    self.skill1 = NO;
+    [WDSkillManager endSkillActionWithTarget:self skillType:@"1" time:time];
+   
 }
 
 - (void)skill2Action
 {
     self.skill2 = YES;
     NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_2];
-
-    [self performSelector:@selector(cd2) withObject:nil afterDelay:time];
-}
-
-- (void)cd2{
-    self.skill2 = NO;
+    [WDSkillManager endSkillActionWithTarget:self skillType:@"2" time:time];
 }
 
 - (void)skill3Action
@@ -279,26 +270,21 @@
     NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_3];
     self.skill3 = YES;
     self.moveSpeed = _speed + 200;
-    [self performSelector:@selector(cd3) withObject:nil afterDelay:time];
+    [WDSkillManager endSkillActionWithTarget:self skillType:@"3" time:time];
 
 }
 
-- (void)cd3{
-    self.skill3 = NO;
-    self.moveSpeed = _speed;
-}
+
 
 - (void)skill4Action
 {
     NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_3];
     self.skill4 = YES;
-    [self performSelector:@selector(cd4) withObject:nil afterDelay:time];
+    [WDSkillManager endSkillActionWithTarget:self skillType:@"4" time:time];
 
 }
 
-- (void)cd4{
-    self.skill4 = NO;
-}
+
 
 - (void)dealloc
 {

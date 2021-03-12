@@ -10,34 +10,23 @@
 #import "WDTouchEndLogic.h"
 #import "WDBaseScene+CreateMonster.h"
 #import "WDBaseScene+SkillLogic.h"
-
+#import "WDBaseScene+ContactLogic.h"
 @implementation WDBaseScene
 
 
 #pragma mark - 通知方法 -
 - (void)addObserveAction
 {
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(diedAction) name:kNotificationForDied object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(diedAction:) name:kNotificationForDied object:nil];
 }
 
-- (void)diedAction{
-    
-    for (WDBaseNode *node in self.userArr) {
-        if (node.isDead) {
-            [node releaseAction];
-            [self.userArr removeObject:node];
-            [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
-            break;
-        }
-    }
-    
-    for (WDBaseNode *node in self.monsterArr) {
-        if (node.isDead) {
-            [node releaseAction];
-            [self.monsterArr removeObject:node];
-            [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
-            break;
-        }
+- (void)diedAction:(NSNotification *)notification{
+    NSString *name = notification.object;
+    NSDictionary *dic = @{kKinght:@"releaseKnightNode",kArcher:@"releaseArcherNode",kIceWizard:@"releaseIceWizardNode"};
+    NSString *selName = dic[name];
+    SEL method = NSSelectorFromString(selName);
+    if (method) {
+        [self performSelector:method withObject:nil];
     }
 }
 
@@ -80,36 +69,7 @@
 
 #pragma mark - 物理检测 -
 - (void)didBeginContact:(SKPhysicsContact *)contact{
-    
-    WDBaseNode *nodeA = (WDBaseNode *)contact.bodyA.node;
-    WDBaseNode *nodeB = (WDBaseNode *)contact.bodyB.node;
-       
-    ///弓箭触碰
-    if ([nodeA.name isEqualToString:@"user_arrow"]) {
-        CGFloat numer = [WDCalculateTool calculateReduceNumberWithAttack:nodeA.attackNumber floatNumber:2];
-        if ([nodeB isKindOfClass:[WDMonsterNode class]]) {
-            [nodeB setBloodNodeNumber:numer];
-            WDArcherNode *node = (WDArcherNode *)[self childNodeWithName:kArcher];
-            //弓箭手吸血技能
-            if (node.skill4) {
-                [node setBloodNodeNumber:-numer];
-            }
-        }
-    }else if([nodeB.name isEqualToString:@"user_arrow"]){
-        CGFloat numer = [WDCalculateTool calculateReduceNumberWithAttack:nodeB.attackNumber floatNumber:2];
-        if ([nodeA isKindOfClass:[WDMonsterNode class]]) {
-            [nodeA setBloodNodeNumber:numer];
-            WDArcherNode *node = (WDArcherNode *)[self childNodeWithName:kArcher];
-            //弓箭手吸血技能
-            if (node.skill4) {
-                [node setBloodNodeNumber:-numer];
-            }
-        }
-    }
-       
-    
-    //NSLog(@"A: %@  b: %@",nodeA.name,nodeB.name);
-    
+    [self contactLogicAction:contact];
 }
 - (void)didEndContact:(SKPhysicsContact *)contact{
     
@@ -176,6 +136,21 @@
     [_selectNode skill5Action];
 }
 
+- (void)releaseKnightNode
+{
+    _kNightNode = nil;
+}
+
+- (void)releaseArcherNode
+{
+    _archerNode = nil;
+}
+
+- (void)releaseIceWizardNode
+{
+    _iceWizardNode = nil;
+}
+
 
 
 - (void)releaseAction
@@ -199,7 +174,6 @@
     _kNightNode    = nil;
     _iceWizardNode = nil;
     _archerNode    = nil;
-    
     
     [[NSNotificationCenter defaultCenter]removeObserver:self name:kNotificationForDied object:nil];
 }

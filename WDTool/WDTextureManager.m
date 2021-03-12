@@ -180,6 +180,11 @@ static WDTextureManager *textureManager = nil;
     _passDoorArr = nil;
 }
 
+- (void)releaseBoss1Model
+{
+    _boss1Model = nil;
+}
+
 #pragma mark - 玩家人物 -
 /// - 骑士 texture -
 - (WDKinghtModel *)kinghtModel
@@ -187,7 +192,7 @@ static WDTextureManager *textureManager = nil;
     if (!_kinghtModel) {
         
         _kinghtModel = [[WDKinghtModel alloc] init];
-        [_kinghtModel setNormalTexturesWithName:kKinght standNumber:10 runNumber:0 walkNumber:10 diedNumber:0 attack1Number:10];
+        [_kinghtModel setNormalTexturesWithName:kKinght standNumber:10 runNumber:0 walkNumber:10 diedNumber:9 attack1Number:10];
     }
     
     return _kinghtModel;
@@ -212,7 +217,7 @@ static WDTextureManager *textureManager = nil;
 {
     if (!_archerModel) {
         _archerModel = [[WDArcherModel alloc] init];
-        [_archerModel setNormalTexturesWithName:kArcher standNumber:10 runNumber:0 walkNumber:10 diedNumber:0 attack1Number:10];
+        [_archerModel setNormalTexturesWithName:kArcher standNumber:10 runNumber:0 walkNumber:10 diedNumber:10 attack1Number:10];
     }
     
     return _archerModel;
@@ -242,7 +247,15 @@ static WDTextureManager *textureManager = nil;
     return _redBatModel;
 }
 
-
+- (Boss1Model *)boss1Model
+{
+    if (!_boss1Model) {
+        _boss1Model = [[Boss1Model alloc] init];
+        [_boss1Model setTextures];
+    }
+    
+    return _boss1Model;
+}
 
 
 #pragma mark - 点击位置 -

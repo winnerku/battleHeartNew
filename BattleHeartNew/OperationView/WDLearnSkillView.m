@@ -38,8 +38,6 @@
     CGFloat width = self.width / 3.0;
    
     //timeArr = @[@(30),@(15),@(10),@(20),@(20)];
-
-    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSInteger time1 = [defaults integerForKey:kArcher_skill_1];
     NSInteger time2 = [defaults integerForKey:kArcher_skill_2];

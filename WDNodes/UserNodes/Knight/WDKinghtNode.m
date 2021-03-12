@@ -30,7 +30,7 @@
 
      _kinghtModel = (WDKinghtModel *)model;
      self.model = model;
-     self.realSize = CGSizeMake(self.size.width - 150, self.size.height - 20);
+     self.realSize = CGSizeMake(self.size.width - 150, self.size.height - 60);
      SKPhysicsBody *body = [SKPhysicsBody bodyWithRectangleOfSize:self.realSize center:CGPointMake(0, 0)];
      self.physicsBody = body;
      self.physicsBody.affectedByGravity = NO;
@@ -49,7 +49,8 @@
  
     
      [self standAction];
-
+    
+     [self createRealSizeNode];
 }
 
 - (void)observedNode
@@ -68,10 +69,12 @@
 - (BOOL)canAttack{
    
     CGPoint point = [WDCalculateTool calculateUserMovePointWithUserNode:self monsterNode:self.targetMonster];
+    point = self.targetMonster.position;
     CGFloat distanceX = self.position.x - point.x;
     CGFloat distanceY = self.position.y - point.y;
+    CGFloat minDistance = self.realSize.width / 2.0 + self.targetMonster.realSize.width / 2.0 + self.targetMonster.randomDistanceX;
     
-    if (fabs(distanceX) < 10 && fabs(distanceY) < 30) {
+    if (fabs(distanceX) < minDistance && fabs(distanceY) < 30) {
         return YES;
     }else{
         return NO;
@@ -119,14 +122,19 @@
         }
         
         //如果之前怪物目标不是玩家，切换下
+        
         if (![weakSelf.targetMonster.targetMonster.name isEqualToString:weakSelf.name] && !isDead) {
+            if ([weakSelf.targetMonster.name isEqualToString:kBoss1]) {
+                //不吃仇恨
+            }else{
+                [weakSelf.balloonNode setBalloonWithLine:7 hiddenTime:2];
+                //吸引仇恨
+                weakSelf.targetMonster.targetMonster = weakSelf;
+                weakSelf.targetMonster.randomDistanceX = 0;
+                weakSelf.targetMonster.randomDistanceY = 0;
+                [weakSelf.targetMonster.balloonNode setBalloonWithLine:5 hiddenTime:2];
+            }
             
-            [weakSelf.balloonNode setBalloonWithLine:7 hiddenTime:2];
-            //吸引仇恨
-            weakSelf.targetMonster.targetMonster = weakSelf;
-            weakSelf.targetMonster.randomDistanceX = 0;
-            weakSelf.targetMonster.randomDistanceY = 0;
-            [weakSelf.targetMonster.balloonNode setBalloonWithLine:5 hiddenTime:2];
         }
         
         [weakSelf runAction:[SKAction animateWithTextures:last timePerFrame:0.1] completion:^{
@@ -165,10 +173,10 @@
         return;
     }
     
-    //攻击的对象是自己
-    if ((self.targetMonster.state & SpriteState_attack) && [self.targetMonster.targetMonster.name isEqualToString:self.name]) {
-        return;
-    }
+//    //攻击的对象是自己
+//    if ((self.targetMonster.state & SpriteState_attack) && [self.targetMonster.targetMonster.name isEqualToString:self.name]) {
+//        return;
+//    }
     
      CGPoint point = [WDCalculateTool calculateUserMovePointWithUserNode:self monsterNode:self.targetMonster];
     

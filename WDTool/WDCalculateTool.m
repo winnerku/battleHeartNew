@@ -7,6 +7,7 @@
 //
 
 #import "WDCalculateTool.h"
+#import "WDBaseScene.h"
 
 @implementation WDCalculateTool
 
@@ -144,13 +145,24 @@
     return target;
 }
 
++ (WDBaseNode *)searchUserRandomNode:(WDBaseNode *)node
+{
+    WDBaseScene *scene = (WDBaseScene *)node.parent;
+    int index = arc4random() % scene.userArr.count;
+    if (index >= scene.userArr.count) {
+        return nil;
+    }else{
+        return scene.userArr[index];
+    }
+}
+
 + (WDBaseNode *)searchUserNearNode:(WDBaseNode *)node
 {
     NSArray *childNodes = node.parent.children;
     WDBaseNode *target = nil;
     CGFloat distance = 10000;
     for (WDBaseNode *nearN in childNodes) {
-        if ([nearN isKindOfClass:[WDUserNode class]]) {
+        if ([nearN isKindOfClass:[WDUserNode class]] && !(nearN.state & SpriteState_dead)) {
             CGFloat d = [WDCalculateTool distanceBetweenPoints:nearN.position seconde:node.position];
             if (distance > d) {
                 distance = d;
@@ -328,6 +340,11 @@
     if (arc4random() % 2 == 0) {
         a = -1;
     }
+    
+    if (floatNumber == 0) {
+        floatNumber = 1;
+    }
+    
     CGFloat numer = attack + (arc4random() % floatNumber) * a;
     return numer;
 }

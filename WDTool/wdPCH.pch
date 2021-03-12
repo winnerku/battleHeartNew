@@ -13,6 +13,7 @@
 
 #import <SpriteKit/SpriteKit.h>
 #import "WDTextureManager.h"
+#import "WDSkillManager.h"
 #import "WDCalculateTool.h"
 #import "WDActionTool.h"
 #import "WDNumberManager.h"
@@ -20,10 +21,16 @@
 
 
 ///玩家
+#define kSkillType @"kSkillType"
+
 //骑士
 #define kKinght @"Knight"
+
+
 //冰霜巫师
 #define kIceWizard @"IceWizard"
+
+
 //弓箭手
 #define kArcher @"Archer"
 #define kArcher_skill_1 @"Archer_skill_1" //射手第1个技能，增加攻速时间
@@ -39,6 +46,8 @@
 ///敌人
 //红色蝙蝠
 #define kRedBat @"RedBat"
+
+#define kBoss1 @"kBoss1"
 
 
 //玩家流程
@@ -72,23 +81,26 @@
 
 
 
-static const uint32_t PLAYER_CATEGORY  = 0x00;  //0001
-static const uint32_t PLAYER_COLLISION = 0x00;  //0001
-static const uint32_t PLAYER_CONTACT   = 0x00;  //0001
+static const uint32_t PLAYER_CATEGORY  = 0x01;  //0001
+static const uint32_t PLAYER_COLLISION = 0x02;  //0010
+static const uint32_t PLAYER_CONTACT   = 0x15;  //1111
 
-static const uint32_t LINE_CATEGORY  = 0x00;  //0010
-static const uint32_t LINE_COLLISION = 0x00;  //0100
-static const uint32_t LINE_CONTACT   = 0x00;  //0010
-
-
-static const uint32_t MONSTER_CATEGORY = 0x01;   //0001
-static const uint32_t MONSTER_COLLISION = 0x00;  //1000
-static const uint32_t MONSTER_CONTACT =   0x02;  //0010
+static const uint32_t LINE_CATEGORY  = 0x00;  //0000
+static const uint32_t LINE_COLLISION = 0x00;  //0000
+static const uint32_t LINE_CONTACT   = 0x00;  //0000
 
 
+static const uint32_t MONSTER_CATEGORY  = 0x04;  //0100
+static const uint32_t MONSTER_COLLISION = 0x08;  //1000
+static const uint32_t MONSTER_CONTACT   = 0x04;  //0100
 
-static const uint32_t ARROW_CATEGORY = 0X02;
 
+
+static const uint32_t ARROW_CATEGORY = 0X04;     //0100
+
+
+#pragma mark 常用动画方法
+#define REMOVE_ACTION [SKAction removeFromParent]
 
 
 
@@ -115,5 +127,8 @@ static const uint32_t ARROW_CATEGORY = 0X02;
 
 /// 全局link
 #define kNotificationForDisplayLink @"kNotificationForDisplayLink"
+
+//召唤小怪的通知(boss3)
+#define kNotificationForCallMonster1 @"kNotificationForCallMonster1"
 
 #endif /* wdPCH_pch */

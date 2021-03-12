@@ -68,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)touchMovedToPoint:(CGPoint)pos;
 - (void)touchUpAtPoint:(CGPoint)pos;
 
-- (void)diedAction;
+- (void)diedAction:(NSNotification *)notification;
 
 - (void)releaseAction;
 
@@ -86,6 +86,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)skill4Action;
 - (void)skill5Action;
 
+
+/// 死亡直接删除
+/// 骑士
+- (void)releaseKnightNode;
+
+/// 弓箭手
+- (void)releaseArcherNode;
+
+/// 冰妹妹~
+- (void)releaseIceWizardNode;
 
 @end
 

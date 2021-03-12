@@ -21,7 +21,7 @@
     BOOL _foot3;
 }
 
-- (void)diedAction{
+- (void)diedAction:(NSNotification *)notification{
     
     for (WDBaseNode *node in self.userArr) {
         if (node.state & SpriteState_dead) {
@@ -218,8 +218,7 @@
             node.state = SpriteState_stand;
         }
         _isLearn = NO;
-        self.archerNode.isLearn = NO;
-        self.archerNode.isInit = NO;
+        self.archerNode.state = SpriteState_stand;
         [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForSkillCanUse object:nil];
         [po postNotificationName:kNotificationForShowSkill object:@(5)];
         [self clickNode].hidden = YES;

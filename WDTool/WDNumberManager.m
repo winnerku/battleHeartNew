@@ -24,6 +24,8 @@
         [self initArcher:node];
     }else if([name isEqualToString:kStone]){
         
+    }else if([name isEqualToString:kBoss1]){
+        [self initBoss1:node];
     }
 }
 
@@ -37,10 +39,9 @@
     node.lastBlood = 300;
     node.attackDistance = 0;
     node.moveCADisplaySpeed = 4;
-    node.attackNumber = 20;
+    node.attackNumber = 30;
+    node.floatAttackNumber = 5;
     node.isRight = YES;
-    
-
 }
 
 #pragma mark - 冰女巫 -
@@ -54,6 +55,8 @@
     node.zPosition = 10;
     node.addBuff = YES;
     node.cureNumber = 50;
+    node.attackNumber = 15;
+    node.floatAttackNumber = 10;
 }
 
 #pragma mark - 弓箭手 -
@@ -81,11 +84,13 @@
     
     node.name = kArcher;
     node.moveSpeed = 300;
+    node.trueMoveSpeed = 300;
     node.moveCADisplaySpeed = 2.5;
     node.blood     = 100;
     node.lastBlood = 100;
     node.zPosition = 10;
-    node.attackNumber = 10;
+    node.attackNumber = 30;
+    node.floatAttackNumber = 10;
 }
 
 
@@ -114,6 +119,18 @@
     node.attackNumber = 10;
 }
 
++ (void)initBoss1:(WDBaseNode *)node
+{
+    node.name = kBoss1;
+    node.moveSpeed = 300;
+    node.blood     = 1500;
+    node.lastBlood = 1500;
+    node.attackDistance = 0;
+    node.moveCADisplaySpeed = 2;
+    node.attackNumber = 20;
+    node.isRight = YES;
+    node.floatAttackNumber = 5;
+}
 
 
 

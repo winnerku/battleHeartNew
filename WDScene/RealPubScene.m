@@ -85,7 +85,7 @@
     _skillNode.name = @"learnSkill";
     _skillNode.xScale = 1.8;
     _skillNode.yScale = 1.8;
-    _skillNode.position = CGPointMake(1600, 400);
+    _skillNode.position = CGPointMake(600, 400);
     _skillNode.zPosition = 650 - _skillNode.position.y;
     [self.bgNode addChild:_skillNode];
        
@@ -97,6 +97,9 @@
     _skillNode.physicsBody.allowsRotation = NO;
     _skillNode.physicsBody.contactTestBitMask = 1;
     _skillNode.physicsBody.collisionBitMask = 0;
+    _skillNode.physicsBody.categoryBitMask = 0;
+
+    
 }
 
 - (void)mapMove{
@@ -162,8 +165,6 @@
     NSLog(@"A: %@  b: %@",nodeA.name,nodeB.name);
 
 }
-
-
 
 - (void)didEndContact:(SKPhysicsContact *)contact
 {
@@ -328,8 +329,10 @@
         _passDoorNode.physicsBody = body;
         _passDoorNode.physicsBody.affectedByGravity = NO;
         _passDoorNode.physicsBody.allowsRotation = NO;
+        _passDoorNode.physicsBody.categoryBitMask = 0;
         _passDoorNode.physicsBody.contactTestBitMask = 1;
         _passDoorNode.physicsBody.collisionBitMask = 0;
+        
     }
     
     return _passDoorNode;

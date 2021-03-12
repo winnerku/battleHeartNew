@@ -34,7 +34,7 @@
      _iceModel = (WDIceWizardModel *)model;
     [_iceModel changeArr];
      self.model = model;
-     self.realSize = CGSizeMake(self.size.width - 150, self.size.height - 20);
+     self.realSize = CGSizeMake(self.size.width - 150, self.size.height - 60);
      SKPhysicsBody *body = [SKPhysicsBody bodyWithRectangleOfSize:self.realSize center:CGPointMake(0, 0)];
      self.physicsBody = body;
      self.physicsBody.affectedByGravity = NO;
@@ -61,7 +61,35 @@
 - (void)observedNode
 {
     [super observedNode];
-    NSLog(@"我是冰妹妹~");
+    
+    if (self.state & SpriteState_move || self.state & SpriteState_movie || self.state & SpriteState_init || self.state & SpriteState_attack || self.state & SpriteState_stagger) {
+        return;
+    }
+    
+    /// 治愈状态不能攻击
+    if (self.isCure) {
+        return;
+    }
+    
+    
+    if (self.targetMonster.state & SpriteState_dead) {
+        self.targetMonster = nil;
+        [self standAction];
+        return;
+    }
+    
+    if (self.targetMonster) {
+        [self attackActionWithEnemyNode:self.targetMonster];
+        return;
+    }
+    
+    if (!self.targetMonster) {
+        WDBaseNode *target = [WDCalculateTool searchMonsterNearNode:self];
+        if (target) {
+            self.targetMonster = target;
+        }
+    }
+    
 }
 
 - (void)beAttackActionWithTargetNode:(WDBaseNode *)targetNode
@@ -77,18 +105,8 @@
     }
     
     if (self.state & SpriteState_dead) return;
-    
-    if (self.lastBlood <= 0) {
-        return;
-    }
-    
-    if (!self.isCure) {
-        [self standAction];
-        return;
-    }
-    
-    [super addBuffActionWithNode:node];
-     
+  
+         
     self.targetUser = node;
     
     if (![node.name isEqualToString:self.name]) {
@@ -160,17 +178,67 @@
 /// @param enemyNode 被攻击者
 - (void)attackActionWithEnemyNode:(WDBaseNode *)enemyNode
 {
-     [super attackActionWithEnemyNode:enemyNode];
-     
+    [super attackActionWithEnemyNode:enemyNode];
+        
+    [self performSelector:@selector(iceFireAction:) withObject:enemyNode afterDelay:5 * 0.1];
+    
+    SKAction *attackAnimation = [SKAction animateWithTextures:_iceModel.attackArr1 timePerFrame:0.1];
+    __weak typeof(self)weakSelf = self;
+    [self runAction:attackAnimation completion:^{
+        weakSelf.state = SpriteState_stand;
+    }];
+    
+}
+
+- (void)iceFireAction:(WDBaseNode *)enemyNode
+{
+    if (self.state & SpriteState_move || self.state & SpriteState_dead) {
+        return;
+    }
+    
+    CGFloat x = 0;
+    if (self.isRight) {
+        x = 60;
+    }else{
+        x = -60;
+    }
+    
+    SKEmitterNode *fireNode = [SKEmitterNode nodeWithFileNamed:@"IceFire"];
+    fireNode.position = CGPointMake(self.position.x + x, self.position.y + 15);
+    fireNode.zPosition = 10000;
+    fireNode.name     = @"fffff";
+    [self.parent addChild:fireNode];
+    
+    WDBaseNode *targetNode = [WDBaseNode new];
+    targetNode.zPosition = 100000;
+    targetNode.position = CGPointMake(0, 0);
+    targetNode.size = CGSizeMake(500, 500);
+    targetNode.name = @"target";
+    [self.parent addChild:targetNode];
+    
+    fireNode.targetNode = targetNode;
+   
+    NSTimeInterval time = fabs(self.position.x - self.targetMonster.position.x) / 800;
+    
+    SKAction *moveAction = [SKAction moveTo:self.targetMonster.position duration:time];
+    SKAction *seq2 = [SKAction sequence:@[moveAction,[SKAction removeFromParent]]];
+    SKPhysicsBody *body = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(10, 10) center:CGPointMake(0, 0)];
+    fireNode.physicsBody = body;
+    fireNode.physicsBody.affectedByGravity = NO;
+    fireNode.physicsBody.allowsRotation = NO;
+    fireNode.name = @"iceFire";
+    //fireNode.attackNumber = weakSelf.attackNumber;
+    body.categoryBitMask = ARROW_CATEGORY;
+    body.collisionBitMask = 0;
+    
+    [fireNode runAction:seq2 completion:^{
+        [targetNode removeFromParent];
+    }];
 }
 
 - (void)moveFinishAction
 {
     [super moveFinishAction];
-    
-    if (self.isAttack) {
-        [self attackActionWithEnemyNode:self.targetMonster];
-    }
     
     if (self.isCure) {
         [self addBuffActionWithNode:self.targetUser];

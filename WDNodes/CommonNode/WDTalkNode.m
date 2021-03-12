@@ -60,8 +60,8 @@
     
     node.position = CGPointMake(0, -height / 2.0 + 10);
    
-    NSLog(@"textWidth: %lf textHeight:%lf",node.frame.size.width,node.frame.size.height);
-    NSLog(@"selfW: %lf, selfH: %lf",self.size.width,self.size.height);
+//    NSLog(@"textWidth: %lf textHeight:%lf",node.frame.size.width,node.frame.size.height);
+//    NSLog(@"selfW: %lf, selfH: %lf",self.size.width,self.size.height);
 }
 
 @end

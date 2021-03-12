@@ -333,8 +333,7 @@
 /// 打开传送门
 - (void)openDoorAction
 {
-   
-    
+
     _passDoorNode.zPosition = kScreenHeight * 2.0 - _passDoorNode.position.y - 100;
 //    NSArray *arr = [self.stoneNode.stoneModel.appearArr ];
     
@@ -403,8 +402,15 @@
 - (void)releaseAction
 {
     [super releaseAction];
+    
+    if (_mapLink) {
+        [_mapLink invalidate];
+        _mapLink = nil;
+    }
+    
     _stoneNode = nil;
     _passDoorNode = nil;
+    
     [self.textureManager releaseRedBatModel];
     [self.textureManager releaseKinghtModel];
     [self.textureManager releaseIceModel];

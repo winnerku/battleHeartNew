@@ -235,7 +235,7 @@
 
 
 /// 死亡方法复写，教学关特殊
-- (void)diedAction
+- (void)diedAction:(NSNotification *)notification
 {
     for (WDBaseNode *node in self.userArr) {
         if (node.state & SpriteState_dead) {

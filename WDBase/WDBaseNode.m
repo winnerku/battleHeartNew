@@ -31,7 +31,11 @@ static CGFloat bloodHeight = 40;
     return [[WDBaseNode alloc] init];
 }
 
-
+- (void)createRealSizeNode{
+//    SKSpriteNode *node = [SKSpriteNode spriteNodeWithColor:[[UIColor orangeColor]colorWithAlphaComponent:0.7] size:self.realSize];
+//    node.zPosition = 100;
+//    [self addChild:node];
+}
 - (void)setChildNodeWithModel:(WDBaseNodeModel *)model{
     
     self.isRight = YES;
@@ -102,14 +106,14 @@ static CGFloat bloodHeight = 40;
 }
 
 - (void)noBlood{
-    [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForDied object:nil];
+    [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForDied object:self.name];
 }
 
 /// 加减血量
 - (BOOL)setBloodNodeNumber:(int)bloodNumber
 {
     if (self.state & SpriteState_dead && bloodNumber > 0) {
-        [self performSelector:@selector(noBlood) withObject:nil afterDelay:0];
+        [self noBlood];
         return YES;
     }
     
@@ -136,6 +140,9 @@ static CGFloat bloodHeight = 40;
     self.bloodBgNode.alpha = 1;
 
     CGFloat last = _lastBlood;
+    if (bloodNumber >= _lastBlood) {
+        bloodNumber = _lastBlood;
+    }
     _lastBlood = _lastBlood - bloodNumber;
     if (_lastBlood > _blood) {
         
@@ -162,7 +169,7 @@ static CGFloat bloodHeight = 40;
     if(bloodNumber == 0){
         //开场设置血线
         CGFloat width = fabs(self.bloodBgNode.size.width * percent);
-        self.bloodNode.size = CGSizeMake(width, bloodHeight - bloodPage * 2.0);
+        self.bloodNode.size = CGSizeMake(width, self.bloodHeight - bloodPage * 2.0);
         self.bloodBgNode.alpha = 0;
 
     }else if (isAddBlood) {
@@ -193,20 +200,21 @@ static CGFloat bloodHeight = 40;
     
     CGFloat width = fabs(self.bloodBgNode.size.width * percent);
        
+    
     //攻击掉血百分比
     CGFloat attackPercent = (float)attackNumber / (float)_blood;
     CGFloat reduceWidth = fabs(self.bloodBgNode.size.width * attackPercent);
        
-    self.bloodNode.size = CGSizeMake(width, bloodHeight - bloodPage * 2.0);
+    self.bloodNode.size = CGSizeMake(width, self.bloodHeight - bloodPage * 2.0);
     
-    WDBaseNode *reduce = [WDBaseNode spriteNodeWithColor:color size:CGSizeMake(reduceWidth, bloodHeight - bloodPage * 2.0)];
+    WDBaseNode *reduce = [WDBaseNode spriteNodeWithColor:color size:CGSizeMake(reduceWidth, self.bloodHeight - bloodPage * 2.0)];
     reduce.zPosition = 1;
     reduce.position = CGPointMake(width,0);
     reduce.anchorPoint = CGPointMake(0, 0);
     [self.bloodNode addChild:reduce];
     
      
-    SKAction *size = [SKAction scaleToSize:CGSizeMake(0, bloodHeight - bloodPage * 2.0) duration:0.15];
+    SKAction *size = [SKAction scaleToSize:CGSizeMake(0, self.bloodHeight - bloodPage * 2.0) duration:0.15];
     SKAction *remo = [SKAction removeFromParent];
     SKAction *seq = [SKAction sequence:@[size,remo]];
     [reduce runAction:seq];
@@ -249,19 +257,19 @@ static CGFloat bloodHeight = 40;
     CGFloat attackPercent = (float)attackNumber / (float)_blood;
     CGFloat reduceWidth = fabs(self.bloodBgNode.size.width * attackPercent);
     
-    WDBaseNode *add = [WDBaseNode spriteNodeWithColor:color size:CGSizeMake(1, bloodHeight - bloodPage * 2.0)];
+    WDBaseNode *add = [WDBaseNode spriteNodeWithColor:color size:CGSizeMake(1, self.bloodHeight - bloodPage * 2.0)];
     add.zPosition = 1;
     add.position = CGPointMake(self.bloodNode.size.width,0);
     add.anchorPoint = CGPointMake(0, 0);
     [self.bloodNode addChild:add];
     
         
-    SKAction *size = [SKAction scaleToSize:CGSizeMake(reduceWidth, bloodHeight - bloodPage * 2.0) duration:0.15];
+    SKAction *size = [SKAction scaleToSize:CGSizeMake(reduceWidth, self.bloodHeight - bloodPage * 2.0) duration:0.15];
     SKAction *remo = [SKAction removeFromParent];
     SKAction *seq = [SKAction sequence:@[size,remo]];
     __weak typeof(self)weakSelf = self;
     [add runAction:seq completion:^{
-        weakSelf.bloodNode.size = CGSizeMake(width, bloodHeight - bloodPage * 2.0);
+        weakSelf.bloodNode.size = CGSizeMake(width, self.bloodHeight - bloodPage * 2.0);
         //weakSelf.bloodNode.position = CGPointMake(0, 0);
     }];
     
@@ -291,9 +299,12 @@ static CGFloat bloodHeight = 40;
         self.state = SpriteState_stand;
     }
     
+    
+    
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(moveFinishAction) object:nil];
     [self removeAllActions];
-   
+    self.reduceBloodNow = NO;
+    self.colorBlendFactor = 0;
     SKAction *stand = [SKAction animateWithTextures:self.model.standArr timePerFrame:0.1];
     SKAction *rep = [SKAction repeatActionForever:stand];
     [self runAction:rep withKey:@"stand"];
@@ -301,15 +312,10 @@ static CGFloat bloodHeight = 40;
 }
 
 
-
-
 /// 加血
 - (void)addBuffActionWithNode:(WDBaseNode *)node
 {
-    self.isCure = YES;
-    self.isAttack = NO;
-    self.isMove = NO;
-    //[self removeAllActions];
+   
 }
 
 
@@ -353,11 +359,21 @@ static CGFloat bloodHeight = 40;
         return;
     }
     
+    if (self.state & SpriteState_stagger) {
+        return;
+    }
     
+    SKAction *action = [self actionForKey:@"select"];
+
     if (self.state & SpriteState_move) {
         [self removeActionForKey:@"move"];
     }else{
         [self removeAllActions];
+    }
+    
+    ///选中动画继续完成
+    if (action) {
+        [self runAction:action];
     }
     
     _moveFinish = moveFinish;
@@ -437,14 +453,18 @@ static CGFloat bloodHeight = 40;
 }
 
 
+/// 死亡释放资源
 - (void)releaseAction
 {
+    [self removeObserver:self forKeyPath:@"isRight"];
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self removeAllActions];
     self.targetMonster = nil;
     self.targetUser    = nil;
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-
+    self.state = SpriteState_dead;
+    
+    __weak typeof(self)weakSelf = self;
     if (self.model.diedArr.count > 0) {
         SKAction *diedAction = [SKAction animateWithTextures:self.model.diedArr timePerFrame:0.1];
         SKAction *alpha = [SKAction fadeAlphaTo:0 duration:self.model.diedArr.count * 0.1];
@@ -515,14 +535,27 @@ static CGFloat bloodHeight = 40;
         UIColor *color = [UIColor blackColor];
         CGFloat width = fabs(self.realSize.width / self.xScale);
         
-        _bloodBgNode = [WDBaseNode spriteNodeWithColor:color size:CGSizeMake(width, bloodHeight)];
+        if (self.bloodWidth != 0) {
+            width = self.bloodWidth;
+        }
+        
+        if (self.bloodHeight == 0) {
+            self.bloodHeight = 40.f;
+        }
+        
+        _bloodBgNode = [WDBaseNode spriteNodeWithColor:color size:CGSizeMake(width, self.bloodHeight)];
         _bloodBgNode.zPosition = -1;
-        _bloodBgNode.position = CGPointMake(- width / 2.0,self.realSize.height / self.yScale - self.realSize.height - 40);
+        if (self.bloodY == 0) {
+            _bloodBgNode.position = CGPointMake(- width / 2.0,self.realSize.height / self.yScale - self.realSize.height - 40);
+        }else{
+            _bloodBgNode.position = CGPointMake(self.bloodX, self.bloodY);
+        }
+        
         [self addChild:_bloodBgNode];
         
         
         UIColor *color2 = UICOLOR_RGB(127, 255, 0, 1);
-        _bloodNode = [WDBaseNode spriteNodeWithColor:color2 size:CGSizeMake(self.realSize.width / self.xScale, bloodHeight - bloodPage * 2.0)];
+        _bloodNode = [WDBaseNode spriteNodeWithColor:color2 size:CGSizeMake(self.realSize.width / self.xScale, self.bloodHeight - bloodPage * 2.0)];
         _bloodNode.zPosition = 1;
         _bloodNode.position = CGPointMake(0, bloodPage);
         [_bloodBgNode addChild:_bloodNode];
@@ -560,41 +593,12 @@ static CGFloat bloodHeight = 40;
         _balloonNode.xScale = 3.0;
         _balloonNode.yScale = 3.0;
         [_balloonNode setScaleAndPositionWithName:self.name];
+        _balloonNode.zPosition = 10000;
         [self addChild:_balloonNode];
     }
     
     return _balloonNode;
 }
-
-//- (CGFloat)randomDistanceX
-//{
-//    if (_randomDistanceX != 0) {
-//        return _randomDistanceX;
-//    }
-//    CGFloat randomX = arc4random() % 25;
-//    if (arc4random() % 2 == 0) {
-//        _randomDistanceX  = randomX * -1;
-//    }else{
-//        _randomDistanceX  = randomX * 1;
-//    }
-//    
-//    return _randomDistanceX;
-//}
-//
-//- (CGFloat)randomDistanceY
-//{
-//    if (_randomDistanceY != 0) {
-//        return _randomDistanceY;
-//    }
-//    CGFloat randomY = arc4random() % 25;
-//    if (arc4random() % 2 == 0) {
-//        _randomDistanceY  = randomY * -1;
-//    }else{
-//        _randomDistanceY  = randomY * 1;
-//    }
-//    
-//    return _randomDistanceY;
-//}
 
 
 @end
@@ -612,7 +616,7 @@ static CGFloat bloodHeight = 40;
     SKAction *seq = [SKAction sequence:@[a,b]];
     SKAction *rep = [SKAction repeatAction:seq count:1];
       
-    [self runAction:rep];
+    [self runAction:rep withKey:@"select"];
 }
 
 - (void)setBodyCanUse
@@ -653,5 +657,10 @@ static CGFloat bloodHeight = 40;
     self.physicsBody.collisionBitMask   = MONSTER_COLLISION;
     self.physicsBody.contactTestBitMask = MONSTER_CONTACT;
 }
+
+@end
+
+
+@implementation WDWeaponNode
 
 @end

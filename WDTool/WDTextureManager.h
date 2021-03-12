@@ -13,7 +13,7 @@
 #import "WDArcherModel.h"
 #import "WDStoneModel.h"
 #import "WDBaseNode.h"
-
+#import "Boss1Model.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -34,6 +34,10 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 怪物 -
 /// 蝙蝠
 @property (nonatomic,strong)WDRedBatModel *redBatModel;
+
+
+/// boss1
+@property (nonatomic,strong)Boss1Model *boss1Model;
 
 
 
@@ -110,6 +114,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 //怪物
 - (void)releaseRedBatModel;
+
+/// boss1
+- (void)releaseBoss1Model;
 
 @end
 

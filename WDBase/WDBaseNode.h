@@ -10,6 +10,8 @@
 #import "WDBaseNodeModel.h"
 #import "WDTalkNode.h"
 #import "WDBalloonNode.h"
+
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -53,10 +55,17 @@ typedef NS_ENUM(NSInteger,SpriteState) {
     SpriteState_stagger    = 1 << 6, /// 0100 0000
     /// 操作中的状态
     SpriteState_operation  = 1 << 7, /// 1000 0000
+    /// 风推攻击
+    SpriteState_wind  = 1 << 8, /// 1000 0000
+
 };
 
 
 @interface WDBaseNode : SKSpriteNode
+
+
+
+
 
 /// 图片真实的显示区域
 @property (nonatomic,assign)CGSize realSize;
@@ -81,6 +90,14 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 @property (nonatomic,assign)BOOL reduceBloodNow;
 
 
+
+/// 血条
+@property (nonatomic,assign)CGFloat bloodWidth;
+@property (nonatomic,assign)CGFloat bloodHeight;
+@property (nonatomic,assign)CGFloat bloodX;
+@property (nonatomic,assign)CGFloat bloodY;
+
+
 /// 方向: 左 又
 @property (nonatomic,strong)NSString *direction;
 @property (nonatomic,assign)CGFloat directionNumber;
@@ -93,10 +110,11 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 @property (nonatomic,assign)CGFloat randomDistanceX;
 @property (nonatomic,assign)CGFloat randomDistanceY;
 
+@property (nonatomic,assign)BOOL testRelease;
 
 /// 精灵状态
 @property (nonatomic,assign)SpriteState state;
-
+@property (nonatomic,assign)BOOL isMoveAnimation;
 
 /// 教学状态
 @property (nonatomic,assign)BOOL isLearn;
@@ -127,6 +145,9 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 @property (nonatomic,assign)CGFloat attackDistance;
 /// 攻击力
 @property (nonatomic,assign)int attackNumber;
+/// 上下浮动的数据
+@property (nonatomic,assign)int floatAttackNumber;
+
 /// 增益或者驱散BUFF的职业(区别选中态)
 @property (nonatomic,assign)BOOL addBuff;
 /// 防御力 
@@ -145,8 +166,9 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 @property (nonatomic,assign)BOOL skill4;
 @property (nonatomic,assign)BOOL skill5;
 
-
-/// 动画过程中的移动速度
+/// 动画过程中的移动速度(不会改变)
+@property (nonatomic,assign)CGFloat trueMoveSpeed;
+/// 动画过程中的移动速度(可能会改变)
 @property (nonatomic,assign)CGFloat moveSpeed;
 /// 实时的移动速度
 @property (nonatomic,assign)CGFloat moveCADisplaySpeed;
@@ -160,6 +182,7 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 
 - (void)createLinePhyBody;
 
+- (void)createRealSizeNode;
 
 /// Link监视Node
 - (void)observedNode;
@@ -226,6 +249,11 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 @end
 
 @interface WDMonsterNode : WDBaseNode
+
+@end
+
+///这个类是用来弄一些怪物释放的招数，避免点击触碰到
+@interface WDWeaponNode : WDBaseNode
 
 @end
 

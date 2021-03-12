@@ -86,14 +86,13 @@
     ///首先判断是否选中的为monster
     if (monsterNode) {
         
-        //选中动画
-        [monsterNode selectSpriteAction];
-        [self selectMonster:monsterNode];
+        BOOL isMonster = [self selectRealMonster:monsterNode pos:pos];
+        if (isMonster) {
+            canMove = NO;
+        }else{
+            canMove = YES;
+        }
         
-        [self.selectNode removeAllActions];
-        self.selectNode.state = SpriteState_stand;
-        [NSObject cancelPreviousPerformRequestsWithTarget:self.selectNode selector:@selector(moveFinishAction) object:nil];
-        canMove = NO;
        
     }else if(userNode){
         
@@ -108,6 +107,13 @@
         
     }
     
+    if (self.selectNode.state & SpriteState_stagger) {
+        canMove = NO;
+    }
+    
+    if (self.selectNode.state & SpriteState_dead) {
+        canMove = NO;
+    }
 
     /// 非切换目标可以移动
     if (canMove) {
@@ -127,6 +133,51 @@
 
 
 #pragma mark - 选中怪物的情况 -
+/// 真是选中怪物，可能图片显示过大问题
+- (BOOL)selectRealMonster:(WDBaseNode *)monster
+                      pos:(CGPoint)pos
+{
+    ///蝙蝠特殊一下
+    if ([monster.name isEqualToString:kRedBat]) {
+        //选中动画
+        [monster selectSpriteAction];
+        [self selectMonster:monster];
+        
+        [self.selectNode removeAllActions];
+        [self.selectNode standAction];
+        
+        /// 如果选中怪物，就取消之前的治疗状态(治疗职业专属)
+        self.selectNode.isCure = NO;
+        
+        [NSObject cancelPreviousPerformRequestsWithTarget:self.selectNode selector:@selector(moveFinishAction) object:nil];
+        
+        return YES;
+    }
+    
+    CGFloat distanceX = fabs(monster.position.x - pos.x);
+    CGFloat distanceY = fabs(monster.position.y - pos.y);
+    //创建的图片比实际显示图片要大
+    if (distanceX < monster.realSize.width / 2.0 && distanceY < monster.realSize.height / 2.0) {
+        
+        //选中动画
+        [monster selectSpriteAction];
+        [self selectMonster:monster];
+        
+        [self.selectNode removeAllActions];
+        [self.selectNode standAction];
+        
+        self.selectNode.isCure = NO;
+        
+        [NSObject cancelPreviousPerformRequestsWithTarget:self.selectNode selector:@selector(moveFinishAction) object:nil];
+        
+        return YES;
+    }else{
+        return NO;
+    }
+    
+}
+
+
 - (void)selectMonster:(WDBaseNode *)monsterNode
 {
     //NSLog(@"当前%@怪物选中的人物是%@",monsterNode.name,self.selectNode.name);

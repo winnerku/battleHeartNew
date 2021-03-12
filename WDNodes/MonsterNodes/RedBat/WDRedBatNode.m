@@ -49,18 +49,12 @@
     [self setShadowNodeWithPosition:CGPointMake(0, -self.size.height / 2.0 - 130) scale:0.3];
     [self setBloodNodeNumber:0];
    
-   
-//    CGFloat randomX = arc4random() % 25;
-//    if (arc4random() % 2 == 0) {
-//        self.randomDistanceX  = randomX * -1;
-//    }else{
-//        self.randomDistanceX  = randomX * 1;
-//    }
-   
     SKAction *stand = [SKAction animateWithTextures:self.model.standArr timePerFrame:0.1];
     SKAction *rep = [SKAction repeatActionForever:stand];
     [self runAction:rep withKey:@"stand"];
     _position = CGPointMake(0, 0);
+    
+    [self createRealSizeNode];
 }
 
 - (void)beAttackActionWithTargetNode:(WDBaseNode *)targetNode

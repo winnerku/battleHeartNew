@@ -10,17 +10,25 @@
 #import "MapSelectViewController.h"
 #import "LearnSkillViewController.h"
 
+
 #import "WDSkillView.h"
 #import "WDTalkView.h"
+#import "WDHomePageUIView.h"
 
 #import "LearnScene.h"
 #import "LearnScene2.h"
+#import "LoadingScene.h"
+@interface GameViewController ()
+@property (nonatomic,strong)WDHomePageUIView *uiView;
+@end
+
 
 @implementation GameViewController
 {
     WDBaseScene *_selectScene;
     WDSkillView *_skillView;
     WDTalkView  *_talkView;
+    WDHomePageUIView *_uiView;
 }
 
 
@@ -65,8 +73,10 @@
         [self createSceneWithName:@"RealPubScene"];
     }
 
-//    [self createSceneWithName:@"TestScene"];
+//   [self createSceneWithName:@"TestScene"];
 //    [self showLearnSkillViewControllerWithName:kArcher];
+    
+    
 }
 
 
@@ -76,8 +86,17 @@
     _talkView = [[WDTalkView alloc] initWithFrame:CGRectMake(0, kScreenHeight - kScreenHeight / 2.0, kScreenWidth, kScreenHeight / 2.0)];
     _talkView.hidden = YES;
     [self.view addSubview:_talkView];
+}
+
+
+- (WDHomePageUIView *)uiView
+{
+    if(!_uiView){
+        _uiView = [[WDHomePageUIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+        [self.view addSubview:_uiView];
+    }
     
-   
+    return _uiView;
 }
 
 
@@ -136,39 +155,59 @@
     if (tag == 100) {
         
         [_selectScene skill1Action];
-        NSLog(@"技能1");
+        //NSLog(@"技能1");
         
     }else if(tag == 101){
         
         [_selectScene skill2Action];
-        NSLog(@"技能2");
+        //NSLog(@"技能2");
         
     }else if(tag == 102){
         
         [_selectScene skill3Action];
-        NSLog(@"技能3");
+        //NSLog(@"技能3");
         
     }else if(tag == 103){
         
         [_selectScene skill4Action];
-        NSLog(@"技能4");
+        //NSLog(@"技能4");
         
     }else if(tag == 104){
         
         [_selectScene skill5Action];
-        NSLog(@"技能5");
+        //NSLog(@"技能5");
         
     }
 }
 
 
+- (void)createLoadingScene{
+    LoadingScene *scene = [LoadingScene nodeWithFileNamed:@"LoadingScene"];
+    scene.scaleMode = SKSceneScaleModeAspectFill;
+       
+    SKView *skView = (SKView *)self.view;
+    SKTransition *tr = [SKTransition fadeWithDuration:1];
 
+    [skView presentScene:scene transition:tr];
+
+}
 
 /// 创建场景
 /// @param name 类名
 - (void)createSceneWithName:(NSString *)name
 {
+    if ([name isEqualToString:@"RealPubScene"] && [[NSUserDefaults standardUserDefaults]boolForKey:kSkillNPC]) {
+        self.uiView.hidden = NO;
+    }else{
+        self.uiView.hidden = YES;
+    }
+    
     [_selectScene releaseAction];
+    [self withName:name];
+}
+
+- (void)withName:(NSString *)name{
+   
     
     Class class = NSClassFromString(name);
     WDBaseScene *scene = [class nodeWithFileNamed:name];
@@ -206,7 +245,6 @@
     }];
     
     [skView presentScene:scene transition:tr];
-    
 }
 
 - (void)setTextWithName:(NSString *)name text:(NSString *)text

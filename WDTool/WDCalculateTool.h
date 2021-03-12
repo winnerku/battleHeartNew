@@ -74,6 +74,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param node 怪物
 + (WDBaseNode *)searchUserNearNode:(WDBaseNode *)node;
 
+/// 怪物搜索随机的玩家
+/// @param node 怪物
++ (WDBaseNode *)searchUserRandomNode:(WDBaseNode *)node;
+
 @end
 
 NS_ASSUME_NONNULL_END
