@@ -74,6 +74,13 @@
             [self.userArr removeObject:node];
             [node releaseAction];
             
+            if ([node.name isEqualToString:self.selectNode.name]) {
+                self.selectNode = self.userArr.firstObject;
+                [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForChangeUser object:self.selectNode.name];
+                [self.selectNode selectSpriteAction];
+            }
+            
+            
             if (self.userArr.count == 0) {
                 if (_boss) {
                     self.textureManager.goText = @"BOSS攻击挺高\n试试风筝!";
@@ -82,6 +89,7 @@
                     if (_boss.state & SpriteState_dead) {
                         
                         [_bossNode removeAllActions];
+                        _bossNode.colorBlendFactor = 0;
                         [NSObject cancelPreviousPerformRequestsWithTarget:_bossNode];
                         SKAction *animation = [SKAction animateWithTextures:_bossNode.boss1Model.winArr timePerFrame:0.15];
                         __weak typeof(self)weakSelf = self;
@@ -118,15 +126,16 @@
                     user.state = SpriteState_movie;
                 }
                 
-                [_bossNode removeAllActions];
-                [NSObject cancelPreviousPerformRequestsWithTarget:_bossNode];
-                SKAction *animation = [SKAction animateWithTextures:_bossNode.boss1Model.winArr timePerFrame:0.15];
-                self.textureManager.goText = @"去学习技能！";
+                for (WDBaseNode *node in self.monsterArr) {
+                    [node releaseAction];
+                }
+                [self.monsterArr removeAllObjects];
+                
                 __weak typeof(self)weakSelf = self;
-                [_bossNode.talkNode setText:@"你们通过了考验\n回来学技能吧"];
-                [_bossNode runAction:animation completion:^{
-                    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:kSkillNPC];
-                    [weakSelf changeActionForMonster:@"RealPubScene"];
+                [_bossNode endAction:^(BOOL isComplete) {
+                    if (isComplete) {
+                        [weakSelf changeActionForMonster:@"RealPubScene"];
+                    }
                 }];
                 return;
             }

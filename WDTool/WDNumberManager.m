@@ -26,6 +26,8 @@
         
     }else if([name isEqualToString:kBoss1]){
         [self initBoss1:node];
+    }else if([name isEqualToString:kNinja]){
+        [self initNinja:node];
     }
 }
 
@@ -93,6 +95,19 @@
     node.floatAttackNumber = 10;
 }
 
+/// 忍者
++ (void)initNinja:(WDBaseNode *)node
+{
+    node.name = kNinja;
+    node.moveSpeed = 300;
+    node.trueMoveSpeed = 300;
+    node.moveCADisplaySpeed = 4.5;
+    node.blood     = 100;
+    node.lastBlood = 100;
+    node.zPosition = 10;
+    node.attackNumber = 30;
+    node.floatAttackNumber = 10;
+}
 
 /// 石头人
 + (void)initStone:(WDBaseNode *)node
@@ -127,9 +142,9 @@
     node.lastBlood = 1500;
     node.attackDistance = 0;
     node.moveCADisplaySpeed = 2;
-    node.attackNumber = 20;
+    node.attackNumber = 40;
     node.isRight = YES;
-    node.floatAttackNumber = 5;
+    node.floatAttackNumber = 25;
 }
 
 

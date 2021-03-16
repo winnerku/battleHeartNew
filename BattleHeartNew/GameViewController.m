@@ -38,7 +38,7 @@
     NSString *key1 = [NSString stringWithFormat:@"%@_0",kKinght];
     NSString *key2 = [NSString stringWithFormat:@"%@_0",kArcher];
     NSString *key3 = [NSString stringWithFormat:@"%@_0",kIceWizard];
-
+    
     [defaults setBool:YES forKey:key1];
     [defaults setBool:YES forKey:key2];
     [defaults setBool:YES forKey:key3];
@@ -73,10 +73,8 @@
         [self createSceneWithName:@"RealPubScene"];
     }
 
-//   [self createSceneWithName:@"TestScene"];
+//    [self createSceneWithName:@"TestScene"];
 //    [self showLearnSkillViewControllerWithName:kArcher];
-    
-    
 }
 
 

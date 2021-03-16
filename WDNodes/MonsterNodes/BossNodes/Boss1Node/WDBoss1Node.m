@@ -18,6 +18,7 @@
     WDBaseNode *_targetMonster;
     NSInteger _attackCount;
     NSInteger _skillIndex;
+    WDBaseNode *_rewardNode;
 }
 
 + (instancetype)initWithModel:(WDBaseNodeModel *)model
@@ -57,6 +58,7 @@
     
     [WDNumberManager initNodeValueWithName:kBoss1 node:self];
     
+    [self setBloodNodeNumber:0];
     [self setShadowNodeWithPosition:CGPointMake(0, -self.size.height / 2.0 + 120) scale:0.1];
 
     self.position = CGPointMake(kScreenWidth, 0);
@@ -84,8 +86,9 @@
     [self runAction:gro completion:^{
         SKAction *talkAction = [SKAction animateWithTextures:weakSelf.boss1Model.attackArr5 timePerFrame:0.2];
         [weakSelf.talkNode setText:@"我是技能导师\n来试着打败我" hiddenTime:weakSelf.boss1Model.attackArr5.count * 0.2 completeBlock:^{
+            weakSelf.state = SpriteState_stand;
             complete(YES);
-            [weakSelf monsterAttackAction];
+            
         }];
         [weakSelf runAction:talkAction completion:^{
                         
@@ -94,6 +97,78 @@
 }
 
 
+- (void)endAction:(void (^)(BOOL isComplete))complete
+{
+    self.completeBlock = complete;
+    [self removeAllActions];
+    self.colorBlendFactor = 0;
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    SKAction *animation = [SKAction animateWithTextures:_boss1Model.winArr timePerFrame:0.2];
+    [WDTextureManager shareTextureManager].goText = @"去学习技能！";
+    __weak typeof(self)weakSelf = self;
+    [self.talkNode setText:@"你们通过了考验\n这是你们的奖励"];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(moveActionForClick) name:kNotificationForClickPrompt object:nil];
+    [self runAction:animation completion:^{
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool:YES forKey:kSkillNPC];
+        NSInteger ballCount = [defaults integerForKey:kSkillBall];
+        ballCount ++;
+        [defaults setInteger:ballCount forKey:kSkillBall];
+        [weakSelf createReward:complete];
+    }];
+}
+
+- (void)createReward:(void (^)(BOOL isComplete))complete{
+    WDBaseNode *reward = [WDBaseNode spriteNodeWithTexture:[SKTexture textureWithImage:[UIImage imageNamed:@"select_no"]]];
+    [self.parent addChild:reward];
+    reward.name = @"click";
+    reward.xScale = 0.1;
+    reward.yScale = 0.1;
+    reward.alpha = 0;
+    reward.zPosition = 10000;
+    reward.position = CGPointMake(self.position.x + 30, self.position.y - 30);
+    
+    SKAction *alphaA = [SKAction fadeAlphaTo:1 duration:0.6];
+    SKAction *xS = [SKAction scaleTo:1.0 duration:0.6];
+    SKAction *gr = [SKAction group:@[alphaA,xS]];
+    
+    _rewardNode = reward;
+    
+    __weak typeof(self)weakSelf = self;
+    [reward runAction:gr completion:^{
+        reward.texture = [SKTexture textureWithImage:[UIImage imageNamed:@"select_yes"]];
+        weakSelf.clickNode.hidden = NO;
+        weakSelf.clickNode.position = CGPointMake(reward.position.x, reward.position.y - weakSelf.clickNode.size.height / 2.0 - reward.size.width / 2.0 + 10);
+    }];
+}
+
+- (void)moveActionForClick{
+    CGPoint movePoint = CGPointMake(kScreenWidth - 90, kScreenHeight - 90);
+    CGFloat distance = [WDCalculateTool distanceBetweenPoints:movePoint seconde:_rewardNode.position];
+    NSTimeInterval time = distance / 1200;
+    SKAction *moveAction = [SKAction moveTo:CGPointMake(kScreenWidth - 90, kScreenHeight - 90) duration:time];
+    [self.clickNode removeAllActions];
+    [self.clickNode removeFromParent];
+    __weak typeof(self)weakSelf = self;
+    [_rewardNode runAction:moveAction completion:^{
+        weakSelf.completeBlock(YES);
+    }];
+}
+
+- (WDBaseNode *)clickNode{
+    if (!_clickNode) {
+        _clickNode = [WDBaseNode spriteNodeWithTexture:[WDTextureManager shareTextureManager].clickArr[0]];
+        _clickNode.hidden = YES;
+        _clickNode.name = @"click";
+        [self.parent addChild:_clickNode];
+        _clickNode.zPosition = 10000;
+        SKAction *an = [SKAction animateWithTextures:[WDTextureManager shareTextureManager].clickArr timePerFrame:0.5];
+        SKAction *re = [SKAction repeatActionForever:an];
+        [_clickNode runAction:re];
+    }
+    
+    return _clickNode;
+}
 
 #pragma mark - 移动逻辑 -
 - (void)observedNode
@@ -187,6 +262,8 @@
     
     if (moveX < -kScreenWidth + self.realSize.width || moveX > kScreenWidth - self.realSize.width) {
         [self removeAllActions];
+        self.reduceBloodNow = NO;
+        self.colorBlendFactor = 0;
         self.state = SpriteState_movie;
         
         SKAction *animation = [SKAction animateWithTextures:_boss1Model.missArr timePerFrame:0.1];
@@ -231,13 +308,13 @@
     
     NSArray *skillNames = @[@"meteoriteAttackAnimation",@"pullAttackAnimation",@"flashAttackAnimation",@"callAttackAnimation",@"callAttackAnimation",@"bookAttackBigAnimation"];
 
-   // _skillIndex = 5;
-    NSString *skillName = skillNames[_skillIndex];
+    NSInteger index = arc4random() % skillNames.count;
+    NSString *skillName = skillNames[index];
     SEL action = NSSelectorFromString(skillName);
-    _skillIndex ++;
-    if (_skillIndex >= skillNames.count) {
-        _skillIndex = 0;
-    }
+//    _skillIndex ++;
+//    if (_skillIndex >= skillNames.count) {
+//        _skillIndex = 0;
+//    }
     
     /**
      1.直接忽略（如果是基本类型比如 void，int这样的）。
@@ -336,7 +413,7 @@
     SKAction *attackAction = [SKAction animateWithTextures:_boss1Model.attackArr9 timePerFrame:0.1];
     
     [self performSelector:@selector(meteoriteAttackWithCount:) withObject:nil afterDelay:0.2];
-//    [self performSelector:@selector(meteoriteAttackWithCount:) withObject:nil afterDelay:0.6];
+    [self performSelector:@selector(meteoriteAttackWithCount:) withObject:nil afterDelay:0.6];
 //    [self performSelector:@selector(meteoriteAttackWithCount:) withObject:nil afterDelay:1.0];
     
     __weak typeof(self)weakSelf = self;
@@ -425,7 +502,7 @@
     SKAction *attackAction = [SKAction animateWithTextures:_boss1Model.attackArr5 timePerFrame:0.1];
     
     [self performSelector:@selector(createCloudNode) withObject:nil afterDelay:0.2];
-//    [self performSelector:@selector(createCloudNode) withObject:nil afterDelay:0.6];
+    [self performSelector:@selector(createCloudNode) withObject:nil afterDelay:0.6];
 //    [self performSelector:@selector(createCloudNode) withObject:nil afterDelay:1];
     __weak typeof(self)weakSelf = self;
     [self runAction:attackAction completion:^{
@@ -511,6 +588,8 @@
     
     self.targetMonster.state = SpriteState_stagger;
     [self.targetMonster removeAllActions];
+    self.targetMonster.reduceBloodNow = NO;
+    self.targetMonster.colorBlendFactor = 0;
     [NSObject cancelPreviousPerformRequestsWithTarget:self.targetMonster];
     
     self.state = SpriteState_attack;
@@ -587,7 +666,7 @@
         isLeft = YES;
     }
     
-    CGFloat fudongNumber = arc4random() % 5 + self.attackNumber;
+    CGFloat fudongNumber = arc4random() % 60 + self.attackNumber;
     
     
     CGFloat bigDistance = 150;

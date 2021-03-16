@@ -62,7 +62,7 @@
 
 - (void)canUse:(NSNotification *)notification
 {
-    self.userInteractionEnabled = YES;
+    self.userInteractionEnabled = [notification.object intValue];
 }
 
 - (void)createSubViewsWithName:(NSString *)name{
@@ -104,8 +104,8 @@
     NSString *btnArrKey   = [NSString stringWithFormat:@"%@_arr",name];
     NSString *timeArrKey  = [NSString stringWithFormat:@"%@_time",name];
     
-    [self.skillViewDic setValue:bgView forKey:viewNameKey];
-    [self.skillViewDic  setValue:arr forKey:btnArrKey];
+    [self.skillViewDic  setValue:bgView  forKey:viewNameKey];
+    [self.skillViewDic  setValue:arr     forKey:btnArrKey];
     [self.skillViewDic  setValue:timeArr forKey:timeArrKey];
     
 }
@@ -153,6 +153,7 @@
         [self createSubViewsWithName:name];
     }
     
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     for (int i = 0; i < self.skillViewDic.allKeys.count; i ++) {
         NSString *keyName = self.skillViewDic.allKeys[i];
        
@@ -170,6 +171,22 @@
         if ([keyName containsString:@"_time"]) {
             if ([keyName isEqualToString:timeArrKey]) {
                 _timeArr = self.skillViewDic[keyName];
+            }
+        }
+        
+        //技能是否隐藏了
+        if ([keyName containsString:@"_arr"]) {
+            NSArray *btnArr = self.skillViewDic[keyName];
+            for (UIButton *btn in btnArr) {
+                
+                NSInteger index = btn.tag - 100;
+                NSString *skillName = [NSString stringWithFormat:@"%@_%ld",name,index];
+                if ([defaults boolForKey:skillName]) {
+                    btn.hidden = NO;
+                }else{
+                    btn.hidden = YES;
+                }
+                
             }
         }
         

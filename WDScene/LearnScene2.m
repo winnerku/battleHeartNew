@@ -202,16 +202,13 @@
 
 - (void)talkAction{
     _foot ++;
-    //[self clickNode].hidden = YES;
+    [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForSkillCanUse object:@(0)];
     NSNotificationCenter *po = [NSNotificationCenter defaultCenter];
     if (_foot == 4) {
         [self.archerNode.talkNode setText:@"第一个技能\n增加攻击速度"];
-        //[self performSelector:@selector(talkAction) withObject:nil afterDelay:3];
         [po postNotificationName:kNotificationForShowSkill object:@(0)];
     }else if(_foot == 5){
         [self.archerNode.talkNode setText:@"想要其它技能\n要找小姐姐学"];
-        //[self performSelector:@selector(talkAction) withObject:nil afterDelay:3];
-        //[po postNotificationName:kNotificationForShowSkill object:@(1)];
     }else if(_foot == 6){
         [self.archerNode.talkNode setText:@"具体如何使用\n实战中体会吧~" hiddenTime:3];
         for (WDMonsterNode *node in self.monsterArr) {
@@ -219,7 +216,7 @@
         }
         _isLearn = NO;
         self.archerNode.state = SpriteState_stand;
-        [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForSkillCanUse object:nil];
+        [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForSkillCanUse object:@(1)];
         [po postNotificationName:kNotificationForShowSkill object:@(5)];
         [self clickNode].hidden = YES;
     }

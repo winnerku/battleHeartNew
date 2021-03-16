@@ -16,6 +16,8 @@
     NSArray *_yArr;
     CADisplayLink *_mapLink;
     LearnSkillNode *_skillNode;
+    SKSpriteNode *_ballNode;
+    SKLabelNode  *_ballLabel;
 }
 
 - (void)didMoveToView:(SKView *)view
@@ -67,9 +69,37 @@
     self.iceWizardNode.isPubScene = YES;
     self.archerNode.isPubScene = YES;
     
-    if ([[NSUserDefaults standardUserDefaults]boolForKey:kSkillNPC]) {
+    [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForHiddenSkill object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(createBallAction) name:kNotificationForLearnSkill object:nil];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    /// 有学习技能的NPC了，之后才有绿球
+    if ([defaults boolForKey:kSkillNPC]) {
         [self createSkillNPC];
+        [self createBallAction];
     }
+    
+    
+    
+}
+
+- (void)createBallAction{
+    
+    NSInteger ballCount = [[NSUserDefaults standardUserDefaults]integerForKey:kSkillBall];
+   
+    _ballNode = (SKSpriteNode *)[self childNodeWithName:@"ballNode"];
+    _ballNode.zPosition = 10000;
+   
+    
+    [_ballNode runAction:[SKAction fadeAlphaTo:1 duration:0.4]];
+    
+    _ballLabel = (SKLabelNode *)[self childNodeWithName:@"ballLabel"];
+    _ballLabel.text = [NSString stringWithFormat:@"x%ld",ballCount];
+    _ballLabel.hidden = NO;
+    _ballLabel.position = CGPointMake(kScreenWidth * 2.0 - _ballLabel.fontSize - 30, kScreenHeight * 2.0 - 100);
+    
+    _ballNode.position = CGPointMake(kScreenWidth * 2.0 - _ballLabel.fontSize - 30 - 90, kScreenHeight * 2.0 - 78);
+    
 }
 
 #pragma mark - 学习技能的NPC（打过第一关BOSS激活）-

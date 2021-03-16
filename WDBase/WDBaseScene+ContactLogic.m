@@ -83,6 +83,8 @@
     
     userNode.state = SpriteState_wind | SpriteState_stagger;
     [userNode removeAllActions];
+    userNode.reduceBloodNow = NO;
+    userNode.colorBlendFactor = 0;
     [NSObject cancelPreviousPerformRequestsWithTarget:userNode];
     
     [windNode removeAllActions];

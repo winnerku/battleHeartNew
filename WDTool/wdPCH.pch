@@ -39,6 +39,9 @@
 #define kArcher_skill_4 @"Archer_skill_4" //射手第4个技能，攻击增加吸血
 #define kArcher_skill_5 @"Archer_skill_5" //射手第5个技能，待定
 
+// 忍者
+#define kNinja @"Ninja"
+
 //石头人
 #define kStone @"Stone"
 
@@ -47,6 +50,7 @@
 //红色蝙蝠
 #define kRedBat @"RedBat"
 
+/// 第一关BOSS
 #define kBoss1 @"kBoss1"
 
 
@@ -55,6 +59,10 @@
 #define kPassLearn2 @"kPassLearn2" //教学2
 #define kPassLearn3 @"kPassLearn3" //教学3
 #define kSkillNPC @"kSkillNPC"     //解救了负责学习技能的NPC
+
+
+
+#define kSkillBall @"kSkillBall" // 学习技能的球
 
 //NSLog
 #ifndef __OPTIMIZE__
@@ -124,6 +132,10 @@ static const uint32_t ARROW_CATEGORY = 0X04;     //0100
 #define kNotificationForShowSkill @"kNotificationForShowSkill"
 /// 隐藏或显示技能栏
 #define kNotificationForHiddenSkill @"kNotificationForHiddenSkill"
+/// ball学习技能，刷新界面
+#define kNotificationForLearnSkill @"kNotificationForLearnSkill"
+/// 点击指示图标
+#define kNotificationForClickPrompt @"kNotificationForClickPrompt"
 
 /// 全局link
 #define kNotificationForDisplayLink @"kNotificationForDisplayLink"

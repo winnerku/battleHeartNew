@@ -82,7 +82,15 @@
     if (isLearn) {
         image = [UIImage imageNamed:@"select_yes"];
     }else{
-        image = [UIImage imageNamed:@"select_no"];
+        if (index - 1 >= 0) {
+            NSInteger index2 = index - 1;
+            BOOL beforeIsLearn = [defaults boolForKey:[NSString stringWithFormat:@"%@_%ld",kArcher,index2]];
+            if (beforeIsLearn) {
+                image = [UIImage imageNamed:@"select_no"];
+            }else{
+                image = [UIImage imageNamed:@"lock"];
+            }
+        }
     }
     
     btn.tag = index + 100;
@@ -96,13 +104,8 @@
 - (void)learnAction:(UIButton *)sender
 {
     NSString *name = [NSString stringWithFormat:@"%@_%ld",_name,sender.tag - 100];
-    BOOL isLearn = [[NSUserDefaults standardUserDefaults] boolForKey:name];
-    if (isLearn) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"已经学会了" message:@"" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        [alert show];
-    }else{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"没有足够的金钱!" message:@"" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        [alert show];
+    if (self.ClickLearnBlock) {
+        self.ClickLearnBlock(name,sender.tag - 100,_name,sender);
     }
 }
 

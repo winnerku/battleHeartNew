@@ -72,14 +72,101 @@
         
         [_bgScrollView addSubview:view];
         
+        __weak typeof(self)weakSelf = self;
+        [view setClickLearnBlock:^(NSString * _Nonnull skillName, NSInteger index,NSString * _Nonnull userName,UIButton *sender) {
+            [weakSelf learnAction:skillName index:index userName:userName sender:sender];
+        }];
+        
     }
 }
 
-
-
-- (void)learnAction:(UIButton *)sender
+- (void)learnAction:(NSString *)skillName
+              index:(NSInteger)index
+           userName:(NSString *)userName
+             sender:(UIButton *)sender
 {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL isLearn = [defaults boolForKey:skillName];
+    if (isLearn) {
+        
+        [self isLearnAlertView];
+        
+    }else{
+        
+        if (index - 1 >= 0) {
+            NSInteger beforeIndex = index - 1;
+            BOOL isBeforeLearn = [defaults boolForKey:[NSString stringWithFormat:@"%@_%ld",userName,beforeIndex]];
+            if (isBeforeLearn) {
+                [self learnAction:skillName sender:sender];
+            }else{
+                [self beforeSkillIsNoLearn];
+            }
+            
+        }
+        
+    }
+}
+
+- (void)learnAction:(NSString *)skillName
+             sender:(UIButton *)sender{
     
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSInteger ball = [defaults integerForKey:kSkillBall];
+    if (ball > 0) {
+        
+        ///这里要判断是否有钱
+        UIAlertController *alertC = [UIAlertController alertControllerWithTitle:@"" message:@"学习该技能将会消耗一个绿球道具\n确定学习嘛？" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"在想想..." style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+        
+        UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确定!" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            NSInteger balls = [defaults integerForKey:kSkillBall];
+            balls --;
+            [defaults setInteger:balls forKey:kSkillBall];
+            [defaults setBool:YES forKey:skillName];
+            [sender setImage:[UIImage imageNamed:@"select_yes"] forState:UIControlStateNormal];
+            [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForLearnSkill object:nil];
+        }];
+        
+        [alertC addAction:action];
+        [alertC addAction:action2];
+        [self presentViewController:alertC animated:YES completion:^{
+        }];
+        
+    }else{
+        ///这里要判断是否有钱
+        UIAlertController *alertC = [UIAlertController alertControllerWithTitle:@"没有相对应的道具" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+        
+        [alertC addAction:action];
+        [self presentViewController:alertC animated:YES completion:^{
+        }];
+    }
+    
+}
+
+
+/// 新技能需要解锁上一个技能才可以学习
+- (void)beforeSkillIsNoLearn{
+    UIAlertController *alertC = [UIAlertController alertControllerWithTitle:@"请先学习上一个技能！" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    
+    [alertC addAction:action];
+    [self presentViewController:alertC animated:YES completion:^{
+    }];
+}
+
+
+- (void)isLearnAlertView{
+    UIAlertController *alertC = [UIAlertController alertControllerWithTitle:@"已经学过了！" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    
+    [alertC addAction:action];
+    [self presentViewController:alertC animated:YES completion:^{
+    }];
 }
 
 - (void)cancelAction:(UIButton *)sender

@@ -54,6 +54,7 @@
 
     pos = [WDCalculateTool calculateBigPoint:pos];
     
+    WDBaseNode *clickNode = nil; /// 点击提示优先
     WDUserNode *userNode = nil;
     WDMonsterNode *monsterNode = nil;
     CGFloat distance = 100000;
@@ -77,6 +78,10 @@
                 userNode = nil;
                 distance = dis;
             }
+        }else if([n.name isEqualToString:@"click"]){
+            clickNode = n;
+            [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForClickPrompt object:nil];
+            return;
         }
     }
     
@@ -112,6 +117,10 @@
     }
     
     if (self.selectNode.state & SpriteState_dead) {
+        canMove = NO;
+    }
+    
+    if (self.selectNode.state & SpriteState_movie) {
         canMove = NO;
     }
 
@@ -230,7 +239,6 @@
     if (distanceX < userNode.realSize.width / 2.0 && distanceY < userNode.realSize.height / 2.0) {
         ///切换选中目标，不能移动
         self.selectNode.arrowNode.hidden = YES;
-        userNode.arrowNode.hidden    = NO;
         self.selectNode = userNode;
         [self.selectNode selectSpriteAction];
         [[WDTextureManager shareTextureManager] hiddenArrow];

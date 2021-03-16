@@ -224,7 +224,6 @@
     return _iceWizardNode;
 }
 
-
 /// 弓箭手
 - (WDArcherNode *)archerNode
 {
@@ -234,6 +233,17 @@
     }
     
     return _archerNode;
+}
+
+/// 忍者
+- (WDNinjaNode *)ninjaNode
+{
+    if (!_ninjaNode) {
+        _ninjaNode = [WDNinjaNode initWithModel:[WDTextureManager shareTextureManager].ninjaModel];
+        [self.userArr addObject:_ninjaNode];
+    }
+    
+    return _ninjaNode;;
 }
 
 

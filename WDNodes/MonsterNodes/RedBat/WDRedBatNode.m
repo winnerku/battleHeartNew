@@ -65,6 +65,7 @@
     if (self.lastBlood * 2 < self.blood && _stagger == 1) {
         _stagger = 0;
         [self removeAllActions];
+        self.reduceBloodNow = NO;
         self.state = SpriteState_stagger;
         self.colorBlendFactor = 0;
         CGFloat direction = 1;

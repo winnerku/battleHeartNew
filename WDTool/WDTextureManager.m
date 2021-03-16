@@ -223,6 +223,18 @@ static WDTextureManager *textureManager = nil;
     return _archerModel;
 }
 
+
+/// 忍者
+- (WDNinjaModel *)ninjaModel
+{
+    if (!_ninjaModel) {
+        _ninjaModel = [[WDNinjaModel alloc] init];
+        [_ninjaModel setNormalTexturesWithName:kNinja standNumber:10 runNumber:0 walkNumber:10 diedNumber:10 attack1Number:10];
+    }
+    
+    return _ninjaModel;
+}
+
 /// 石头人
 - (WDStoneModel *)stoneModel
 {

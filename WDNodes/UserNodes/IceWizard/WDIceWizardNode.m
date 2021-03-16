@@ -100,7 +100,7 @@
 - (void)addBuffActionWithNode:(WDBaseNode *)node
 {
     //移动大于一切
-    if (self.state & SpriteState_move) {
+    if (self.state & SpriteState_move || self.state & SpriteState_movie) {
         return;
     }
     
@@ -132,7 +132,8 @@
     
     [self removeAllActions];
     self.colorBlendFactor = 0;
-     
+    self.reduceBloodNow   = NO;
+    
     SKAction *texture = [SKAction animateWithTextures:self.model.attackArr1 timePerFrame:0.1];
     SKAction *time = [SKAction waitForDuration:0.15];
     SKAction *seq = [SKAction sequence:@[texture,time]];

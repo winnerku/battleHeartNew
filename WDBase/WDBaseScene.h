@@ -14,6 +14,7 @@
 #import "WDKinghtNode.h"
 #import "WDIceWizardNode.h"
 #import "WDArcherNode.h"
+#import "WDNinjaNode.h"
 
 
 //怪物单位
@@ -61,7 +62,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)WDIceWizardNode *iceWizardNode;
 /// 弓箭手
 @property (nonatomic,strong)WDArcherNode *archerNode;
-
+/// 忍者
+@property (nonatomic,strong)WDNinjaNode *ninjaNode;
 
 
 - (void)touchDownAtPoint:(CGPoint)pos;

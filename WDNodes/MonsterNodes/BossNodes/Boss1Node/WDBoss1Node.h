@@ -13,9 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface WDBoss1Node : WDMonsterNode
 @property (nonatomic,strong)Boss1Model *boss1Model;
-
+@property (nonatomic,strong)WDBaseNode *clickNode;
+@property (nonatomic,copy)void (^completeBlock)(BOOL isComplete);
 - (void)moveToTheMap:(void (^)(BOOL isComplete))complete;
-
+- (void)endAction:(void (^)(BOOL isComplete))complete;
 @end
 
 NS_ASSUME_NONNULL_END

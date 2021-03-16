@@ -25,20 +25,12 @@
     self.bgNode.xScale = scale;
     self.bgNode.yScale = scale;
     
-    [self addChild:self.iceWizardNode];
-    
-    self.iceWizardNode.lastBlood = 100000;
-    self.iceWizardNode.blood = 100000;
-    self.iceWizardNode.position = CGPointMake(200, 0);
-       
     self.textureManager.mapBigY_Up = 100;
     self.textureManager.mapBigY_down = 230;
     
+    //[self addChild:self.ninjaNode];
     
-   // [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
     
-    
-       
     [self createBoss2];
 }
 
@@ -56,11 +48,16 @@
     
     __weak typeof(self)weakSelf = self;
     [_bossNode moveToTheMap:^(BOOL isComplete) {
-        for (WDBaseNode *node in weakSelf.userArr) {
-            node.state = SpriteState_stand;
-        }
+        [_bossNode endAction:^(BOOL isComplete) {
+                
+        }];
     }];
 }
 
+- (void)touchUpAtPoint:(CGPoint)pos
+{
+    [super touchUpAtPoint:pos];
+    
+}
 
 @end

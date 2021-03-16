@@ -323,6 +323,7 @@ static CGFloat bloodHeight = 40;
 - (void)attackActionWithEnemyNode:(WDBaseNode *)enemyNode
 {
     self.colorBlendFactor = 0;
+    self.reduceBloodNow = NO;
     self.state = SpriteState_attack | self.state;
   
     CGFloat distance = enemyNode.position.x - self.position.x;
@@ -369,6 +370,8 @@ static CGFloat bloodHeight = 40;
         [self removeActionForKey:@"move"];
     }else{
         [self removeAllActions];
+        self.reduceBloodNow = NO;
+        self.colorBlendFactor = 0;
     }
     
     ///选中动画继续完成
@@ -460,6 +463,7 @@ static CGFloat bloodHeight = 40;
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self removeAllActions];
+    self.colorBlendFactor = 0;
     self.targetMonster = nil;
     self.targetUser    = nil;
     self.state = SpriteState_dead;
@@ -555,7 +559,7 @@ static CGFloat bloodHeight = 40;
         
         
         UIColor *color2 = UICOLOR_RGB(127, 255, 0, 1);
-        _bloodNode = [WDBaseNode spriteNodeWithColor:color2 size:CGSizeMake(self.realSize.width / self.xScale, self.bloodHeight - bloodPage * 2.0)];
+        _bloodNode = [WDBaseNode spriteNodeWithColor:color2 size:CGSizeMake(self.realSize.width / fabs(self.xScale), self.bloodHeight - bloodPage * 2.0)];
         _bloodNode.zPosition = 1;
         _bloodNode.position = CGPointMake(0, bloodPage);
         [_bloodBgNode addChild:_bloodNode];
@@ -611,6 +615,7 @@ static CGFloat bloodHeight = 40;
 
 - (void)selectSpriteAction
 {
+    self.arrowNode.hidden = NO;
     SKAction *a = [SKAction colorizeWithColor:[UIColor blackColor] colorBlendFactor:0.7 duration:0.15];
     SKAction *b = [SKAction colorizeWithColorBlendFactor:0 duration:0.15];
     SKAction *seq = [SKAction sequence:@[a,b]];

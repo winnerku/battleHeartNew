@@ -119,7 +119,6 @@
         if ([node isEqualToNode:self.iceWizardNode]) {
            
             self.selectNode.arrowNode.hidden = YES;
-            self.iceWizardNode.arrowNode.hidden = NO;
             self.selectNode = self.iceWizardNode;
             [self.selectNode selectSpriteAction];
             [self.textureManager hiddenArrow];
@@ -154,7 +153,6 @@
             return;
         }
         
-
         WDBaseNode *node = (WDBaseNode *) [self nodeAtPoint:pos];
         if ([node isEqualToNode:self.textureManager.arrowNode] || [node isEqualToNode:self.textureManager.locationNode]) {
             __weak typeof(self)weakSelf = self;

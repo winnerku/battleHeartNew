@@ -14,6 +14,7 @@
 #import "WDStoneModel.h"
 #import "WDBaseNode.h"
 #import "Boss1Model.h"
+#import "WDNinjaModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,14 +29,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)WDIceWizardModel *iceWizardModel;
 /// 弓箭手
 @property (nonatomic,strong)WDArcherModel *archerModel;
+/// 忍者
+@property (nonatomic,strong)WDNinjaModel *ninjaModel;
+
 ///NPC 石头人
 @property (nonatomic,strong)WDStoneModel *stoneModel;
 
 #pragma mark - 怪物 -
 /// 蝙蝠
 @property (nonatomic,strong)WDRedBatModel *redBatModel;
-
-
 /// boss1
 @property (nonatomic,strong)Boss1Model *boss1Model;
 
