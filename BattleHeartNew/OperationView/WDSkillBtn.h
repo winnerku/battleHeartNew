@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,strong)UILabel *timeLabel;
 
+
+/// 初始化时间
+- (void)reloadAction;
 - (void)setTime:(CGFloat)time;
 
 @end

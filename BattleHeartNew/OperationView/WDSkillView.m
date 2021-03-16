@@ -10,14 +10,21 @@
 #import "WDSkillBtn.h"
 @implementation WDSkillView
 {
+    /// 这个字典分别存储了： 技能按钮   技能CD  对应角色的技能条view
     NSMutableDictionary *_skillViewDic;
     NSArray *_timeArr;
+    
+    /// 存储已经创建了的技能面板名字,用于重置技能CD
+    NSMutableArray *_createNameArr;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        _createNameArr = [NSMutableArray array];
+        
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeUser:) name:kNotificationForChangeUser object:nil];
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(canUse:) name:kNotificationForSkillCanUse object:nil];
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(show:) name:kNotificationForShowSkill object:nil];
@@ -37,6 +44,7 @@
     }
 }
 
+/// 用于教学2关卡
 - (void)show:(NSNotification *)notifiaction
 {
     UIImageView *imageVV = [self viewWithTag:1000];
@@ -66,8 +74,11 @@
 }
 
 - (void)createSubViewsWithName:(NSString *)name{
+    if (!name) {
+        return;
+    }
     CGFloat width = 50;
-    
+    [_createNameArr addObject:name];
     NSMutableArray *arr = [NSMutableArray arrayWithCapacity:5];
     UIView *bgView = [[UIView alloc] initWithFrame:self.bounds];
     bgView.hidden = YES;
@@ -110,8 +121,17 @@
     
 }
 
-- (void)skillOK:(NSDictionary *)dic
+/// 初始化时间
+- (void)reloadAction
 {
+    for (NSString *key in _createNameArr) {
+        NSString *btnArrKey = [NSString stringWithFormat:@"%@_arr",key];
+        NSArray *btnArr = self.skillViewDic[btnArrKey];
+        for (WDSkillBtn *btn in btnArr) {
+            [btn reloadAction];
+        }
+    }
+    
     
 }
 

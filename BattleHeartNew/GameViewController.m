@@ -142,9 +142,7 @@
     [_skillView setSkillActionBlock:^(NSInteger tag) {
         [weakSelf skillActionWithTag:tag];
     }];
-   
-   
-    
+
 }
 
 
@@ -199,6 +197,8 @@
     }else{
         self.uiView.hidden = YES;
     }
+    
+    [_skillView reloadAction];
     
     [_selectScene releaseAction];
     [self withName:name];

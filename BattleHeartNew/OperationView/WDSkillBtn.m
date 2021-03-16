@@ -16,6 +16,16 @@
     UILabel *_timeLabel;
 }
 
+- (void)reloadAction
+{
+    if (_timer) {
+        [_timer invalidate];
+    }
+    
+    self.selected = NO;
+    self.alpha = 1;
+    self.timeLabel.hidden = YES;
+}
 
 - (void)setTime:(CGFloat)time
 {

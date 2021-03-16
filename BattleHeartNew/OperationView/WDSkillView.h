@@ -16,7 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,copy)void (^skillActionBlock)(NSInteger tag);
 //设置技能按钮图片
 - (void)setSkillViewWithUserName:(NSString *)name;
-
+/// 初始化时间
+- (void)reloadAction;
 @end
 
 NS_ASSUME_NONNULL_END
