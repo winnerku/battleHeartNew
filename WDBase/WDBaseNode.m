@@ -117,15 +117,23 @@ static CGFloat bloodHeight = 40;
         return YES;
     }
     
-    [WDActionTool reduceBloodLabelAnimation:self reduceCount:bloodNumber];
+    
 
     [self bloodNode];
     BOOL isAddBlood = NO;
     if (bloodNumber > 0) {
+        /// 增加防御数值
+        bloodNumber = bloodNumber - _defense;
+        if (bloodNumber <= 0) {
+            bloodNumber = 1;
+        }
+        
         isAddBlood = NO;
     }else{
         isAddBlood = YES;
     }
+    
+    [WDActionTool reduceBloodLabelAnimation:self reduceCount:bloodNumber];
     
     /*
      attackNumber 为负数的时候说明是加血，为正数的
@@ -580,7 +588,7 @@ static CGFloat bloodHeight = 40;
         _talkNode.hidden = YES;
         _talkNode.xScale = 3;
         _talkNode.yScale = 3;
-        _talkNode.position = CGPointMake(0, self.realSize.height + 40);
+        _talkNode.position = CGPointMake(0, self.realSize.height + 80);
         [self addChild:_talkNode];
     }
     

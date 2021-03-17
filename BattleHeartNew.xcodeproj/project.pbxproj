@@ -259,12 +259,22 @@
 		04824233257E2085006CE6BD /* WDBaseNodeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04824232257E2085006CE6BD /* WDBaseNodeModel.m */; };
 		04A2613D25F8E35A00055A32 /* LoadingScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A2613C25F8E35A00055A32 /* LoadingScene.m */; };
 		04A2614025F8E36E00055A32 /* LoadingScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 04A2613F25F8E36E00055A32 /* LoadingScene.sks */; };
+		04AAEB8B2601E9D700961726 /* Ninja_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 04AAEB8A2601E9D700961726 /* Ninja_0.png */; };
+		04AAEB8E2601EE8F00961726 /* doubleKill.sks in Resources */ = {isa = PBXBuildFile; fileRef = 04AAEB8D2601EE8F00961726 /* doubleKill.sks */; };
+		04AAEB9826020D3A00961726 /* WDBaseScene+Moive.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AAEB9726020D3A00961726 /* WDBaseScene+Moive.m */; };
 		04C84DA82601955500C6B630 /* Archer.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 04C84DA72601955500C6B630 /* Archer.atlas */; };
 		04C84DAC26019AF500C6B630 /* Knight.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 04C84DAB26019AF500C6B630 /* Knight.atlas */; };
 		04C84DAF26019BBB00C6B630 /* IceWizard.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 04C84DAE26019BBB00C6B630 /* IceWizard.atlas */; };
 		04C84DB226019C5900C6B630 /* Stone.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 04C84DB126019C5800C6B630 /* Stone.atlas */; };
 		04C84DB526019CAC00C6B630 /* Ninja.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 04C84DB426019CAC00C6B630 /* Ninja.atlas */; };
 		04C84DBB26019D8F00C6B630 /* RedBat.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 04C84DBA26019D8F00C6B630 /* RedBat.atlas */; };
+		04C84DC22601A34800C6B630 /* complete.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C84DC12601A34800C6B630 /* complete.png */; };
+		04C84DC72601AAA400C6B630 /* WDBoneSoliderNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C84DC62601AAA400C6B630 /* WDBoneSoliderNode.m */; };
+		04C84DCB2601AAB800C6B630 /* WDBoneSoliderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C84DCA2601AAB800C6B630 /* WDBoneSoliderModel.m */; };
+		04C84DCE2601AB7000C6B630 /* BoneSolider.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 04C84DCD2601AB7000C6B630 /* BoneSolider.atlas */; };
+		04C84DD22601C63E00C6B630 /* BoneSoliderScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C84DD12601C63E00C6B630 /* BoneSoliderScene.m */; };
+		04C84DD52601C65100C6B630 /* BoneSoliderScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 04C84DD42601C65100C6B630 /* BoneSoliderScene.sks */; };
+		04C84DD92601CED200C6B630 /* define_state.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C84DD82601CED200C6B630 /* define_state.png */; };
 		04D2E8DC25FB391000722DFC /* WDSkillManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D2E8DB25FB391000722DFC /* WDSkillManager.m */; };
 		04D2E90A25FB4D5100722DFC /* WDBaseScene+ContactLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D2E90925FB4D5100722DFC /* WDBaseScene+ContactLogic.m */; };
 		04D2E90E25FB59A900722DFC /* WDHomePageUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D2E90D25FB59A900722DFC /* WDHomePageUIView.m */; };
@@ -734,12 +744,26 @@
 		04A2613B25F8E35A00055A32 /* LoadingScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingScene.h; sourceTree = "<group>"; };
 		04A2613C25F8E35A00055A32 /* LoadingScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingScene.m; sourceTree = "<group>"; };
 		04A2613F25F8E36E00055A32 /* LoadingScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LoadingScene.sks; sourceTree = "<group>"; };
+		04AAEB8A2601E9D700961726 /* Ninja_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ninja_0.png; sourceTree = "<group>"; };
+		04AAEB8D2601EE8F00961726 /* doubleKill.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = doubleKill.sks; sourceTree = "<group>"; };
+		04AAEB9626020D3A00961726 /* WDBaseScene+Moive.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WDBaseScene+Moive.h"; sourceTree = "<group>"; };
+		04AAEB9726020D3A00961726 /* WDBaseScene+Moive.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "WDBaseScene+Moive.m"; sourceTree = "<group>"; };
 		04C84DA72601955500C6B630 /* Archer.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Archer.atlas; sourceTree = "<group>"; };
 		04C84DAB26019AF500C6B630 /* Knight.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Knight.atlas; sourceTree = "<group>"; };
 		04C84DAE26019BBB00C6B630 /* IceWizard.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = IceWizard.atlas; sourceTree = "<group>"; };
 		04C84DB126019C5800C6B630 /* Stone.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Stone.atlas; sourceTree = "<group>"; };
 		04C84DB426019CAC00C6B630 /* Ninja.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Ninja.atlas; sourceTree = "<group>"; };
 		04C84DBA26019D8F00C6B630 /* RedBat.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = RedBat.atlas; sourceTree = "<group>"; };
+		04C84DC12601A34800C6B630 /* complete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = complete.png; sourceTree = "<group>"; };
+		04C84DC52601AAA400C6B630 /* WDBoneSoliderNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WDBoneSoliderNode.h; sourceTree = "<group>"; };
+		04C84DC62601AAA400C6B630 /* WDBoneSoliderNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WDBoneSoliderNode.m; sourceTree = "<group>"; };
+		04C84DC92601AAB800C6B630 /* WDBoneSoliderModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WDBoneSoliderModel.h; sourceTree = "<group>"; };
+		04C84DCA2601AAB800C6B630 /* WDBoneSoliderModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WDBoneSoliderModel.m; sourceTree = "<group>"; };
+		04C84DCD2601AB7000C6B630 /* BoneSolider.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = BoneSolider.atlas; sourceTree = "<group>"; };
+		04C84DD02601C63E00C6B630 /* BoneSoliderScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BoneSoliderScene.h; sourceTree = "<group>"; };
+		04C84DD12601C63E00C6B630 /* BoneSoliderScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BoneSoliderScene.m; sourceTree = "<group>"; };
+		04C84DD42601C65100C6B630 /* BoneSoliderScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = BoneSoliderScene.sks; sourceTree = "<group>"; };
+		04C84DD82601CED200C6B630 /* define_state.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = define_state.png; sourceTree = "<group>"; };
 		04D2E8DA25FB391000722DFC /* WDSkillManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WDSkillManager.h; sourceTree = "<group>"; };
 		04D2E8DB25FB391000722DFC /* WDSkillManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WDSkillManager.m; sourceTree = "<group>"; };
 		04D2E90825FB4D5100722DFC /* WDBaseScene+ContactLogic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WDBaseScene+ContactLogic.h"; sourceTree = "<group>"; };
@@ -1304,6 +1328,7 @@
 				048025AB25874FC200AE4D65 /* Fire.sks */,
 				048025AC25874FC200AE4D65 /* Assets.xcassets */,
 				0434813025F9F79F00BB0CD7 /* IceFire.sks */,
+				04AAEB8D2601EE8F00961726 /* doubleKill.sks */,
 			);
 			path = WDEmitter;
 			sourceTree = "<group>";
@@ -1378,8 +1403,12 @@
 			children = (
 				044A1F2E25A446B200032FC7 /* UIImage+CacheImage.h */,
 				044A1F2F25A446B200032FC7 /* UIImage+CacheImage.m */,
+				0482422B257E2036006CE6BD /* WDBaseNode.h */,
+				0482422C257E2036006CE6BD /* WDBaseNode.m */,
 				04824228257E2027006CE6BD /* WDBaseScene.h */,
 				04824229257E2027006CE6BD /* WDBaseScene.m */,
+				04AAEB9626020D3A00961726 /* WDBaseScene+Moive.h */,
+				04AAEB9726020D3A00961726 /* WDBaseScene+Moive.m */,
 				04D2E90825FB4D5100722DFC /* WDBaseScene+ContactLogic.h */,
 				04D2E90925FB4D5100722DFC /* WDBaseScene+ContactLogic.m */,
 				044A1F2B25A4345A00032FC7 /* WDBaseScene+SkillLogic.h */,
@@ -1388,8 +1417,6 @@
 				042A93962592D26000F79BCD /* WDBaseScene+TouchLogic.m */,
 				04D3ED5B2588A63800AA0AE5 /* WDBaseScene+CreateMonster.h */,
 				04D3ED5C2588A63800AA0AE5 /* WDBaseScene+CreateMonster.m */,
-				0482422B257E2036006CE6BD /* WDBaseNode.h */,
-				0482422C257E2036006CE6BD /* WDBaseNode.m */,
 				04824231257E2085006CE6BD /* WDBaseNodeModel.h */,
 				04824232257E2085006CE6BD /* WDBaseNodeModel.m */,
 			);
@@ -1399,6 +1426,9 @@
 		04824234257E2093006CE6BD /* WDScene */ = {
 			isa = PBXGroup;
 			children = (
+				044A1F0725A3F5BB00032FC7 /* RealPubScene.h */,
+				044A1F0825A3F5BB00032FC7 /* RealPubScene.m */,
+				044A1F0A25A3F5D300032FC7 /* RealPubScene.sks */,
 				044A1F2425A42C2B00032FC7 /* TestScene.h */,
 				044A1F2525A42C2B00032FC7 /* TestScene.m */,
 				044A1F2725A42C3B00032FC7 /* TestScene.sks */,
@@ -1411,12 +1441,12 @@
 				04D6E5062594A4D90065AAC6 /* PubScene.h */,
 				04D6E5072594A4D90065AAC6 /* PubScene.m */,
 				04D6E5092594A4E40065AAC6 /* PubScene.sks */,
-				044A1F0725A3F5BB00032FC7 /* RealPubScene.h */,
-				044A1F0825A3F5BB00032FC7 /* RealPubScene.m */,
-				044A1F0A25A3F5D300032FC7 /* RealPubScene.sks */,
 				044A1F1025A404AA00032FC7 /* RedBatScene.h */,
 				044A1F1125A404AA00032FC7 /* RedBatScene.m */,
 				044A1F1325A404B600032FC7 /* RedBatScene.sks */,
+				04C84DD02601C63E00C6B630 /* BoneSoliderScene.h */,
+				04C84DD12601C63E00C6B630 /* BoneSoliderScene.m */,
+				04C84DD42601C65100C6B630 /* BoneSoliderScene.sks */,
 				04A2613B25F8E35A00055A32 /* LoadingScene.h */,
 				04A2613C25F8E35A00055A32 /* LoadingScene.m */,
 				04A2613F25F8E36E00055A32 /* LoadingScene.sks */,
@@ -1463,15 +1493,45 @@
 		04824240257E23A5006CE6BD /* MonsterNodes */ = {
 			isa = PBXGroup;
 			children = (
+				04C84DC42601AA7D00C6B630 /* BoneSolider */,
 				04DCF63F25F8583000F42324 /* BossNodes */,
 				04D68E512583229A004B07C0 /* RedBat */,
 			);
 			path = MonsterNodes;
 			sourceTree = "<group>";
 		};
+		04AAEB892601E9C400961726 /* Ninja */ = {
+			isa = PBXGroup;
+			children = (
+				04AAEB8A2601E9D700961726 /* Ninja_0.png */,
+			);
+			path = Ninja;
+			sourceTree = "<group>";
+		};
+		04C84DC42601AA7D00C6B630 /* BoneSolider */ = {
+			isa = PBXGroup;
+			children = (
+				04C84DCD2601AB7000C6B630 /* BoneSolider.atlas */,
+				04C84DC52601AAA400C6B630 /* WDBoneSoliderNode.h */,
+				04C84DC62601AAA400C6B630 /* WDBoneSoliderNode.m */,
+				04C84DC92601AAB800C6B630 /* WDBoneSoliderModel.h */,
+				04C84DCA2601AAB800C6B630 /* WDBoneSoliderModel.m */,
+			);
+			path = BoneSolider;
+			sourceTree = "<group>";
+		};
+		04C84DD72601CEC500C6B630 /* BoneSolider */ = {
+			isa = PBXGroup;
+			children = (
+				04C84DD82601CED200C6B630 /* define_state.png */,
+			);
+			path = BoneSolider;
+			sourceTree = "<group>";
+		};
 		04D2E91025FB5A1400722DFC /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				04C84DC12601A34800C6B630 /* complete.png */,
 				04D2E92C25FB5A2800722DFC /* armor.png */,
 				04D2E91225FB5A2200722DFC /* axe.png */,
 				04D2E92525FB5A2600722DFC /* axe2.png */,
@@ -1704,6 +1764,7 @@
 		04D68E58258323F7004B07C0 /* Monsters */ = {
 			isa = PBXGroup;
 			children = (
+				04C84DD72601CEC500C6B630 /* BoneSolider */,
 				043442082600628A006E7471 /* Boss1 */,
 				04D68E5925832400004B07C0 /* RedBat */,
 			);
@@ -1721,6 +1782,7 @@
 		04D68EB525834C9E004B07C0 /* Users */ = {
 			isa = PBXGroup;
 			children = (
+				04AAEB892601E9C400961726 /* Ninja */,
 				04D3ED7A2599D12E007AAF6C /* Stone */,
 				04EF6947259045DF00D8E02D /* Archer */,
 				04D68F5B2583742D004B07C0 /* IceWizard */,
@@ -1944,6 +2006,7 @@
 				0434430E260062F3006E7471 /* boss3_move_2.png in Resources */,
 				04D3EDEB2599E64F007AAF6C /* passDoor_2.png in Resources */,
 				04D3ED792599B28E007AAF6C /* LearnScene.jpg in Resources */,
+				04AAEB8E2601EE8F00961726 /* doubleKill.sks in Resources */,
 				043442E9260062F3006E7471 /* boss3_attack4_12.png in Resources */,
 				048025AA25874E6E00AE4D65 /* cureFire.sks in Resources */,
 				043442DB260062F3006E7471 /* meteoriteShadow.png in Resources */,
@@ -1961,6 +2024,7 @@
 				04D3ED972599D1BB007AAF6C /* appear_15.png in Resources */,
 				04344301260062F3006E7471 /* boss3_wind_5.png in Resources */,
 				04D2E95A25FB5A2B00722DFC /* upg_axe.png in Resources */,
+				04C84DD52601C65100C6B630 /* BoneSoliderScene.sks in Resources */,
 				047E7D9B25A5B1A700460EBB /* npc_Base_learn_2.png in Resources */,
 				04344328260062F3006E7471 /* boss3_attack2_2.png in Resources */,
 				04D3EDA72588A85E00AA0AE5 /* light_18.png in Resources */,
@@ -2035,6 +2099,7 @@
 				04344338260062F3006E7471 /* boss3_attack4_9.png in Resources */,
 				04D956D5258C61E90009CA01 /* Balloon.png in Resources */,
 				04344340260062F3006E7471 /* boss3_attack7_6.png in Resources */,
+				04C84DD92601CED200C6B630 /* define_state.png in Resources */,
 				04C84DBB26019D8F00C6B630 /* RedBat.atlas in Resources */,
 				04D2E94C25FB5A2B00722DFC /* upg_spear.png in Resources */,
 				04344308260062F3006E7471 /* boss3_died_3.png in Resources */,
@@ -2086,6 +2151,7 @@
 				043442F2260062F3006E7471 /* boss3_attack6_2.png in Resources */,
 				0482421C257E1D07006CE6BD /* LaunchScreen.storyboard in Resources */,
 				043442CE260062F3006E7471 /* boss3_died_14.png in Resources */,
+				04C84DCE2601AB7000C6B630 /* BoneSolider.atlas in Resources */,
 				042A93DC2593664700F79BCD /* green_light_4.png in Resources */,
 				04D2E94725FB5A2B00722DFC /* helmet.png in Resources */,
 				04344329260062F3006E7471 /* boss3_attack5_5.png in Resources */,
@@ -2106,6 +2172,7 @@
 				047E7D9725A5B1A700460EBB /* npc_Base_stay_7.png in Resources */,
 				047E7D9D25A5B1A700460EBB /* npc_Base_sit_1.png in Resources */,
 				04D3ED912588A85E00AA0AE5 /* smoke_8.png in Resources */,
+				04C84DC22601A34800C6B630 /* complete.png in Resources */,
 				043442BF260062F3006E7471 /* boss3_died_1.png in Resources */,
 				043442DF260062F3006E7471 /* boss3_wind_7.png in Resources */,
 				04344341260062F3006E7471 /* boss3_attack4_6.png in Resources */,
@@ -2200,6 +2267,7 @@
 				043442F8260062F3006E7471 /* boss3_attack2_14.png in Resources */,
 				043442FD260062F3006E7471 /* boss3_died_15.png in Resources */,
 				047E7D9325A5B1A700460EBB /* npc_Base_stay_4.png in Resources */,
+				04AAEB8B2601E9D700961726 /* Ninja_0.png in Resources */,
 				04344313260062F3006E7471 /* boss3_attack6_4.png in Resources */,
 				0434431A260062F3006E7471 /* boss3_wind_6.png in Resources */,
 				047E7D8F25A5B1A700460EBB /* npc_Base_stay_5.png in Resources */,
@@ -2317,6 +2385,7 @@
 				04D68E3525830458004B07C0 /* LearnScene.m in Sources */,
 				04D68EAD25833EDA004B07C0 /* WDCalculateTool.m in Sources */,
 				04D3ED5D2588A63800AA0AE5 /* WDBaseScene+CreateMonster.m in Sources */,
+				04C84DD22601C63E00C6B630 /* BoneSoliderScene.m in Sources */,
 				04012C2F25FF40FD00F93C69 /* WDIceWizardNode.m in Sources */,
 				04D956DB258C775D0009CA01 /* WDBalloonNode.m in Sources */,
 				044A1F2D25A4345A00032FC7 /* WDBaseScene+SkillLogic.m in Sources */,
@@ -2335,6 +2404,8 @@
 				04D6E5082594A4D90065AAC6 /* PubScene.m in Sources */,
 				04D2E90A25FB4D5100722DFC /* WDBaseScene+ContactLogic.m in Sources */,
 				0482420A257E1D03006CE6BD /* AppDelegate.m in Sources */,
+				04C84DCB2601AAB800C6B630 /* WDBoneSoliderModel.m in Sources */,
+				04AAEB9826020D3A00961726 /* WDBaseScene+Moive.m in Sources */,
 				04D68E54258322AC004B07C0 /* WDRedBatNode.m in Sources */,
 				04012C3725FF410A00F93C69 /* WDKinghtNode.m in Sources */,
 				04D2E8DC25FB391000722DFC /* WDSkillManager.m in Sources */,
@@ -2346,6 +2417,7 @@
 				04012B2925FEF6CC00F93C69 /* WDStoneNode.m in Sources */,
 				04D68E57258322E0004B07C0 /* WDRedBatModel.m in Sources */,
 				04012C4625FF417500F93C69 /* WDKinghtModel.m in Sources */,
+				04C84DC72601AAA400C6B630 /* WDBoneSoliderNode.m in Sources */,
 				04DCF65F25F85A6D00F42324 /* WDBoss1Node.m in Sources */,
 				04012B2825FEF6CC00F93C69 /* WDStoneModel.m in Sources */,
 				047E7DB125A5BF2C00460EBB /* WDTalkView.m in Sources */,

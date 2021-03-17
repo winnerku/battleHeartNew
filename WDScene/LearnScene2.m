@@ -13,7 +13,6 @@
     ///是否还在教学状态
     BOOL _isLearn;
     BOOL _isOver;
-    WDBaseNode *_clickNode;
     int _foot;
     WDRedBatNode *_redNode;
     int _diedNumber;
@@ -222,19 +221,6 @@
     }
 }
 
-- (WDBaseNode *)clickNode{
-    if (!_clickNode) {
-        _clickNode = [WDBaseNode spriteNodeWithTexture:self.textureManager.clickArr[0]];
-        _clickNode.hidden = YES;
-        [self addChild:_clickNode];
-        _clickNode.zPosition = 10000;
-        SKAction *an = [SKAction animateWithTextures:self.textureManager.clickArr timePerFrame:0.5];
-        SKAction *re = [SKAction repeatActionForever:an];
-        [_clickNode runAction:re];
-    }
-    
-    return _clickNode;
-}
 
 - (void)releaseAction
 {

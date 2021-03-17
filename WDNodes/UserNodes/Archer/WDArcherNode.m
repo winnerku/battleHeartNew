@@ -274,8 +274,6 @@
 
 }
 
-
-
 - (void)skill4Action
 {
     NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_3];

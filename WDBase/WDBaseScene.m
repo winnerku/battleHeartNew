@@ -11,6 +11,7 @@
 #import "WDBaseScene+CreateMonster.h"
 #import "WDBaseScene+SkillLogic.h"
 #import "WDBaseScene+ContactLogic.h"
+
 @implementation WDBaseScene
 
 
@@ -83,12 +84,18 @@
     [manager arrowMoveActionWithPos:pos];
     
     _selectNode.targetMonster = nil;
-    _selectNode.isAttack = NO;
+    
 
 }
 
 
 
+/// 返回主城
+- (void)backToRealPubScene{
+    if (self.changeSceneWithNameBlock) {
+        self.changeSceneWithNameBlock(@"RealPubScene");
+    }
+}
 
 
 
@@ -117,6 +124,9 @@
     if ([name isEqualToString:kRedBat]) {
         //红蝙蝠
         [self redBatWithPosition:point];
+    }else if([name isEqualToString:kBoneSolider]){
+        //骷髅
+        [self boneSoliderWithPosition:point];
     }
 }
 
@@ -174,6 +184,7 @@
     _kNightNode    = nil;
     _iceWizardNode = nil;
     _archerNode    = nil;
+    _ninjaNode     = nil;
     
     [[NSNotificationCenter defaultCenter]removeObserver:self name:kNotificationForDied object:nil];
 }
@@ -272,5 +283,18 @@
     return _textureManager;
 }
 
+- (WDBaseNode *)clickNode{
+    if (!_clickNode) {
+        _clickNode = [WDBaseNode spriteNodeWithTexture:self.textureManager.clickArr[0]];
+        _clickNode.hidden = YES;
+        [self addChild:_clickNode];
+        _clickNode.zPosition = 10000;
+        SKAction *an = [SKAction animateWithTextures:self.textureManager.clickArr timePerFrame:0.5];
+        SKAction *re = [SKAction repeatActionForever:an];
+        [_clickNode runAction:re];
+    }
+    
+    return _clickNode;
+}
 
 @end

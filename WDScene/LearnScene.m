@@ -38,7 +38,6 @@
     
     self.kNightNode.position = CGPointMake(0, 0);
     self.kNightNode.zPosition = 10;
-    self.kNightNode.isLearn = YES;
     self.bgNode.texture = [SKTexture textureWithImage:[UIImage imageNamed:@"LearnScene.jpg"]];
    
     [self.kNightNode.talkNode setText:@"嘿，请点击他！"];

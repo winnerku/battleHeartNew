@@ -165,6 +165,11 @@ static WDTextureManager *textureManager = nil;
     _archerModel = nil;
 }
 
+- (void)releaseNinjaModel
+{
+    _ninjaModel = nil;
+}
+
 - (void)releaseRedBatModel
 {
     _redBatModel = nil;
@@ -300,6 +305,15 @@ static WDTextureManager *textureManager = nil;
     return _boss1Model;
 }
 
+- (WDBoneSoliderModel *)boneSoliderModel
+{
+    if (!_boneSoliderModel) {
+        _boneSoliderModel = [[WDBoneSoliderModel alloc] init];
+        [_boneSoliderModel setNormalTexturesWithName:kBoneSolider standNumber:0 runNumber:0 walkNumber:4 diedNumber:6 attack1Number:4];
+    }
+    
+    return _boneSoliderModel;
+}
 
 #pragma mark - 点击位置 -
 - (WDBaseNode *)arrowNode

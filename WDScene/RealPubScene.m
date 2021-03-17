@@ -10,6 +10,8 @@
 #import "RealPubScene.h"
 #import "LearnSkillNode.h"
 #import "WDBaseScene+TouchLogic.h"
+#import "WDBaseScene+Moive.h"
+
 @implementation RealPubScene
 {
     NSArray *_xArr;
@@ -44,6 +46,7 @@
     [self.bgNode addChild:self.kNightNode];
     [self.bgNode addChild:self.archerNode];
     
+    
     self.iceWizardNode.position = CGPointMake(1000, 300);
     self.kNightNode.position    = CGPointMake(1200, 300);
     
@@ -55,8 +58,7 @@
     self.selectNode = self.archerNode;
     self.archerNode.arrowNode.hidden = NO;
     
-    self.passDoorNode.position = CGPointMake(300, 200);
-    self.passDoorNode.zPosition = 10;
+    
     
     self.archerNode.physicsBody.categoryBitMask = 1;
     self.kNightNode.physicsBody.categoryBitMask = 1;
@@ -73,15 +75,31 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(createBallAction) name:kNotificationForLearnSkill object:nil];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    
+    
+    /// 忍者剧情
+    if ([defaults boolForKey:kNinjaFirst]) {
+        [self ninjaMoive];
+    }else if([defaults boolForKey:kPassCheckPoint2]){
+        [self.bgNode addChild:self.ninjaNode];
+        self.ninjaNode.position = CGPointMake(1400, 300);
+        self.ninjaNode.physicsBody.categoryBitMask = 1;
+        self.ninjaNode.isPubScene = YES;
+    }
+    
     /// 有学习技能的NPC了，之后才有绿球
     if ([defaults boolForKey:kSkillNPC]) {
         [self createSkillNPC];
         [self createBallAction];
+        [self.iceWizardNode.talkNode setText:@"发现新探索地点\n快去救老大吧" hiddenTime:4 completeBlock:^{
+        }];
     }
     
-    
-    
+    self.passDoorNode.position = CGPointMake(300, 200);
+    self.passDoorNode.zPosition = 10;
 }
+
 
 - (void)createBallAction{
     

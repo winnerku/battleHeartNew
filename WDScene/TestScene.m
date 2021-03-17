@@ -28,31 +28,16 @@
     self.textureManager.mapBigY_Up = 100;
     self.textureManager.mapBigY_down = 230;
     
-    //[self addChild:self.ninjaNode];
-    
-    
-    [self createBoss2];
-}
-
-- (void)createBoss2{
-    
-    for (WDBaseNode *node in self.userArr) {
+    [self addChild:self.ninjaNode];
+    [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForChangeUser object:kNinja];
+     [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForHiddenSkill object:@(1)];
+    [self createMonsterWithName:kBoneSolider position:CGPointMake(10, 10)];
+    for (WDBaseNode *node in self.monsterArr) {
         node.state = SpriteState_movie;
     }
-    
-    _bossNode = [WDBoss1Node initWithModel:self.textureManager.boss1Model];
-    _bossNode.state = SpriteState_movie;
-    _bossNode.lastBlood = 3000;
-    [self addChild:_bossNode];
-    [self.monsterArr addObject:_bossNode];
-    
-    __weak typeof(self)weakSelf = self;
-    [_bossNode moveToTheMap:^(BOOL isComplete) {
-        [_bossNode endAction:^(BOOL isComplete) {
-                
-        }];
-    }];
 }
+
+
 
 - (void)touchUpAtPoint:(CGPoint)pos
 {

@@ -15,6 +15,7 @@
 #import "WDBaseNode.h"
 #import "Boss1Model.h"
 #import "WDNinjaModel.h"
+#import "WDBoneSoliderModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -40,7 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)WDRedBatModel *redBatModel;
 /// boss1
 @property (nonatomic,strong)Boss1Model *boss1Model;
-
+/// 骷髅兵
+@property (nonatomic,strong)WDBoneSoliderModel *boneSoliderModel;
 
 
 /** 小怪出场光效 */
@@ -111,6 +113,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)releaseKinghtModel;
 - (void)releaseIceModel;
 - (void)releaseArcherModel;
+- (void)releaseNinjaModel;
 - (void)releaseStoneModel;
 - (void)releasePassWordModel;
 

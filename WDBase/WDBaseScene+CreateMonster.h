@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)redBatWithPosition:(CGPoint)point;
 
+- (void)boneSoliderWithPosition:(CGPoint)point;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -61,6 +61,10 @@
         return;
     }
     
+    if (self.state & SpriteState_movie) {
+        return;
+    }
+    
     if (self.targetMonster) {
         [self moveToEnemy];
     }
@@ -138,7 +142,11 @@
         }
         
         [weakSelf runAction:[SKAction animateWithTextures:last timePerFrame:0.1] completion:^{
-            weakSelf.state = SpriteState_stand;
+            if (weakSelf.state & SpriteState_movie) {
+                weakSelf.state = SpriteState_movie | SpriteState_stand;
+            }else{
+                weakSelf.state = SpriteState_stand;
+            }
         }];
     }];
 

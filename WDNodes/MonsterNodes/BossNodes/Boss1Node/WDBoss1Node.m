@@ -110,6 +110,7 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(moveActionForClick) name:kNotificationForClickPrompt object:nil];
     [self runAction:animation completion:^{
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool:YES forKey:kPassCheckPoint1];
         [defaults setBool:YES forKey:kSkillNPC];
         NSInteger ballCount = [defaults integerForKey:kSkillBall];
         ballCount ++;

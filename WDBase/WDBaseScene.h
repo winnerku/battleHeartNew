@@ -19,6 +19,7 @@
 
 //怪物单位
 #import "WDRedBatNode.h"
+#import "WDBoneSoliderNode.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -55,6 +56,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 背景
 @property (nonatomic,strong)SKSpriteNode *bgNode;
 
+@property (nonatomic,strong)WDBaseNode *clickNode;
+
 
 /// 骑士
 @property (nonatomic,strong)WDKinghtNode *kNightNode;
@@ -80,6 +83,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)arrowAction:(CGPoint)pos;
 
 
+/// 返回主城
+- (void)backToRealPubScene;
 
 /// 技能
 - (void)skill1Action;

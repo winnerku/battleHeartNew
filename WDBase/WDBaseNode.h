@@ -14,26 +14,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- /// 教学状态
- @property (nonatomic,assign)BOOL isLearn;
- /// 初始化中(只有在创建时候有效)
- @property (nonatomic,assign)BOOL isInit;
- /// 正在攻击
- @property (nonatomic,assign)BOOL isAttack;
- /// 正在移动
- @property (nonatomic,assign)BOOL isMove;
- /// 正在治疗
- @property (nonatomic,assign)BOOL isCure;
- /// 死亡
- @property (nonatomic,assign)BOOL isDead;
- /// 朝向
- @property (nonatomic,assign)BOOL isRight;
- /// 硬直状态
- @property (nonatomic,assign)BOOL isStagger;
- /// 初始地方Z坐标不一样
- @property (nonatomic,assign)BOOL isPubScene;
- */
+
 
 typedef NS_ENUM(NSInteger,SpriteState) {
      
@@ -112,29 +93,18 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 
 @property (nonatomic,assign)BOOL testRelease;
 
+#pragma mark - 精灵状态
 /// 精灵状态
 @property (nonatomic,assign)SpriteState state;
 @property (nonatomic,assign)BOOL isMoveAnimation;
-
-/// 教学状态
-@property (nonatomic,assign)BOOL isLearn;
-/// 初始化中(只有在创建时候有效)
-@property (nonatomic,assign)BOOL isInit;
-/// 正在攻击
-@property (nonatomic,assign)BOOL isAttack;
-/// 正在移动
-@property (nonatomic,assign)BOOL isMove;
 /// 正在治疗
 @property (nonatomic,assign)BOOL isCure;
-/// 死亡
-@property (nonatomic,assign)BOOL isDead;
 /// 朝向
 @property (nonatomic,assign)BOOL isRight;
-/// 硬直状态
-@property (nonatomic,assign)BOOL isStagger;
 /// 初始地方Z坐标不一样
 @property (nonatomic,assign)BOOL isPubScene;
 
+#pragma mark - 精灵数值
 /// 治愈量
 @property (nonatomic,assign)int cureNumber;
 /// 血量
@@ -147,7 +117,6 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 @property (nonatomic,assign)int attackNumber;
 /// 上下浮动的数据
 @property (nonatomic,assign)int floatAttackNumber;
-
 /// 增益或者驱散BUFF的职业(区别选中态)
 @property (nonatomic,assign)BOOL addBuff;
 /// 防御力 

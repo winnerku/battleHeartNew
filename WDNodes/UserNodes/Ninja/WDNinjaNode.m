@@ -13,6 +13,8 @@
 {
     WDNinjaModel *_ninjaModel;
     CGFloat _speed;
+    SKEmitterNode *_doubleKill;
+    
 }
 
 + (instancetype)initWithModel:(WDBaseNodeModel *)model
@@ -24,14 +26,11 @@
 
 - (void)setChildNodeWithModel:(WDBaseNodeModel *)model
 {
-    
     [super setChildNodeWithModel:model];
     
     self.xScale = 0.65;
     self.yScale = 0.65;
  
-   
-    
     self.model = model;
     _ninjaModel = (WDNinjaModel *)model;
 
@@ -55,6 +54,9 @@
     
     [self standAction];
     
+    self.talkNode.position = CGPointMake(0, self.realSize.height + 70);
+    self.talkNode.xScale = 2.5;
+    self.talkNode.yScale = 2.5;
 }
 
 - (void)beAttackActionWithTargetNode:(WDBaseNode *)targetNode
@@ -87,6 +89,10 @@
 {
     [super observedNode];
     
+    if (_doubleKill) {
+        _doubleKill.position = CGPointMake(self.position.x, self.position.y - 75);
+    }
+    
     if (!self.targetMonster) {
         return;
     }
@@ -102,8 +108,6 @@
         [self standAction];
         return;
     }
-    
-    
     
     
     if ([self canAttack]) {
@@ -157,12 +161,105 @@
     }
 }
 
+
+/// 双倍攻击，远距离瞬移
+- (void)doubleAttack:(WDBaseNode *)enemyNode
+{
+    self.state = SpriteState_attack;
+    
+    WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:[WDTextureManager shareTextureManager].smokeArr[0]];
+    
+    node.position = self.position;
+    node.zPosition = 10000;
+    node.name = @"smoke";
+    node.xScale = 1.5;
+    node.yScale = 1.5;
+    [self.parent addChild:node];
+    SKAction *lightA = [SKAction animateWithTextures:[WDTextureManager shareTextureManager].smokeArr timePerFrame:0.075];
+    SKAction *alphaA = [SKAction fadeAlphaTo:0.2 duration:[WDTextureManager shareTextureManager].smokeArr.count * 0.03];
+    SKAction *r = [SKAction removeFromParent];
+    SKAction *s = [SKAction sequence:@[[SKAction group:@[lightA,alphaA]],r]];
+    
+    SKAction *alpha = [SKAction fadeAlphaTo:0 duration:[WDTextureManager shareTextureManager].smokeArr.count * 0.03];
+    __weak typeof(self)weakSelf = self;
+    [self runAction:alpha completion:^{
+        
+        weakSelf.position = CGPointMake(enemyNode.position.x - enemyNode.directionNumber * 80, enemyNode.position.y - 20);
+        CGFloat distance = enemyNode.position.x - weakSelf.position.x;
+        if (distance < 0) {
+            weakSelf.xScale = -fabs(self.xScale);
+            weakSelf.direction = @"left";
+            weakSelf.isRight = NO;
+        }else{
+            weakSelf.xScale = +fabs(self.xScale);
+            weakSelf.direction = @"right";
+            weakSelf.isRight = YES;
+        }
+        
+        NSArray *attackArr1 = [weakSelf.model.attackArr1 subarrayWithRange:NSMakeRange(2,5)];
+        SKAction *alpha2 = [SKAction fadeAlphaTo:1 duration:0.3];
+       
+        
+        
+        [weakSelf runAction:alpha2 completion:^{
+            [weakSelf runAction:[SKAction animateWithTextures:attackArr1 timePerFrame:0.05] completion:^{
+                
+                BOOL isDead = NO;
+                if ([self canAttack]) {
+                   
+                    int attackNumber = weakSelf.attackNumber;
+                    /// 双倍伤害技能
+                    if (weakSelf.skill1) {
+                        attackNumber = weakSelf.attackNumber * 2;
+                        int targetLastBlood = weakSelf.targetMonster.lastBlood;
+                        int targetAllBlood  = weakSelf.targetMonster.blood;
+                        if (targetAllBlood * 0.15 > targetLastBlood) {
+                            ///低于15%血量，百分之50几率斩杀
+                            int index = arc4random() % 2;
+                            if (index == 0) {
+                                attackNumber = targetAllBlood;
+                            }else{
+                                attackNumber = weakSelf.attackNumber * 2;
+                            }
+                        }else if(targetAllBlood * 0.10 > targetLastBlood){
+                            ///低于10%血量，直接斩杀
+                            attackNumber = targetAllBlood;
+                        }
+                        
+                    }
+                    
+                   isDead = [weakSelf.targetMonster setBloodNodeNumber:attackNumber];
+                    if (isDead) {
+                        weakSelf.targetMonster = nil;
+                    }
+                }
+                
+                weakSelf.state = SpriteState_stand;
+                weakSelf.skill1 = NO;
+                
+            }];
+        }];
+    }];
+    
+    [_doubleKill runAction:alpha completion:^{
+        [weakSelf removeDoubleKill];
+    }];
+    [node runAction:s completion:^{
+        
+    }];
+}
+
 /// 攻击1
 - (void)attackActionWithEnemyNode:(WDBaseNode *)enemyNode
 {
     [super attackActionWithEnemyNode:enemyNode];
     
     self.state = SpriteState_attack;
+    
+    if (self.skill1) {
+        [self doubleAttack:enemyNode];
+        return;
+    }
 
     NSArray *attackArr1 = [_ninjaModel.attackArr1 subarrayWithRange:NSMakeRange(0, 6)];
     NSArray *attackArr2 = [_ninjaModel.attackArr1 subarrayWithRange:NSMakeRange(6, _ninjaModel.attackArr1.count - 6)];
@@ -177,9 +274,33 @@
             return ;
         }
         
+        [weakSelf removeDoubleKill];
+
         BOOL isDead = NO;
         if ([self canAttack]) {
-           isDead = [weakSelf.targetMonster setBloodNodeNumber:weakSelf.attackNumber];
+           
+            int attackNumber = weakSelf.attackNumber;
+            /// 双倍伤害技能
+            if (weakSelf.skill1) {
+                attackNumber = weakSelf.attackNumber * 2;
+                int targetLastBlood = weakSelf.targetMonster.lastBlood;
+                int targetAllBlood  = weakSelf.targetMonster.blood;
+                if (targetAllBlood * 0.15 > targetLastBlood) {
+                    ///低于15%血量，百分之50几率斩杀
+                    int index = arc4random() % 2;
+                    if (index == 0) {
+                        attackNumber = targetAllBlood;
+                    }else{
+                        attackNumber = weakSelf.attackNumber * 2;
+                    }
+                }else if(targetAllBlood * 0.10 > targetLastBlood){
+                    ///低于10%血量，直接斩杀
+                    attackNumber = targetAllBlood;
+                }
+                
+            }
+            
+           isDead = [weakSelf.targetMonster setBloodNodeNumber:attackNumber];
             if (isDead) {
                 weakSelf.targetMonster = nil;
             }
@@ -187,11 +308,64 @@
         
         [weakSelf runAction:attack2 completion:^{
             [weakSelf standAction];
+            weakSelf.skill1 = NO;
         }];
     }];
     
+}
+
+- (void)removeDoubleKill
+{
+    [_doubleKill removeFromParent];
+    _doubleKill = nil;
+}
+
+#pragma mark - 技能 -
+//双倍伤害,持续%d秒
+- (void)skill1Action
+{
+    if (_doubleKill) {
+        return;
+    }
+    _doubleKill = [SKEmitterNode nodeWithFileNamed:@"doubleKill"];
+    [self.parent addChild:_doubleKill];
+    _doubleKill.targetNode = self.parent;
+    _doubleKill.position = CGPointMake(self.position.x, self.position.y - 75);
     
+    self.skill1 = YES;
    
+}
+
+- (void)skill2Action
+{
+    self.skill2 = YES;
+    NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_2];
+    [WDSkillManager endSkillActionWithTarget:self skillType:@"2" time:time];
+}
+
+- (void)skill3Action
+{
+    NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_3];
+    self.skill3 = YES;
+    self.moveSpeed = _speed + 200;
+    [WDSkillManager endSkillActionWithTarget:self skillType:@"3" time:time];
+
+}
+
+- (void)skill4Action
+{
+    NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_3];
+    self.skill4 = YES;
+    [WDSkillManager endSkillActionWithTarget:self skillType:@"4" time:time];
+
+}
+
+
+- (void)dealloc
+{
+    NSLog(@"忍者销毁了");
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    _ninjaModel = nil;
 }
 
 @end

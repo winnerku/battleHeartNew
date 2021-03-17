@@ -26,7 +26,7 @@
     }
     
     /// 玩家在移动状态，不显示指引线
-    if (!self.selectNode.isMove) {
+    if (!(self.selectNode.state & SpriteState_move)) {
         self.selectLine.hidden = NO;
         self.selectLine.position = CGPointMake(self.selectNode.position.x, self.selectNode.position.y - self.selectNode.realSize.height / 2.0 + 35);
     }
@@ -104,6 +104,7 @@
         //如果引导线没隐藏，添加buff效果
         if (self.selectNode.addBuff && self.selectLine.hidden == NO) {
             [self addBuf:userNode];
+            userNode.arrowNode.hidden = YES;
             canMove = NO;
         }else if(![self.selectNode.name isEqualToString:userNode.name]){
             //切换选中的玩家
@@ -155,10 +156,21 @@
         [self.selectNode removeAllActions];
         [self.selectNode standAction];
         
+        
+        
         /// 如果选中怪物，就取消之前的治疗状态(治疗职业专属)
         self.selectNode.isCure = NO;
         
         [NSObject cancelPreviousPerformRequestsWithTarget:self.selectNode selector:@selector(moveFinishAction) object:nil];
+        
+        /// 忍者
+        if ([self.selectNode.name isEqualToString:kNinja]) {
+            WDNinjaNode *ninja = (WDNinjaNode *)self.selectNode;
+            if (ninja.skill1) {
+                [ninja doubleAttack:monster];
+                [self.clickNode removeFromParent];
+            }
+        }
         
         return YES;
     }
@@ -178,6 +190,15 @@
         self.selectNode.isCure = NO;
         
         [NSObject cancelPreviousPerformRequestsWithTarget:self.selectNode selector:@selector(moveFinishAction) object:nil];
+        
+        /// 忍者
+        if ([self.selectNode.name isEqualToString:kNinja]) {
+            WDNinjaNode *ninja = (WDNinjaNode *)self.selectNode;
+            if (ninja.skill1) {
+                [ninja doubleAttack:monster];
+                [self.clickNode removeFromParent];
+            }
+        }
         
         return YES;
     }else{

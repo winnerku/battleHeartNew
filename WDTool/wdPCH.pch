@@ -41,6 +41,7 @@
 
 // 忍者
 #define kNinja @"Ninja"
+#define kNinja_skill_1 @"Ninja_skill_1" //忍者第1个技能，斩杀
 
 //石头人
 #define kStone @"Stone"
@@ -49,9 +50,11 @@
 ///敌人
 //红色蝙蝠
 #define kRedBat @"RedBat"
-
 /// 第一关BOSS
 #define kBoss1 @"kBoss1"
+
+//骷髅兵
+#define kBoneSolider @"BoneSolider"
 
 
 //玩家流程
@@ -59,6 +62,13 @@
 #define kPassLearn2 @"kPassLearn2" //教学2
 #define kPassLearn3 @"kPassLearn3" //教学3
 #define kSkillNPC @"kSkillNPC"     //解救了负责学习技能的NPC
+#define kNinjaFirst @"kNinjaFirst" //第一次会面忍者
+
+
+/// 第一关
+#define kPassCheckPoint1 @"kPassCheckPoint1"
+/// 第二关
+#define kPassCheckPoint2 @"kPassCheckPoint2"
 
 
 
@@ -140,7 +150,10 @@ static const uint32_t ARROW_CATEGORY = 0X04;     //0100
 /// 全局link
 #define kNotificationForDisplayLink @"kNotificationForDisplayLink"
 
-//召唤小怪的通知(boss3)
+//召唤小怪的通知(boss1)
 #define kNotificationForCallMonster1 @"kNotificationForCallMonster1"
+
+/// 忍者首次出现的关卡通知
+#define kNotificationForCallNinja @"kNotificationForCallNinja"
 
 #endif /* wdPCH_pch */

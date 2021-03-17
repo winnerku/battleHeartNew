@@ -11,6 +11,7 @@
 @implementation WDMapSelectView
 {
     UIScrollView *_scrollView;
+    NSArray      *_mapArr;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -60,7 +61,7 @@
         [v removeFromSuperview];
     }
     
-    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     for (int i = 0; i < images.count; i ++) {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(50 + kScreenWidth * i, 20, kScreenWidth - 100, kScreenHeight - 40)];
         imageView.image = images[i];
@@ -85,6 +86,12 @@
         label.text = textArr[i];
         [imageView addSubview:label];
         
+        if ([defaults boolForKey:kPassCheckPoint1] && i == 0) {
+            btn.userInteractionEnabled = NO;
+            label.text = @"COMPLETE!";
+            imageView.alpha = 0.5;
+        }
+        
     }
     
     [_scrollView setContentSize:CGSizeMake(kScreenWidth * images.count, 0)];
@@ -94,7 +101,7 @@
 
 - (void)mapAction:(UIButton *)sender
 {
-    NSArray *mapArr = @[@"RedBatScene"];
+    NSArray *mapArr = @[@"RedBatScene",@"BoneSoliderScene",@"RedBatScene",@"RedBatScene"];
     NSString *mapName = mapArr[sender.tag - 100];
     if (self.selectSceneBlock) {
         self.selectSceneBlock(mapName);

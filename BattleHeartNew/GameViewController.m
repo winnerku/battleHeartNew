@@ -38,10 +38,12 @@
     NSString *key1 = [NSString stringWithFormat:@"%@_0",kKinght];
     NSString *key2 = [NSString stringWithFormat:@"%@_0",kArcher];
     NSString *key3 = [NSString stringWithFormat:@"%@_0",kIceWizard];
+    NSString *key4 = [NSString stringWithFormat:@"%@_0",kNinja];
     
     [defaults setBool:YES forKey:key1];
     [defaults setBool:YES forKey:key2];
     [defaults setBool:YES forKey:key3];
+    [defaults setBool:YES forKey:key4];
 }
 
 - (void)viewDidLoad {

@@ -32,7 +32,6 @@
     }
     
     WDRedBatNode *node = [WDRedBatNode initWithModel:[WDTextureManager shareTextureManager].redBatModel];
-    node.isInit = YES;
     node.position = point;
 
 
@@ -64,7 +63,56 @@
     [self.textureManager setMonsterMovePointWithName:kRedBat monster:node];
 }
 
+- (void)boneSoliderWithPosition:(CGPoint)point
+{
+    if (point.x == 0) {
+        
+        int ax = 1;
+        int ay = 1;
+        if (arc4random() % 2 == 0) {
+            ax = -1;
+        }
+        if (arc4random() % 2 == 0) {
+            ay = -1;
+        }
+        
+        CGFloat x = (arc4random() % (int)kScreenWidth) ;
+        CGFloat y = (arc4random() % (int)kScreenHeight) ;
 
+        point = CGPointMake(x * ax, y * ay);
+    }
+    
+    WDBoneSoliderNode *node = [WDBoneSoliderNode initWithModel:[WDTextureManager shareTextureManager].boneSoliderModel];
+    node.position = point;
+
+
+    ///追击最近的人
+    WDBaseNode *nearNode = (WDBaseNode *)[self nodesAtPoint:point];
+    if ([nearNode isKindOfClass:[WDBaseNode class]] && nearNode) {
+        node.targetMonster = nearNode;
+    }else{
+        CGFloat distance = 100000;
+        for (int i = 0; i < self.userArr.count; i++) {
+            WDBaseNode *user = self.userArr[i];
+            CGFloat dis = [WDCalculateTool distanceBetweenPoints:node.position seconde:user.position];
+            if (dis < distance) {
+                distance = dis;
+                nearNode = user;
+            }
+        }
+        //if ([nearNode isKindOfClass:[WDBaseNode class]]) {
+            node.targetMonster = nearNode;
+        //}
+    }
+
+    node.alpha = 0;
+    [self addChild:node];
+    
+    
+    [self setSmokeWithMonster:node name:kBoneSolider];
+    [self.monsterArr addObject:node];
+    [self.textureManager setMonsterMovePointWithName:kBoneSolider monster:node];
+}
 
 //烟雾出场
 - (void)setSmokeWithMonster:(WDBaseNode *)monsterNode
@@ -86,7 +134,6 @@
     
     [monsterNode runAction:[SKAction fadeAlphaTo:1 duration:self.textureManager.smokeArr.count * 0.075]];
     [node runAction:s completion:^{
-        monsterNode.isInit = NO;
     }];
 }
 

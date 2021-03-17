@@ -102,13 +102,23 @@
     }
     
     NSArray *timeArr = @[];
-    ///射手时间轴
+    ///技能时间轴
     if ([name isEqualToString:kArcher]) {
+        
         timeArr = @[@(30),@(15),@(10),@(20),@(20)];
+        
     }else if([name isEqualToString:kIceWizard]){
+        
         timeArr = @[@(30),@(15),@(10),@(10),@(10)];
-    }else{
+        
+    }else if([name isEqualToString:kKinght]){
+        
         timeArr = @[@(30),@(15),@(10),@(10),@(10)];
+        
+    }else if([name isEqualToString:kNinja]){
+        
+        timeArr = @[@(5),@(15),@(10),@(10),@(10)];
+        
     }
     
     NSString *viewNameKey = [NSString stringWithFormat:@"%@_view",name];

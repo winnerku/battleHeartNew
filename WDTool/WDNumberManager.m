@@ -28,6 +28,8 @@
         [self initBoss1:node];
     }else if([name isEqualToString:kNinja]){
         [self initNinja:node];
+    }else if([name isEqualToString:kBoneSolider]){
+        [self initBoneSolider:node];
     }
 }
 
@@ -91,7 +93,7 @@
     node.blood     = 100;
     node.lastBlood = 100;
     node.zPosition = 10;
-    node.attackNumber = 30;
+    node.attackNumber = 20;
     node.floatAttackNumber = 10;
 }
 
@@ -147,6 +149,17 @@
     node.floatAttackNumber = 25;
 }
 
-
++ (void)initBoneSolider:(WDBaseNode *)node
+{
+    node.name = kBoneSolider;
+    node.moveSpeed = 300;
+    node.blood     = 200;
+    node.lastBlood = 200;
+    node.attackDistance = 0;
+    node.moveCADisplaySpeed = 2;
+    node.attackNumber = 25;
+    node.isRight = YES;
+    node.floatAttackNumber = 25;
+}
 
 @end
