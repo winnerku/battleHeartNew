@@ -62,6 +62,7 @@
     }
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray *keys = @[kPassCheckPoint1,kPassCheckPoint2];
     for (int i = 0; i < images.count; i ++) {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(50 + kScreenWidth * i, 20, kScreenWidth - 100, kScreenHeight - 40)];
         imageView.image = images[i];
@@ -86,11 +87,15 @@
         label.text = textArr[i];
         [imageView addSubview:label];
         
-        if ([defaults boolForKey:kPassCheckPoint1] && i == 0) {
-            btn.userInteractionEnabled = NO;
-            label.text = @"COMPLETE!";
-            imageView.alpha = 0.5;
+        if (i < keys.count) {
+            NSString *key = keys[i];
+            if ([defaults boolForKey:key]) {
+                btn.userInteractionEnabled = NO;
+                label.text = @"COMPLETE!";
+                imageView.alpha = 0.5;
+            }
         }
+        
         
     }
     
