@@ -22,13 +22,66 @@
                     attack1Number:(int)attackNumber
 {
     
+    NSArray *bigArr = @[@(standNumber),@(runNumber),@(walkNumber),@(diedNumber),@(attackNumber)];
+    int big = 0;
+    for (NSNumber *number in bigArr) {
+        if ([number intValue] > big) {
+            big = [number intValue];
+        }
+    }
     
-    self.standArr = [self stateName:@"stand" textureName:name number:standNumber];
-    self.runArr   = [self stateName:@"run" textureName:name number:runNumber];
-    self.walkArr = [self stateName:@"walk" textureName:name number:walkNumber];
-    self.diedArr = [self stateName:@"died" textureName:name number:diedNumber];
-    self.attackArr1 = [self stateName:@"attack1" textureName:name number:attackNumber];
+    NSMutableArray *standArr = [NSMutableArray array];
+    NSMutableArray *walkArr = [NSMutableArray array];
+    NSMutableArray *diedArr = [NSMutableArray array];
+    NSMutableArray *attackArr1 = [NSMutableArray array];
+    
+    SKTextureAtlas *atlas = [SKTextureAtlas atlasNamed:name];
+    for (int i = 0; i < big; i ++) {
+        
+        /// 站立
+        if (i < standNumber) {
+            [self createNameWithString:name actionName:@"stand" index:i arr:standArr atlas:atlas];
+        }
+        
+        /// 移动
+        if (i < walkNumber) {
+            [self createNameWithString:name actionName:@"walk" index:i arr:walkArr atlas:atlas];
+        }
+        
+        /// 死亡
+        if (i < diedNumber) {
+            [self createNameWithString:name actionName:@"died" index:i arr:diedArr atlas:atlas];
+        }
+        
+        /// 攻击
+        if (i < attackNumber) {
+            [self createNameWithString:name actionName:@"attack1" index:i arr:attackArr1 atlas:atlas];
+        }
+        
+    }
+    
+    self.standArr = [standArr copy];
+    self.walkArr  = [walkArr copy];
+    self.diedArr  = [diedArr copy];
+    self.attackArr1 = [attackArr1 copy];
+    
+    
+//    self.standArr = [self stateName:@"stand" textureName:name number:standNumber];
+//    self.runArr   = [self stateName:@"run" textureName:name number:runNumber];
+//    self.walkArr = [self stateName:@"walk" textureName:name number:walkNumber];
+//    self.diedArr = [self stateName:@"died" textureName:name number:diedNumber];
+//    self.attackArr1 = [self stateName:@"attack1" textureName:name number:attackNumber];
 
+}
+
+- (void)createNameWithString:(NSString *)name
+                  actionName:(NSString *)behaviorName
+                       index:(int)index
+                         arr:(NSMutableArray *)arr
+                       atlas:(SKTextureAtlas *)atlas
+{
+    NSString *textureName = [NSString stringWithFormat:@"%@_%@_%d",name,behaviorName,index];
+    [arr addObject:[atlas textureNamed:textureName]];
 }
 
 - (NSMutableArray *)stateName:(NSString *)stateName

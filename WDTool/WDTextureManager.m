@@ -217,6 +217,37 @@ static WDTextureManager *textureManager = nil;
 {
     if (!_archerModel) {
         _archerModel = [[WDArcherModel alloc] init];
+        
+        NSMutableArray *standArr = [NSMutableArray array];
+        NSMutableArray *walkArr = [NSMutableArray array];
+        NSMutableArray *diedArr = [NSMutableArray array];
+        NSMutableArray *attackArr1 = [NSMutableArray array];
+
+        for (int i = 0; i < 9; i ++) {
+            SKTextureAtlas *atlas = [SKTextureAtlas atlasNamed:@"Archer"];
+            NSString *stand = [NSString stringWithFormat:@"%@_stand_%d",kArcher,i];
+            [standArr addObject:[atlas textureNamed:stand]];
+            
+            NSString *walk = [NSString stringWithFormat:@"%@_walk_%d",kArcher,i];
+            [walkArr addObject:[atlas textureNamed:walk]];
+            
+            NSString *attack1 = [NSString stringWithFormat:@"%@_attack1_%d",kArcher,i];
+            [attackArr1 addObject:[atlas textureNamed:attack1]];
+            
+            NSString *died = [NSString stringWithFormat:@"%@_died_%d",kArcher,i];
+            [diedArr addObject:[atlas textureNamed:died]];
+            
+        }
+        _archerModel.standArr = [standArr copy];
+        _archerModel.walkArr  = [walkArr copy];
+        _archerModel.diedArr  = [diedArr copy];
+        _archerModel.attackArr1 = [attackArr1 copy];
+//        self.standArr = [self stateName:@"stand" textureName:name number:standNumber];
+//        self.runArr   = [self stateName:@"run" textureName:name number:runNumber];
+//        self.walkArr = [self stateName:@"walk" textureName:name number:walkNumber];
+//        self.diedArr = [self stateName:@"died" textureName:name number:diedNumber];
+//        self.attackArr1 = [self stateName:@"attack1" textureName:name number:attackNumber];
+        
         [_archerModel setNormalTexturesWithName:kArcher standNumber:10 runNumber:0 walkNumber:10 diedNumber:10 attack1Number:10];
     }
     
