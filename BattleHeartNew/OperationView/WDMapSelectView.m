@@ -106,7 +106,7 @@
 
 - (void)mapAction:(UIButton *)sender
 {
-    NSArray *mapArr = @[@"RedBatScene",@"BoneSoliderScene",@"RedBatScene",@"RedBatScene"];
+    NSArray *mapArr = @[@"RedBatScene",@"BoneSoliderScene",@"BoneBossScene",@"RedBatScene"];
     NSString *mapName = mapArr[sender.tag - 100];
     if (self.selectSceneBlock) {
         self.selectSceneBlock(mapName);

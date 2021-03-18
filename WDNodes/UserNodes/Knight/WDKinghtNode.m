@@ -57,17 +57,77 @@
 {
     [super observedNode];
     
-    if (self.state & SpriteState_dead) {
+    if (self.state & SpriteState_movie || self.state & SpriteState_init || self.state & SpriteState_stagger || self.state & SpriteState_attack || self.state & SpriteState_dead || self.state & SpriteState_move) {
         return;
     }
     
-    if (self.state & SpriteState_movie) {
+    if (!self.targetMonster) {
+        WDBaseNode *target = [WDCalculateTool searchMonsterNearNode:self];
+        if (target) {
+            self.targetMonster = target;
+        }
         return;
     }
     
-    if (self.targetMonster) {
-        [self moveToEnemy];
+    /// 玩家目标死亡
+    if (self.targetMonster.state & SpriteState_dead) {
+        self.targetMonster = nil;
+        [self standAction];
+        return;
     }
+    
+    
+    if ([self canAttack]) {
+        [self attackActionWithEnemyNode:self.targetMonster];
+        return;
+    }
+
+    
+     CGPoint point = [WDCalculateTool calculateUserMovePointWithUserNode:self monsterNode:self.targetMonster];
+    
+    
+     CGFloat distanceX = self.position.x - point.x;
+     CGFloat distanceY = self.position.y - point.y;
+         
+    
+      NSInteger xDirection = 1;
+      NSInteger yDirection = 1;
+      
+      if (distanceX > 0) {
+          xDirection = -1;
+      }else{
+          xDirection = 1;
+      }
+         
+      if (distanceY > 0) {
+          yDirection = -1;
+      }else{
+          yDirection = 1;
+      }
+         
+      CGFloat aDX = fabs(distanceX);
+      CGFloat aDY = fabs(distanceY);
+      //斜边英文。。。。等比计算
+      CGFloat hypotenuse = sqrt(aDX * aDX + aDY * aDY);
+         
+      CGFloat moveX = self.moveCADisplaySpeed * aDX / hypotenuse * xDirection;
+      CGFloat moveY = self.moveCADisplaySpeed * aDY / hypotenuse * yDirection;
+         
+      CGFloat pointX = self.position.x + moveX;
+      CGFloat pointY = self.position.y + moveY;
+      
+
+      
+      
+      self.position = CGPointMake(pointX, pointY);
+           
+         
+      SKAction *moveAnimation = [self actionForKey:@"moveAnimation"];
+      if (!moveAnimation) {
+          SKAction *texture = [SKAction animateWithTextures:self.model.walkArr timePerFrame:0.05];
+          SKAction *rep = [SKAction repeatActionForever:texture];
+          [self runAction:rep withKey:@"moveAnimation"];
+      }
 }
 
 - (BOOL)canAttack{
@@ -164,73 +224,11 @@
     }
 }
 
-- (void)moveToEnemy{
-   
-    if (self.targetMonster.state & SpriteState_dead) {
-        self.targetMonster = nil;
-        [self standAction];
-        return;
-    }
-    
-    if (self.state & SpriteState_attack || self.state & SpriteState_move) {
-        return;
-    }
-    
-    if ([self canAttack]) {
-        [self attackActionWithEnemyNode:self.targetMonster];
-        return;
-    }
-    
-//    //攻击的对象是自己
-//    if ((self.targetMonster.state & SpriteState_attack) && [self.targetMonster.targetMonster.name isEqualToString:self.name]) {
-//        return;
-//    }
-    
-     CGPoint point = [WDCalculateTool calculateUserMovePointWithUserNode:self monsterNode:self.targetMonster];
-    
-    
-     CGFloat distanceX = self.position.x - point.x;
-     CGFloat distanceY = self.position.y - point.y;
-         
-    
-      NSInteger xDirection = 1;
-      NSInteger yDirection = 1;
-      
-      if (distanceX > 0) {
-          xDirection = -1;
-      }else{
-          xDirection = 1;
-      }
-         
-      if (distanceY > 0) {
-          yDirection = -1;
-      }else{
-          yDirection = 1;
-      }
-         
-      CGFloat aDX = fabs(distanceX);
-      CGFloat aDY = fabs(distanceY);
-      //斜边英文。。。。等比计算
-      CGFloat hypotenuse = sqrt(aDX * aDX + aDY * aDY);
-         
-      CGFloat moveX = self.moveCADisplaySpeed * aDX / hypotenuse * xDirection;
-      CGFloat moveY = self.moveCADisplaySpeed * aDY / hypotenuse * yDirection;
-         
-      CGFloat pointX = self.position.x + moveX;
-      CGFloat pointY = self.position.y + moveY;
-      
-
-      
-      
-      self.position = CGPointMake(pointX, pointY);
-           
-         
-      SKAction *moveAnimation = [self actionForKey:@"moveAnimation"];
-      if (!moveAnimation) {
-          SKAction *texture = [SKAction animateWithTextures:self.model.walkArr timePerFrame:0.05];
-          SKAction *rep = [SKAction repeatActionForever:texture];
-          [self runAction:rep withKey:@"moveAnimation"];
-      }
+- (void)moveActionWithPoint:(CGPoint)point
+               moveComplete:(void (^)(void))moveFinish
+{
+    [super moveActionWithPoint:point moveComplete:moveFinish];
+    self.targetMonster = nil;
 }
 
 

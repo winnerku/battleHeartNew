@@ -109,6 +109,7 @@
                        name:(NSString *)nameStr
 {
     
+    monsterNode.state = SpriteState_movie;
     [self addChild:monsterNode];
     monsterNode.position = CGPointMake(-100, 0);
     WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:self.textureManager.smokeArr[0]];
@@ -136,7 +137,7 @@
             [weakSelf.selectNode selectSpriteAction];
             [[WDTextureManager shareTextureManager] hiddenArrow];
             [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForChangeUser object:weakSelf.selectNode.name];
-            weakSelf.selectNode.state = SpriteState_stand;
+            weakSelf.selectNode.state = SpriteState_movie;
             [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationForShowSkill object:@(0)];
             weakSelf.canShowClickNode = YES;
         }];
@@ -165,6 +166,7 @@
     [self.textureManager releaseArcherModel];
     [self.textureManager releaseRedBatModel];
     [self.textureManager releaseNinjaModel];
+    
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 

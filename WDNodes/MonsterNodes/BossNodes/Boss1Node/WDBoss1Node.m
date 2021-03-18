@@ -105,18 +105,26 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     SKAction *animation = [SKAction animateWithTextures:_boss1Model.winArr timePerFrame:0.2];
     [WDTextureManager shareTextureManager].goText = @"去学习技能！";
-    __weak typeof(self)weakSelf = self;
-    [self.talkNode setText:@"你们通过了考验\n这是你们的奖励"];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(moveActionForClick) name:kNotificationForClickPrompt object:nil];
-    [self runAction:animation completion:^{
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:YES forKey:kPassCheckPoint1];
-        [defaults setBool:YES forKey:kSkillNPC];
-        NSInteger ballCount = [defaults integerForKey:kSkillBall];
-        ballCount ++;
-        [defaults setInteger:ballCount forKey:kSkillBall];
-        [weakSelf createReward:complete];
+    
+    SKAction *action = [SKAction animateWithTextures:_boss1Model.walkArr timePerFrame:0.1];
+    SKAction *move = [SKAction moveTo:CGPointMake(0, 0) duration:0.1 * _boss1Model.walkArr.count];
+    SKAction *gr = [SKAction group:@[action,move]];
+    [self runAction:gr completion:^{
+        __weak typeof(self)weakSelf = self;
+        [self.talkNode setText:@"你们通过了考验\n这是你们的奖励"];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(moveActionForClick) name:kNotificationForClickPrompt object:nil];
+        [self runAction:animation completion:^{
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setBool:YES forKey:kPassCheckPoint1];
+            [defaults setBool:YES forKey:kSkillNPC];
+            NSInteger ballCount = [defaults integerForKey:kSkillBall];
+            ballCount ++;
+            [defaults setInteger:ballCount forKey:kSkillBall];
+            [weakSelf createReward:complete];
+        }];
     }];
+    
+    
 }
 
 - (void)createReward:(void (^)(BOOL isComplete))complete{

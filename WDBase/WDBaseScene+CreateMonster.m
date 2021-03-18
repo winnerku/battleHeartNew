@@ -25,9 +25,9 @@
             ay = -1;
         }
         
-        CGFloat x = (arc4random() % (int)kScreenWidth) ;
-        CGFloat y = (arc4random() % (int)kScreenHeight) ;
-
+        CGFloat x = (arc4random() % (int)kScreenWidth);
+        CGFloat y = (arc4random() % (int)kScreenHeight);
+        
         point = CGPointMake(x * ax, y * ay);
     }
     

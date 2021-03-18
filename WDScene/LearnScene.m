@@ -108,6 +108,7 @@
         
         self.kNightNode.talkNode.hidden = YES;
         _redNode.state = SpriteState_stand;
+        self.kNightNode.state = SpriteState_stand;
         [super touchUpAtPoint:pos];
         [self performSelector:@selector(createIceNode) withObject:nil afterDelay:3];
     
@@ -166,6 +167,7 @@
 
 - (void)redNode{
     
+    self.selectNode.state = SpriteState_movie;
     [self.selectNode.talkNode setText:@"选中蝙蝠怪物\n进行普通攻击"];
 //    self.talkBlock(@"选中蝙蝠怪物，进行普通攻击", kKinght);
 

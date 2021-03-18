@@ -12,6 +12,7 @@
 @implementation WDBoneSoliderNode
 {
     WDBoneSoliderModel *_boneModel;
+    WDBaseNode         *_defineNode;
     CGPoint _position;
     int _stagger;
     int _cureNumber;
@@ -73,40 +74,32 @@
 {
     [super beAttackActionWithTargetNode:targetNode];
     if (self.lastBlood <= self.blood * 0.3) {
-        if (self.state == SpriteState_stagger) {
-            return;
-        }
         
         /// 只有忍者未出场的时候出现
-        _cureNumber ++;
-        if (_cureNumber == 2) {
-            [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForCallNinja object:nil];
-            return;
+        [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForCallNinja object:nil];
+            
+        if (_defineNode) {
+            return;;
         }
         
-        WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:_boneModel.defineArr[0]];
-        node.zPosition = 10;
-        node.xScale = 1.5;
-        node.yScale = 1.5;
-        node.name = @"add";
-        [self addChild:node];
+        _defineNode = [WDBaseNode spriteNodeWithTexture:_boneModel.defineArr[0]];
+        _defineNode.zPosition = 10;
+        _defineNode.xScale = 1.5;
+        _defineNode.yScale = 1.5;
+        _defineNode.name = @"add";
+        [self addChild:_defineNode];
         
-        node.position = CGPointMake(10 * self.directionNumber, 0);
+        _defineNode.position = CGPointMake(10 * self.directionNumber, 0);
         
         SKAction *animation = [SKAction animateWithTextures:_boneModel.defineArr timePerFrame:0.05];
-        SKAction *rep = [SKAction repeatAction:animation count:5];
-        SKAction *remove = [SKAction removeFromParent];
-        SKAction *seq = [SKAction sequence:@[rep,remove]];
-        __weak typeof(self)weakSelf = self;
-        [node runAction:seq completion:^{
-            [weakSelf setBloodNodeNumber:-200];
-            weakSelf.state = SpriteState_stand | weakSelf.state;
-            weakSelf.defense = 0;
+        SKAction *rep = [SKAction repeatActionForever:animation];
+        
+        //__weak typeof(self)weakSelf = self;
+        [_defineNode runAction:rep completion:^{
+            
         }];
         
-        self.state = SpriteState_stagger;
-        [self removeAllActions];
-        self.defense = 100;
+        self.defense = 10000;
         
     }
 }

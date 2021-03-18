@@ -93,16 +93,23 @@
         _doubleKill.position = CGPointMake(self.position.x, self.position.y - 75);
     }
     
-    if (!self.targetMonster) {
-        return;
-    }
+    
     
     if (self.state & SpriteState_movie || self.state & SpriteState_init || self.state & SpriteState_stagger || self.state & SpriteState_attack || self.state & SpriteState_dead || self.state & SpriteState_move) {
         return;
     }
     
+    
+    if (!self.targetMonster) {
+        WDBaseNode *target = [WDCalculateTool searchMonsterNearNode:self];
+        if (target) {
+            self.targetMonster = target;
+        }
+        return;
+    }
+    
    
-    /// 玩家死亡
+    /// 玩家目标死亡
     if (self.targetMonster.state & SpriteState_dead) {
         self.targetMonster = nil;
         [self standAction];
@@ -184,7 +191,7 @@
     __weak typeof(self)weakSelf = self;
     [self runAction:alpha completion:^{
         
-        weakSelf.position = CGPointMake(enemyNode.position.x - enemyNode.directionNumber * 80, enemyNode.position.y - 20);
+        weakSelf.position = CGPointMake(enemyNode.position.x - enemyNode.directionNumber * 10, enemyNode.position.y - 20);
         CGFloat distance = enemyNode.position.x - weakSelf.position.x;
         if (distance < 0) {
             weakSelf.xScale = -fabs(self.xScale);
@@ -207,28 +214,32 @@
                 BOOL isDead = NO;
                 if ([self canAttack]) {
                    
-                    int attackNumber = weakSelf.attackNumber;
-                    /// 双倍伤害技能
-                    if (weakSelf.skill1) {
-                        attackNumber = weakSelf.attackNumber * 2;
-                        int targetLastBlood = weakSelf.targetMonster.lastBlood;
-                        int targetAllBlood  = weakSelf.targetMonster.blood;
-                        if (targetAllBlood * 0.15 > targetLastBlood) {
-                            ///低于15%血量，百分之50几率斩杀
-                            int index = arc4random() % 2;
-                            if (index == 0) {
-                                attackNumber = targetAllBlood;
-                            }else{
-                                attackNumber = weakSelf.attackNumber * 2;
-                            }
-                        }else if(targetAllBlood * 0.10 > targetLastBlood){
-                            ///低于10%血量，直接斩杀
+                    int attackNumber = weakSelf.attackNumber * 2.0;
+                    int targetLastBlood = weakSelf.targetMonster.lastBlood;
+                    int targetAllBlood  = weakSelf.targetMonster.blood;
+                       
+                    if(targetAllBlood * 0.10 > targetLastBlood){
+                        ///低于10%血量，直接斩杀
+                        attackNumber = targetAllBlood;
+                        isDead = [weakSelf.targetMonster setBloodNodeNumber:attackNumber reduceDefenseNumber:INT_MAX];
+                        
+                     }else if(targetAllBlood * 0.15 > targetLastBlood){
+                        ///低于15%血量，百分之50几率斩杀
+                        int index = arc4random() % 2;
+                        if (index == 0) {
                             attackNumber = targetAllBlood;
+                            isDead = [weakSelf.targetMonster setBloodNodeNumber:attackNumber reduceDefenseNumber:INT_MAX];
+                        }else{
+                            isDead = [weakSelf.targetMonster setBloodNodeNumber:attackNumber];
                         }
                         
-                    }
+                        
+                     }else{
+                         isDead = [weakSelf.targetMonster setBloodNodeNumber:attackNumber];
+                     }
                     
-                   isDead = [weakSelf.targetMonster setBloodNodeNumber:attackNumber];
+                    ///攻击吸血
+                    [weakSelf setBloodNodeNumber:-attackNumber];
                     if (isDead) {
                         weakSelf.targetMonster = nil;
                     }
@@ -244,6 +255,7 @@
     [_doubleKill runAction:alpha completion:^{
         [weakSelf removeDoubleKill];
     }];
+    
     [node runAction:s completion:^{
         
     }];
@@ -256,11 +268,6 @@
     
     self.state = SpriteState_attack;
     
-    if (self.skill1) {
-        [self doubleAttack:enemyNode];
-        return;
-    }
-
     NSArray *attackArr1 = [_ninjaModel.attackArr1 subarrayWithRange:NSMakeRange(0, 6)];
     NSArray *attackArr2 = [_ninjaModel.attackArr1 subarrayWithRange:NSMakeRange(6, _ninjaModel.attackArr1.count - 6)];
     
@@ -279,27 +286,9 @@
         BOOL isDead = NO;
         if ([self canAttack]) {
            
+        
             int attackNumber = weakSelf.attackNumber;
-            /// 双倍伤害技能
-            if (weakSelf.skill1) {
-                attackNumber = weakSelf.attackNumber * 2;
-                int targetLastBlood = weakSelf.targetMonster.lastBlood;
-                int targetAllBlood  = weakSelf.targetMonster.blood;
-                if (targetAllBlood * 0.15 > targetLastBlood) {
-                    ///低于15%血量，百分之50几率斩杀
-                    int index = arc4random() % 2;
-                    if (index == 0) {
-                        attackNumber = targetAllBlood;
-                    }else{
-                        attackNumber = weakSelf.attackNumber * 2;
-                    }
-                }else if(targetAllBlood * 0.10 > targetLastBlood){
-                    ///低于10%血量，直接斩杀
-                    attackNumber = targetAllBlood;
-                }
-                
-            }
-            
+
            isDead = [weakSelf.targetMonster setBloodNodeNumber:attackNumber];
             if (isDead) {
                 weakSelf.targetMonster = nil;
@@ -308,7 +297,6 @@
         
         [weakSelf runAction:attack2 completion:^{
             [weakSelf standAction];
-            weakSelf.skill1 = NO;
         }];
     }];
     

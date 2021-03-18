@@ -9,7 +9,6 @@
 #import "WDBaseNode.h"
 
 static CGFloat bloodPage = 0;
-static CGFloat bloodHeight = 40;
 
 
 @interface WDBaseNode ()
@@ -109,20 +108,65 @@ static CGFloat bloodHeight = 40;
     [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForDied object:self.name];
 }
 
-/// 加减血量
+/// 加减血量（破防状态）
+- (BOOL)setBloodNodeNumber:(int)bloodNumber
+       reduceDefenseNumber:(int)reduceDefenseNumber;
+{
+    if (self.state & SpriteState_dead && bloodNumber > 0) {
+        [self noBlood];
+        return YES;
+    }
+
+    [self bloodNode];
+   
+    /// 最终减血量 = 攻击数值 - 防御数值 + 破防数值
+    bloodNumber = bloodNumber - _defense + reduceDefenseNumber;
+    if (bloodNumber <= 0) {
+        bloodNumber = 1;
+    }
+        
+    [WDActionTool reduceBloodLabelAnimation:self reduceCount:bloodNumber];
+    
+    self.bloodBgNode.alpha = 1;
+
+    if (bloodNumber >= _lastBlood) {
+        bloodNumber = _lastBlood;
+    }
+    _lastBlood = _lastBlood - bloodNumber;
+    
+    /// 没有血的状态
+    if (_lastBlood <= 0) {
+        self.state = SpriteState_dead;
+        [self reduceAnimation:bloodNumber];
+        ///这里这样处理是因为先走了死亡的处理之后又走的通知
+        [self performSelector:@selector(noBlood) withObject:nil afterDelay:0];
+        return YES;
+    }
+    
+    
+    CGFloat percent = (float)_lastBlood / (float)_blood;
+    if (_lastBlood <= 0) {
+        percent = 0;
+    }
+    
+    //减血动画
+    [self reduceAnimation:bloodNumber];
+       
+    return NO;
+}
+
+/// 加减血量(考虑防御)
 - (BOOL)setBloodNodeNumber:(int)bloodNumber
 {
     if (self.state & SpriteState_dead && bloodNumber > 0) {
         [self noBlood];
         return YES;
     }
-    
-    
 
     [self bloodNode];
     BOOL isAddBlood = NO;
     if (bloodNumber > 0) {
-        /// 增加防御数值
+        /// 最终减血量 = 攻击数值 - 防御数值
         bloodNumber = bloodNumber - _defense;
         if (bloodNumber <= 0) {
             bloodNumber = 1;
@@ -195,7 +239,6 @@ static CGFloat bloodHeight = 40;
     
     return NO;
 }
-
 
 /// 减血动画
 - (void)reduceAnimation:(int)attackNumber
@@ -552,7 +595,7 @@ static CGFloat bloodHeight = 40;
         }
         
         if (self.bloodHeight == 0) {
-            self.bloodHeight = 40.f;
+            self.bloodHeight = 20.f;
         }
         
         _bloodBgNode = [WDBaseNode spriteNodeWithColor:color size:CGSizeMake(width, self.bloodHeight)];
@@ -574,6 +617,8 @@ static CGFloat bloodHeight = 40;
         
         _bloodBgNode.anchorPoint = CGPointMake(0, 0);
         _bloodNode.anchorPoint = CGPointMake(0, 0);
+        
+        
     }
     
     return _bloodNode;

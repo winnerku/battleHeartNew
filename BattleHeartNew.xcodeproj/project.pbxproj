@@ -262,6 +262,8 @@
 		04AAEB8B2601E9D700961726 /* Ninja_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 04AAEB8A2601E9D700961726 /* Ninja_0.png */; };
 		04AAEB8E2601EE8F00961726 /* doubleKill.sks in Resources */ = {isa = PBXBuildFile; fileRef = 04AAEB8D2601EE8F00961726 /* doubleKill.sks */; };
 		04AAEB9826020D3A00961726 /* WDBaseScene+Moive.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AAEB9726020D3A00961726 /* WDBaseScene+Moive.m */; };
+		04ABCB5B2602EC6F005487E2 /* BoneBossScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 04ABCB5A2602EC6F005487E2 /* BoneBossScene.m */; };
+		04ABCB5E2602ED27005487E2 /* BoneBossScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 04ABCB5D2602ED27005487E2 /* BoneBossScene.sks */; };
 		04C84DA82601955500C6B630 /* Archer.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 04C84DA72601955500C6B630 /* Archer.atlas */; };
 		04C84DAC26019AF500C6B630 /* Knight.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 04C84DAB26019AF500C6B630 /* Knight.atlas */; };
 		04C84DAF26019BBB00C6B630 /* IceWizard.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 04C84DAE26019BBB00C6B630 /* IceWizard.atlas */; };
@@ -748,6 +750,9 @@
 		04AAEB8D2601EE8F00961726 /* doubleKill.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = doubleKill.sks; sourceTree = "<group>"; };
 		04AAEB9626020D3A00961726 /* WDBaseScene+Moive.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WDBaseScene+Moive.h"; sourceTree = "<group>"; };
 		04AAEB9726020D3A00961726 /* WDBaseScene+Moive.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "WDBaseScene+Moive.m"; sourceTree = "<group>"; };
+		04ABCB592602EC6F005487E2 /* BoneBossScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BoneBossScene.h; sourceTree = "<group>"; };
+		04ABCB5A2602EC6F005487E2 /* BoneBossScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BoneBossScene.m; sourceTree = "<group>"; };
+		04ABCB5D2602ED27005487E2 /* BoneBossScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = BoneBossScene.sks; sourceTree = "<group>"; };
 		04C84DA72601955500C6B630 /* Archer.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Archer.atlas; sourceTree = "<group>"; };
 		04C84DAB26019AF500C6B630 /* Knight.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Knight.atlas; sourceTree = "<group>"; };
 		04C84DAE26019BBB00C6B630 /* IceWizard.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = IceWizard.atlas; sourceTree = "<group>"; };
@@ -1447,6 +1452,9 @@
 				04C84DD02601C63E00C6B630 /* BoneSoliderScene.h */,
 				04C84DD12601C63E00C6B630 /* BoneSoliderScene.m */,
 				04C84DD42601C65100C6B630 /* BoneSoliderScene.sks */,
+				04ABCB592602EC6F005487E2 /* BoneBossScene.h */,
+				04ABCB5A2602EC6F005487E2 /* BoneBossScene.m */,
+				04ABCB5D2602ED27005487E2 /* BoneBossScene.sks */,
 				04A2613B25F8E35A00055A32 /* LoadingScene.h */,
 				04A2613C25F8E35A00055A32 /* LoadingScene.m */,
 				04A2613F25F8E36E00055A32 /* LoadingScene.sks */,
@@ -2133,6 +2141,7 @@
 				043442F7260062F3006E7471 /* wuqishi_mete2_2.png in Resources */,
 				04D3ED842588A85E00AA0AE5 /* smoke_5.png in Resources */,
 				0434430D260062F3006E7471 /* boss3_attack5_6.png in Resources */,
+				04ABCB5E2602ED27005487E2 /* BoneBossScene.sks in Resources */,
 				047E7DBF25A5D82700460EBB /* select_no.png in Resources */,
 				0434433A260062F3006E7471 /* boss3_attack6_6.png in Resources */,
 				043442B2260062F3006E7471 /* wuqishi_mete2_5.png in Resources */,
@@ -2403,6 +2412,7 @@
 				044A1F3025A446B200032FC7 /* UIImage+CacheImage.m in Sources */,
 				04D6E5082594A4D90065AAC6 /* PubScene.m in Sources */,
 				04D2E90A25FB4D5100722DFC /* WDBaseScene+ContactLogic.m in Sources */,
+				04ABCB5B2602EC6F005487E2 /* BoneBossScene.m in Sources */,
 				0482420A257E1D03006CE6BD /* AppDelegate.m in Sources */,
 				04C84DCB2601AAB800C6B630 /* WDBoneSoliderModel.m in Sources */,
 				04AAEB9826020D3A00961726 /* WDBaseScene+Moive.m in Sources */,

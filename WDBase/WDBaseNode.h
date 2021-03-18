@@ -176,6 +176,13 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 /// @param bloodNumber  敌人攻击力,也可能是牧师加血量,初始化传0
 - (BOOL)setBloodNodeNumber:(int)bloodNumber;
 
+
+/// 同上，不过考虑破防状态
+/// @param bloodNumber 攻击掉的血量
+/// @param reduceDefenseNumber 破掉的防御力
+- (BOOL)setBloodNodeNumber:(int)bloodNumber
+       reduceDefenseNumber:(int)reduceDefenseNumber;
+
 /// 被攻击
 /// @param targetNode 攻击单位
 - (void)beAttackActionWithTargetNode:(WDBaseNode *)targetNode;

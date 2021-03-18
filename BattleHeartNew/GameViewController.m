@@ -63,7 +63,7 @@
  
     [manager loadCommonTexture];
     [manager setLinker];
-
+//
     NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
     if (![d boolForKey:kPassLearn1]) {
         [self createSceneWithName:@"LearnScene"];
@@ -74,7 +74,7 @@
     }else{
         [self createSceneWithName:@"RealPubScene"];
     }
-
+  
 //    [self createSceneWithName:@"TestScene"];
 //    [self showLearnSkillViewControllerWithName:kArcher];
 }
