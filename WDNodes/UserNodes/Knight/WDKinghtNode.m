@@ -66,6 +66,7 @@
         if (target) {
             self.targetMonster = target;
         }
+        [self standAction];
         return;
     }
     

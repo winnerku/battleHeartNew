@@ -26,7 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,copy)NSArray <SKTexture *>*attackArr1;
 /// 被攻击硬直
 @property (nonatomic,copy)NSArray <SKTexture *>*beHurtArr;
-
+/// 状态<减速>
+@property (nonatomic,copy)NSArray <SKTexture *>*statusReduceArr;
 
 /// 初始化
 - (void)setNormalTexturesWithName:(NSString *)name

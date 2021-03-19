@@ -14,31 +14,20 @@
 + (void)initNodeValueWithName:(NSString *)name
                          node:(WDBaseNode *)node
 {
-    if ([name isEqualToString:kRedBat]) {
-        [self initRedBat:node];
-    }else if([name isEqualToString:kKinght]){
-        [self initKknight:node];
-    }else if([name isEqualToString:kIceWizard]){
-        [self initIceWizard:node];
-    }else if([name isEqualToString:kArcher]){
-        [self initArcher:node];
-    }else if([name isEqualToString:kStone]){
-        
-    }else if([name isEqualToString:kBoss1]){
-        [self initBoss1:node];
-    }else if([name isEqualToString:kNinja]){
-        [self initNinja:node];
-    }else if([name isEqualToString:kBoneSolider]){
-        [self initBoneSolider:node];
+    NSString *methodName = [NSString stringWithFormat:@"init%@:",name];
+    SEL method = NSSelectorFromString(methodName);
+    if (method) {
+        [self performSelector:method withObject:node];
     }
 }
 
 ////////////////////// 玩家 ////////////////////
 #pragma mark - 骑士 -
-+ (void)initKknight:(WDBaseNode *)node
++ (void)initKnight:(WDBaseNode *)node
 {
     node.name = kKinght;
     node.moveSpeed = 300;
+    node.trueMoveSpeed = 300;
     node.blood     = 300;
     node.lastBlood = 300;
     node.attackDistance = 0;
@@ -53,6 +42,7 @@
 {
     node.name = kIceWizard;
     node.moveSpeed = 300;
+    node.trueMoveSpeed = 300;
     node.moveCADisplaySpeed = 2.5;
     node.blood     = 100;
     node.lastBlood = 100;
@@ -136,6 +126,7 @@
     node.attackNumber = 10;
 }
 
+/// boss1
 + (void)initBoss1:(WDBaseNode *)node
 {
     node.name = kBoss1;
@@ -149,12 +140,27 @@
     node.floatAttackNumber = 25;
 }
 
+/// 骷髅骑士
++ (void)initBoneKnight:(WDBaseNode *)node
+{
+    node.name = kBoneKnight;
+    node.moveSpeed = 300;
+    node.blood     = 1500;
+    node.lastBlood = 1500;
+    node.attackDistance = 0;
+    node.moveCADisplaySpeed = 2;
+    node.attackNumber = 40;
+    node.isRight = YES;
+    node.floatAttackNumber = 25;
+}
+
+/// 骷髅兵
 + (void)initBoneSolider:(WDBaseNode *)node
 {
     node.name = kBoneSolider;
     node.moveSpeed = 300;
-    node.blood     = 200;
-    node.lastBlood = 200;
+    node.blood     = 400;
+    node.lastBlood = 400;
     node.attackDistance = 0;
     node.moveCADisplaySpeed = 2;
     node.attackNumber = 25;

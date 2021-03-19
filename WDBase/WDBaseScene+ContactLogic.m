@@ -41,7 +41,6 @@
         }
     }
     
-    
     ///冰火触碰
     if ([nodeA.name isEqualToString:@"iceFire"] && ![nodeB isKindOfClass:[WDUserNode class]]) {
         CGFloat numer = [WDCalculateTool calculateReduceNumberWithAttack:self.iceWizardNode.attackNumber floatNumber:self.iceWizardNode.floatAttackNumber];
@@ -60,27 +59,55 @@
     
     
     
+    /// 冰爪攻击
+    if ([nodeA isKindOfClass:[WDUserNode class]] && [nodeB.name  isEqualToString:@"iceClaw"]) {
+        [self iceClawContactAction:nodeA claw:nodeB];
+    } else if([nodeB isKindOfClass:[WDUserNode class]] && [nodeA.name  isEqualToString:@"iceClaw"]){
+        [self iceClawContactAction:nodeB claw:nodeA];
+    }
+    
     /// 风攻击导致瘫痪
     if ([nodeA isKindOfClass:[WDUserNode class]] && [nodeB.name isEqualToString:@"wind"]) {
         [self windContactAction:nodeB user:nodeA];
+    }else if([nodeB isKindOfClass:[WDUserNode class]] && [nodeA.name isEqualToString:@"wind"]){
+        [self windContactAction:nodeA user:nodeB];
     }
        
-    
     /// 怪物攻击击中玩家
     if ([nodeA isKindOfClass:[WDUserNode class]] && [nodeB isKindOfClass:[WDWeaponNode class]]) {
         CGFloat numer = [WDCalculateTool calculateReduceNumberWithAttack:nodeB.attackNumber floatNumber:nodeB.floatAttackNumber];
         [nodeA setBloodNodeNumber:numer];
+    }else if([nodeB isKindOfClass:[WDUserNode class]] && [nodeA isKindOfClass:[WDWeaponNode class]]){
+        CGFloat numer = [WDCalculateTool calculateReduceNumberWithAttack:nodeA.attackNumber floatNumber:nodeA.floatAttackNumber];
+        [nodeB setBloodNodeNumber:numer];
     }
 }
 
 
 
+/// 被BOSS的冰爪攻击了
+- (void)iceClawContactAction:(WDBaseNode *)userNode
+                        claw:(WDBaseNode *)iceClawNode
+{
+    CGFloat numer = [WDCalculateTool calculateReduceNumberWithAttack:iceClawNode.attackNumber floatNumber:5];
+    [userNode setBloodNodeNumber:numer];
+   
+    CGPoint point = CGPointMake(-60, userNode.realSize.height + 40);
+    CGFloat scale = 3.0;
+    if ([userNode.name isEqualToString:kArcher]) {
+        point = CGPointMake(-60, userNode.realSize.height + 40);
+        scale = 3.0;
+    }
+    
+    userNode.affect = SpriteAffect_reduce;
+    [userNode setAffectWithArr:userNode.model.statusReduceArr point:point scale:scale count:3];
+    
+}
 
 /// 被BOSS的吹风攻击
 - (void)windContactAction:(WDBaseNode *)windNode
                      user:(WDBaseNode *)userNode
 {
-    
     userNode.state = SpriteState_wind | SpriteState_stagger;
     [userNode removeAllActions];
     userNode.reduceBloodNow = NO;

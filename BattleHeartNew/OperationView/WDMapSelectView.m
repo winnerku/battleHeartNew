@@ -62,7 +62,8 @@
     }
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSArray *keys = @[kPassCheckPoint1,kPassCheckPoint2];
+    NSArray *keys = @[kPassCheckPoint1,kPassCheckPoint2,kPassCheckPoint3,kPassCheckPoint4,kPassCheckPoint5,kPassCheckPoint6];
+    int passNumber = 0;
     for (int i = 0; i < images.count; i ++) {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(50 + kScreenWidth * i, 20, kScreenWidth - 100, kScreenHeight - 40)];
         imageView.image = images[i];
@@ -87,21 +88,31 @@
         label.text = textArr[i];
         [imageView addSubview:label];
         
-        if (i < keys.count) {
-            NSString *key = keys[i];
-            if ([defaults boolForKey:key]) {
-                btn.userInteractionEnabled = NO;
-                label.text = @"COMPLETE!";
-                imageView.alpha = 0.5;
-            }
+        
+        NSString *key = keys[i];
+        if ([defaults boolForKey:key]) {
+            btn.userInteractionEnabled = NO;
+            label.text = @"COMPLETE!";
+            imageView.alpha = 0.5;
+            passNumber ++;
+        }else if(i > passNumber){
+            label.alpha = 0.3;
+            UIButton *btn2 = [[UIButton alloc] initWithFrame:imageView.bounds];
+            [btn2 addTarget:self action:@selector(notCompleteAction:) forControlEvents:UIControlEventTouchUpInside];
+            [imageView addSubview:btn2];
         }
-        
-        
     }
     
     [_scrollView setContentSize:CGSizeMake(kScreenWidth * images.count, 0)];
     
     //[self performSelector:@selector(a) withObject:nil afterDelay:0.5];
+}
+
+- (void)notCompleteAction:(UIButton *)sender
+{
+    if (self.selectSceneBlock) {
+        self.selectSceneBlock(@"NOPASS");
+    }
 }
 
 - (void)mapAction:(UIButton *)sender

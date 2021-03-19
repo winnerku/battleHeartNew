@@ -34,15 +34,30 @@
     }];
     
     [_mapView setSelectSceneBlock:^(NSString * _Nonnull sceneName) {
-        if (weakSelf.selectSceneBlock) {
-            weakSelf.selectSceneBlock(sceneName);
+        
+        if ([sceneName isEqualToString:@"NOPASS"]) {
+            [weakSelf noPassAction];
+        }else{
+            if (weakSelf.selectSceneBlock) {
+                weakSelf.selectSceneBlock(sceneName);
+            }
+            [weakSelf dismissViewControllerAnimated:YES completion:^{
+                
+            }];
         }
-        [weakSelf dismissViewControllerAnimated:YES completion:^{
-            
-        }];
+        
     }];
 }
 
-
+- (void)noPassAction
+{
+    UIAlertController *alertC = [UIAlertController alertControllerWithTitle:@"请先完成上一个关卡" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    
+    [alertC addAction:action];
+    [self presentViewController:alertC animated:YES completion:^{
+    }];
+}
 
 @end

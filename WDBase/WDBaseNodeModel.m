@@ -65,12 +65,14 @@
     self.diedArr  = [diedArr copy];
     self.attackArr1 = [attackArr1 copy];
     
+    NSMutableArray *arr = [NSMutableArray array];
+    for (int i = 0; i < 4; i ++) {
+        NSString *reduce = [NSString stringWithFormat:@"reduceSpeed_%d",i];
+        SKTexture *texture = [SKTexture textureWithImage:[UIImage imageNamed:reduce]];
+        [arr addObject:texture];
+    }
     
-//    self.standArr = [self stateName:@"stand" textureName:name number:standNumber];
-//    self.runArr   = [self stateName:@"run" textureName:name number:runNumber];
-//    self.walkArr = [self stateName:@"walk" textureName:name number:walkNumber];
-//    self.diedArr = [self stateName:@"died" textureName:name number:diedNumber];
-//    self.attackArr1 = [self stateName:@"attack1" textureName:name number:attackNumber];
+    self.statusReduceArr = [arr copy];
 
 }
 

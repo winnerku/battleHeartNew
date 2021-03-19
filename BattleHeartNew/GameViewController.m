@@ -220,8 +220,6 @@
     SKTransition *tr = [SKTransition fadeWithDuration:1];
 
     // Present the scene
-  
-       
     skView.showsFPS = YES;
     skView.showsNodeCount = YES;
     skView.showsPhysics = YES;

@@ -51,7 +51,9 @@
 //红色蝙蝠
 #define kRedBat @"RedBat"
 /// 第一关BOSS
-#define kBoss1 @"kBoss1"
+#define kBoss1 @"Boss1"
+/// 第二关BOSS(骷髅骑士)
+#define kBoneKnight @"BoneKnight"
 
 //骷髅兵
 #define kBoneSolider @"BoneSolider"
@@ -69,7 +71,14 @@
 #define kPassCheckPoint1 @"kPassCheckPoint1"
 /// 第二关
 #define kPassCheckPoint2 @"kPassCheckPoint2"
-
+/// 第三关
+#define kPassCheckPoint3 @"kPassCheckPoint3"
+/// 第四关
+#define kPassCheckPoint4 @"kPassCheckPoint4"
+/// 第五关
+#define kPassCheckPoint5 @"kPassCheckPoint5"
+/// 第六关
+#define kPassCheckPoint6 @"kPassCheckPoint6"
 
 
 #define kSkillBall @"kSkillBall" // 学习技能的球

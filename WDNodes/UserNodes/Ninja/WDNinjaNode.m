@@ -105,6 +105,7 @@
         if (target) {
             self.targetMonster = target;
         }
+        [self standAction];
         return;
     }
     
@@ -281,7 +282,7 @@
             return ;
         }
         
-        [weakSelf removeDoubleKill];
+        
 
         BOOL isDead = NO;
         if ([self canAttack]) {

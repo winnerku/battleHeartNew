@@ -10,60 +10,51 @@
 
 @implementation WDBaseScene (CreateMonster)
 
-
+#pragma mark - 红蝙蝠 -
+/// 红蝙蝠
 - (void)redBatWithPosition:(CGPoint)point
 {
-    
-    if (point.x == 0) {
-        
-        int ax = 1;
-        int ay = 1;
-        if (arc4random() % 2 == 0) {
-            ax = -1;
-        }
-        if (arc4random() % 2 == 0) {
-            ay = -1;
-        }
-        
-        CGFloat x = (arc4random() % (int)kScreenWidth);
-        CGFloat y = (arc4random() % (int)kScreenHeight);
-        
-        point = CGPointMake(x * ax, y * ay);
-    }
-    
+    point = [self appearPoint:point];
+
     WDRedBatNode *node = [WDRedBatNode initWithModel:[WDTextureManager shareTextureManager].redBatModel];
     node.position = point;
+    node.targetMonster = [self targetNode:point];
+    node.alpha = 0;
+    [self addChild:node];
+    [self appearNodeWithName:kRedBat node:node];
+}
 
+#pragma mark - 骷髅士兵 -
+///骷髅士兵
+- (void)boneSoliderWithPosition:(CGPoint)point
+{
+    point = [self appearPoint:point];
+    
+    WDBoneSoliderNode *node = [WDBoneSoliderNode initWithModel:[WDTextureManager shareTextureManager].boneSoliderModel];
+    node.position = point;
+    node.targetMonster = [self targetNode:point];
+    node.alpha = 0;
+    [self addChild:node];
+    [self appearNodeWithName:kBoneSolider node:node];
+}
 
-    ///追击最近的人
-    WDBaseNode *nearNode = (WDBaseNode *)[self nodesAtPoint:point];
-    if ([nearNode isKindOfClass:[WDBaseNode class]] && nearNode) {
-        node.targetMonster = nearNode;
-    }else{
-        CGFloat distance = 100000;
-        for (int i = 0; i < self.userArr.count; i++) {
-            WDBaseNode *user = self.userArr[i];
-            CGFloat dis = [WDCalculateTool distanceBetweenPoints:node.position seconde:user.position];
-            if (dis < distance) {
-                distance = dis;
-                nearNode = user;
-            }
-        }
-        //if ([nearNode isKindOfClass:[WDBaseNode class]]) {
-            node.targetMonster = nearNode;
-        //}
-    }
+#pragma mark - 骷髅骑士 -
+- (void)boneKnightWithPosition:(CGPoint)point{
+   
+    point = [self appearPoint:point];
+    
+    WDBoss2Node *node = [WDBoss2Node initWithModel:[WDTextureManager shareTextureManager].boss2Model];
+    node.position = point;
+    node.targetMonster = [self targetNode:point];
 
     node.alpha = 0;
     [self addChild:node];
-    
-    
-    [self setSmokeWithMonster:node name:kRedBat];
-    [self.monsterArr addObject:node];
-    [self.textureManager setMonsterMovePointWithName:kRedBat monster:node];
+    [self appearNodeWithName:kBoneKnight node:node];
 }
 
-- (void)boneSoliderWithPosition:(CGPoint)point
+
+/// 出场的位置
+- (CGPoint)appearPoint:(CGPoint)point
 {
     if (point.x == 0) {
         
@@ -82,36 +73,43 @@
         point = CGPointMake(x * ax, y * ay);
     }
     
-    WDBoneSoliderNode *node = [WDBoneSoliderNode initWithModel:[WDTextureManager shareTextureManager].boneSoliderModel];
-    node.position = point;
+    return point;
+}
 
-
+/// 追击的目标
+- (WDBaseNode *)targetNode:(CGPoint)point
+{
     ///追击最近的人
-    WDBaseNode *nearNode = (WDBaseNode *)[self nodesAtPoint:point];
-    if ([nearNode isKindOfClass:[WDBaseNode class]] && nearNode) {
-        node.targetMonster = nearNode;
+    WDBaseNode *nearNode = (WDBaseNode *)[self nodeAtPoint:point];
+    if ([nearNode isKindOfClass:[WDUserNode class]] && nearNode) {
+        return nearNode;
     }else{
         CGFloat distance = 100000;
         for (int i = 0; i < self.userArr.count; i++) {
-            WDBaseNode *user = self.userArr[i];
-            CGFloat dis = [WDCalculateTool distanceBetweenPoints:node.position seconde:user.position];
+            WDUserNode *user = self.userArr[i];
+            CGFloat dis = [WDCalculateTool distanceBetweenPoints:point seconde:user.position];
             if (dis < distance) {
                 distance = dis;
                 nearNode = user;
             }
         }
-        //if ([nearNode isKindOfClass:[WDBaseNode class]]) {
-            node.targetMonster = nearNode;
-        //}
+        
+        if ([nearNode isKindOfClass:[WDUserNode class]]) {
+            return nearNode;
+        }else{
+            return nil;
+        }
     }
+}
 
-    node.alpha = 0;
-    [self addChild:node];
-    
-    
-    [self setSmokeWithMonster:node name:kBoneSolider];
+
+/// 设置出场动画
+- (void)appearNodeWithName:(NSString *)name
+                      node:(WDBaseNode *)node
+{
+    [self setSmokeWithMonster:node name:name];
     [self.monsterArr addObject:node];
-    [self.textureManager setMonsterMovePointWithName:kBoneSolider monster:node];
+    [self.textureManager setMonsterMovePointWithName:name monster:node];
 }
 
 //烟雾出场
@@ -136,7 +134,6 @@
     [node runAction:s completion:^{
     }];
 }
-
 
 //紫色灯光出场
 - (void)setLightWithMonster:(WDBaseNode *)monsterNode name:(NSString *)nameStr

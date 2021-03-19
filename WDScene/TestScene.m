@@ -12,6 +12,7 @@
 @implementation TestScene
 {
     WDBoss1Node *_bossNode;
+    WDBoss2Node *_bossNode2;
 }
 
 - (void)didMoveToView:(SKView *)view
@@ -31,29 +32,20 @@
     [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForChangeUser object:kNinja];
      [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForHiddenSkill object:@(1)];
     
-    [self createBoss2];
-}
-
-- (void)createBoss2{
-    
-    for (WDBaseNode *node in self.userArr) {
-        node.state = SpriteState_movie;
+    [self createMonsterWithName:kBoneKnight position:CGPointMake(10, 10)];
+    for (WDBaseNode *node in self.monsterArr) {
+        _bossNode2 = node;
     }
     
-    _bossNode = [WDBoss1Node initWithModel:self.textureManager.boss1Model];
-    _bossNode.state = SpriteState_movie;
-    [self addChild:_bossNode];
-    [self.monsterArr addObject:_bossNode];
+    self.iceWizardNode.lastBlood = 10000;
+    self.iceWizardNode.blood = 10000;
+    [self addChild:self.iceWizardNode];
     
-    __weak typeof(self)weakSelf = self;
-    [_bossNode moveToTheMap:^(BOOL isComplete) {
-        for (WDBaseNode *node in weakSelf.userArr) {
-            node.state = SpriteState_stand;
-          
-        }
-        
-    }];
+    
+    
 }
+
+
 
 
 - (void)touchUpAtPoint:(CGPoint)pos

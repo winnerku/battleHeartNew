@@ -20,6 +20,7 @@
 //怪物单位
 #import "WDRedBatNode.h"
 #import "WDBoneSoliderNode.h"
+#import "WDBoss2Node.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

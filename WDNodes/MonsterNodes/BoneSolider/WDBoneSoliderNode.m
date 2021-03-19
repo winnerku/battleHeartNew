@@ -53,6 +53,7 @@
     self.balloonNode.xScale = 1.0;
     self.balloonNode.yScale = 1.0;
     self.balloonNode.position = CGPointMake(0, self.size.height / 2.0 - 15);
+    self.balloonNode.hidden = YES;
 }
 
 - (BOOL)canAttack{
@@ -73,7 +74,7 @@
 - (void)beAttackActionWithTargetNode:(WDBaseNode *)targetNode
 {
     [super beAttackActionWithTargetNode:targetNode];
-    if (self.lastBlood <= self.blood * 0.3) {
+    if (self.lastBlood <= self.blood * 0.1) {
         
         /// 只有忍者未出场的时候出现
         [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForCallNinja object:nil];

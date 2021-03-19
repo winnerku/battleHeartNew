@@ -35,8 +35,7 @@
     [self addChild:self.kNightNode];
     [self addChild:self.iceWizardNode];
     
-    self.ninjaNode.alpha = 0;
-    self.ninjaNode.state = SpriteState_movie;
+    
 
     self.archerNode.position = CGPointMake(0, 0);
     self.iceWizardNode.position = CGPointMake(-200, 0);
@@ -53,7 +52,12 @@
 
 
 - (void)showNinja{
-   
+    
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:kNotificationForCallNinja object:nil];
+    
+    self.ninjaNode.alpha = 0;
+    self.ninjaNode.state = SpriteState_movie;
+    [self addChild:self.ninjaNode];
     self.isPauseClick = YES;
     
     NSArray *points = @[@(CGPointMake(100, 0)),@(CGPointMake(200, 0)),@(CGPointMake(300, 0)),@(CGPointMake(-100, 0))];
@@ -72,15 +76,11 @@
         
         i ++;
     }
-    
-    
  
     _boneSolider.state = SpriteState_movie;
     [_boneSolider removeAllActions];
     [NSObject cancelPreviousPerformRequestsWithTarget:_boneSolider];
    
-    
-  
         __weak typeof(self)weakSelf = self;
         [self.selectNode.talkNode setText:@"打不死的嘛？\n这破骷髅怪物" hiddenTime:3 completeBlock:^{
             
@@ -108,9 +108,6 @@
 - (void)setSmokeWithMonsterForThis:(WDBaseNode *)monsterNode
                        name:(NSString *)nameStr
 {
-    
-    monsterNode.state = SpriteState_movie;
-    [self addChild:monsterNode];
     monsterNode.position = CGPointMake(-100, 0);
     WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:self.textureManager.smokeArr[0]];
     

@@ -16,12 +16,16 @@
 #import "Boss1Model.h"
 #import "WDNinjaModel.h"
 #import "WDBoneSoliderModel.h"
+#import "Boss2Model.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface WDTextureManager : NSObject
 
 + (WDTextureManager *)shareTextureManager;
+#pragma mark - 状态 -
+
+
 
 #pragma mark - 玩家人物 -
 /// 骑士
@@ -39,8 +43,10 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 怪物 -
 /// 蝙蝠
 @property (nonatomic,strong)WDRedBatModel *redBatModel;
-/// boss1
+/// boss1 学习技能NPC
 @property (nonatomic,strong)Boss1Model *boss1Model;
+/// boss2 骷髅骑士
+@property (nonatomic,strong)Boss2Model *boss2Model;
 /// 骷髅兵
 @property (nonatomic,strong)WDBoneSoliderModel *boneSoliderModel;
 
@@ -117,11 +123,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)releaseStoneModel;
 - (void)releasePassWordModel;
 
+
 //怪物
 - (void)releaseRedBatModel;
 
 /// boss1
 - (void)releaseBoss1Model;
+
+
+/// 释放资源
+- (void)releaseAllModel;
 
 @end
 

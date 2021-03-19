@@ -71,19 +71,44 @@
                 if (_boneNumber < 3) {
                     [self createMonsterWithName:kBoneSolider position:CGPointMake(0, 0)];
                     _boneNumber ++;
+                }else{
+                    [self createMonsterWithName:kBoneKnight position:CGPointMake(0, 0)];
                 }
                 
             }
-            
-            if (_redNumber + _boneNumber > 13) {
-                NSLog(@"该出现BOSS啦！");
-            }
-            
             
             break;
         }
     }
     
+    
+    for (WDUserNode *node in self.userArr) {
+        if (node.state & SpriteState_dead) {
+            [self.userArr removeObject:node];
+            [node releaseAction];
+            
+            if ([node.name isEqualToString:self.selectNode.name]) {
+                self.selectNode = self.userArr.firstObject;
+                [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForChangeUser object:self.selectNode.name];
+                [self.selectNode selectSpriteAction];
+            }
+            
+            if (self.userArr.count == 0) {
+                [self backToRealPubScene];
+            }
+            
+            break;
+        }
+        
+       
+        
+    }
+    
+}
+
+- (void)releaseAction
+{
+    [super releaseAction];
     
 }
 

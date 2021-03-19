@@ -83,24 +83,29 @@
             
             if (self.userArr.count == 0) {
                 if (_boss) {
-                    self.textureManager.goText = @"BOSS攻击挺高\n试试风筝!";
+                    self.textureManager.goText = @"再接再厉吧\n记得多走位!";
                     //被boss杀干净
                     __weak typeof(self)weakSelf = self;
                     if (_boss.state & SpriteState_dead) {
+                       
+                        for (WDBaseNode *node in self.monsterArr) {
+                            [node releaseAction];
+                        }
+                        [self.monsterArr removeAllObjects];
                         
                         [_bossNode removeAllActions];
                         _bossNode.colorBlendFactor = 0;
                         [NSObject cancelPreviousPerformRequestsWithTarget:_bossNode];
-                        SKAction *animation = [SKAction animateWithTextures:_bossNode.boss1Model.winArr timePerFrame:0.15];
+                        SKAction *moveAn = [SKAction animateWithTextures:_bossNode.boss1Model.walkArr timePerFrame:0.1];
+                        SKAction *move = [SKAction moveTo:CGPointMake(0, 0) duration:_bossNode.boss1Model.walkArr.count * 0.1];
+                        SKAction *gr = [SKAction group:@[moveAn,move]];
                         __weak typeof(self)weakSelf = self;
-                        [_bossNode.talkNode setText:@"你们还不够格哦"];
-                        [_bossNode runAction:animation completion:^{
-                            [weakSelf changeActionForMonster:@"RealPubScene"];
+                        [_bossNode runAction:gr completion:^{
+                            [weakSelf noPassForBoss2];
                         }];
                         
-                        
                     }else{
-                        [_boss.talkNode setText:@"小菜鸡们\n在练练吧!" hiddenTime:2 completeBlock:^{
+                        [_boss.talkNode setText:@"再接再厉吧\n记得多走位!" hiddenTime:2 completeBlock:^{
                             if (weakSelf.changeSceneWithNameBlock) {
                                 weakSelf.changeSceneWithNameBlock(@"RealPubScene");
                             }
@@ -109,7 +114,7 @@
                     
                 }else{
                     //被小怪杀干净
-                    self.textureManager.goText = @"小怪都打不过\n在练练吧!";
+                    self.textureManager.goText = @"再接再厉吧\n记得多走位!";
                     [self performSelector:@selector(changeActionForMonster:) withObject:@"RealPubScene" afterDelay:2];
                 }
             }
@@ -168,7 +173,14 @@
     
 }
 
-
+- (void)noPassForBoss2{
+    SKAction *animation = [SKAction animateWithTextures:_bossNode.boss1Model.winArr timePerFrame:0.15];
+    [_bossNode.talkNode setText:@"你们还不够格哦"];
+    __weak typeof(self)weakSelf = self;
+    [_bossNode runAction:animation completion:^{
+        [weakSelf changeActionForMonster:@"RealPubScene"];
+    }];
+}
 
 - (void)changeActionForMonster:(NSString *)sceneName{
    

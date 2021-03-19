@@ -14,6 +14,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// 效果：如减速、加速、双倍伤害等等
+typedef NS_ENUM(NSInteger,SpriteAffect) {
+    
+    SpriteAffect_none     = 0,
+    
+    SpriteAffect_reduce   = 1 << 0,  ///0000 0000
+};
 
 
 typedef NS_ENUM(NSInteger,SpriteState) {
@@ -45,9 +52,6 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 @interface WDBaseNode : SKSpriteNode
 
 
-
-
-
 /// 图片真实的显示区域
 @property (nonatomic,assign)CGSize realSize;
 
@@ -75,7 +79,8 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 /// 血条
 @property (nonatomic,assign)CGFloat bloodWidth;
 @property (nonatomic,assign)CGFloat bloodHeight;
-@property (nonatomic,assign)CGFloat bloodX;
+@property (nonatomic,assign)CGFloat bloodX; ///血条右侧的X
+@property (nonatomic,assign)CGFloat bloodX_Left;
 @property (nonatomic,assign)CGFloat bloodY;
 
 
@@ -96,6 +101,7 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 #pragma mark - 精灵状态
 /// 精灵状态
 @property (nonatomic,assign)SpriteState state;
+@property (nonatomic,assign)SpriteAffect affect;
 @property (nonatomic,assign)BOOL isMoveAnimation;
 /// 正在治疗
 @property (nonatomic,assign)BOOL isCure;
@@ -121,6 +127,7 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 @property (nonatomic,assign)BOOL addBuff;
 /// 防御力 
 @property (nonatomic,assign)int defense;
+
 
 - (void)skill1Action;
 - (void)skill2Action;
@@ -216,6 +223,17 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 - (void)releaseAction;
 
 
+/// 创建怪物发出的攻击物体的物理尺寸
+- (void)createMonsterAttackPhysicBodyWithPoint:(CGPoint)point
+                                          size:(CGSize)size;
+
+
+
+/// 设置状态
+- (void)setAffectWithArr:(NSArray *)statusArr
+                   point:(CGPoint)point
+                   scale:(CGFloat)scale
+                   count:(NSInteger)count;
 
 @end
 

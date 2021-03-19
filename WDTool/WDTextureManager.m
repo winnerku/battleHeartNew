@@ -151,6 +151,11 @@ static WDTextureManager *textureManager = nil;
     return _balloonDic[key];
 }
 
+- (void)releaseBoneSoliderModel
+{
+    _boneSoliderModel = nil;
+}
+
 - (void)releaseKinghtModel
 {
     _kinghtModel = nil;
@@ -188,6 +193,23 @@ static WDTextureManager *textureManager = nil;
 - (void)releaseBoss1Model
 {
     _boss1Model = nil;
+}
+
+- (void)releaseBoss2Model
+{
+    _boss2Model = nil;
+}
+
+- (void)releaseAllModel
+{
+    [self releaseKinghtModel];          //骑士
+    [self releaseIceModel];             //冰女
+    [self releaseArcherModel];          //弓箭手
+    [self releaseNinjaModel];           //忍者
+    [self releaseRedBatModel];          //红蝙蝠
+    [self releaseBoneSoliderModel];     //骷髅士兵
+    [self releaseBoss1Model];           //boss1
+    [self releaseBoss2Model];           //boss2
 }
 
 #pragma mark - 玩家人物 -
@@ -303,6 +325,16 @@ static WDTextureManager *textureManager = nil;
     }
     
     return _boss1Model;
+}
+
+- (Boss2Model *)boss2Model
+{
+    if (!_boss2Model) {
+        _boss2Model = [[Boss2Model alloc] init];
+        [_boss2Model setNormalTexturesWithName:kBoneKnight standNumber:4 runNumber:0 walkNumber:4 diedNumber:9 attack1Number:8];
+    }
+    
+    return _boss2Model;
 }
 
 - (WDBoneSoliderModel *)boneSoliderModel

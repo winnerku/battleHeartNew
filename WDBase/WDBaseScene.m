@@ -127,6 +127,9 @@
     }else if([name isEqualToString:kBoneSolider]){
         //骷髅
         [self boneSoliderWithPosition:point];
+    }else if([name isEqualToString:kBoneKnight]){
+        //骷髅骑士(boss2)
+        [self boneKnightWithPosition:point];
     }
 }
 
@@ -185,6 +188,8 @@
     _iceWizardNode = nil;
     _archerNode    = nil;
     _ninjaNode     = nil;
+    
+    [self.textureManager releaseAllModel];
     
     [[NSNotificationCenter defaultCenter]removeObserver:self name:kNotificationForDied object:nil];
 }

@@ -53,6 +53,7 @@ static CGFloat bloodPage = 0;
     if ([keyPath isEqualToString:@"isRight"]) {
         BOOL isRight = [change[@"new"]boolValue];
         if (isRight) {
+            self.xScale = fabs(self.xScale);
             self.directionNumber = 1;
            self.bloodBgNode.xScale = 1;
            self.bloodBgNode.position = CGPointMake(-self.bloodBgNode.size.width / 2.0, self.bloodBgNode.position.y);
@@ -61,6 +62,8 @@ static CGFloat bloodPage = 0;
             if ([self.name isEqualToString:kRedBat]) {
                 //NSLog(@"1");
             }
+            
+            self.xScale = -fabs(self.xScale);
             self.directionNumber = -1;
             self.bloodBgNode.xScale = -1;
             self.bloodBgNode.position = CGPointMake(self.bloodBgNode.size.width / 2.0, self.bloodBgNode.position.y);
@@ -78,6 +81,18 @@ static CGFloat bloodPage = 0;
     }else{
         self.zPosition = [WDCalculateTool calculateZposition:self];
     }
+}
+
+- (void)createMonsterAttackPhysicBodyWithPoint:(CGPoint)point
+                                          size:(CGSize)size
+{
+    SKPhysicsBody *body = [SKPhysicsBody bodyWithRectangleOfSize:size center:point];
+    body.allowsRotation = NO;
+    body.affectedByGravity = NO;
+    body.categoryBitMask = MONSTER_CATEGORY;
+    body.contactTestBitMask = MONSTER_CONTACT;
+    body.collisionBitMask = 0;
+    self.physicsBody = body;
 }
 
 - (void)setBodyCanUse
@@ -336,6 +351,37 @@ static CGFloat bloodPage = 0;
     
 }
 
+
+/// 设置状态
+- (void)setAffectWithArr:(NSArray *)statusArr
+                   point:(CGPoint)point
+                   scale:(CGFloat)scale
+                   count:(NSInteger)count
+{
+    WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:statusArr[0]];
+    node.name = @"status";
+    [self addChild:node];
+    node.position = point;
+    node.xScale = scale;
+    node.yScale = scale;
+    node.zPosition = 10;
+    
+    SKAction *action = [SKAction animateWithTextures:statusArr timePerFrame:0.3];
+    SKAction *rep = [SKAction repeatAction:action count:count];
+    SKAction *remove = [SKAction removeFromParent];
+    SKAction *seq = [SKAction sequence:@[rep,remove]];
+    
+    if (self.affect & SpriteAffect_reduce) {
+        self.moveSpeed = self.trueMoveSpeed;
+        self.moveSpeed = self.moveSpeed - self.moveSpeed * 0.5;
+    }
+    
+    __weak typeof(self)weakSelf = self;
+    [node runAction:seq completion:^{
+        weakSelf.affect = SpriteAffect_none;
+        weakSelf.moveSpeed = weakSelf.trueMoveSpeed;
+    }];
+}
 
 #pragma mark - 行为 -
 /// 站立

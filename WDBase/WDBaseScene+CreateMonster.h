@@ -16,8 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
                        name:(NSString *)nameStr;
 
 - (void)redBatWithPosition:(CGPoint)point;
-
 - (void)boneSoliderWithPosition:(CGPoint)point;
+- (void)boneKnightWithPosition:(CGPoint)point;
 
 @end
 
