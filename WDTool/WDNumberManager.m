@@ -25,6 +25,27 @@
 #pragma mark - 骑士 -
 + (void)initKnight:(WDBaseNode *)node
 {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSInteger skill2 = [defaults integerForKey:kKinght_skill_2];
+    if (skill2 == 0) {
+        [defaults setInteger:10 forKey:kKinght_skill_2];
+    }
+    
+    NSInteger skill3 = [defaults integerForKey:kKinght_skill_3];
+    if (skill3 == 0) {
+        [defaults setInteger:10 forKey:kKinght_skill_3];
+    }
+    
+    NSInteger skill4 = [defaults integerForKey:kKinght_skill_4];
+    if (skill4 == 0) {
+        [defaults setInteger:10 forKey:kKinght_skill_4];
+    }
+    
+    NSInteger skill5 = [defaults integerForKey:kKinght_skill_5];
+    if (skill5 == 0) {
+        [defaults setInteger:60 forKey:kKinght_skill_5];
+    }
+    
     node.name = kKinght;
     node.moveSpeed = 300;
     node.trueMoveSpeed = 300;
@@ -40,6 +61,23 @@
 #pragma mark - 冰女巫 -
 + (void)initIceWizard:(WDBaseNode *)node
 {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSInteger skill1 = [defaults integerForKey:kIceWizard_skill_1];
+    if (skill1 == 0) {
+        [defaults setInteger:10 forKey:kIceWizard_skill_1];
+    }
+    
+    NSInteger skill3 = [defaults integerForKey:kIceWizard_skill_3];
+    if (skill3 == 0) {
+        [defaults setInteger:10 forKey:kIceWizard_skill_3];
+    }
+    
+    NSInteger skill4 = [defaults integerForKey:kIceWizard_skill_4];
+    if (skill4 == 0) {
+        [defaults setInteger:5 forKey:kIceWizard_skill_4];
+    }
+    
     node.name = kIceWizard;
     node.moveSpeed = 300;
     node.trueMoveSpeed = 300;
@@ -49,6 +87,7 @@
     node.zPosition = 10;
     node.addBuff = YES;
     node.cureNumber = 50;
+    node.trueCureNumber = 50;
     node.attackNumber = 15;
     node.floatAttackNumber = 10;
 }
@@ -80,6 +119,7 @@
     node.moveSpeed = 300;
     node.trueMoveSpeed = 300;
     node.moveCADisplaySpeed = 2.5;
+    node.trueAttackNumber = 20;
     node.blood     = 100;
     node.lastBlood = 100;
     node.zPosition = 10;

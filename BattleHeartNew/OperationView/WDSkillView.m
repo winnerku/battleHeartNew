@@ -95,7 +95,12 @@
         [bgView addSubview:btn];
         btn.backgroundColor = UICOLOR_RANDOM;
         [arr addObject:btn];
-        if (!image || ![defaults boolForKey:skillName]) {
+//        if (!image || ![defaults boolForKey:skillName]) {
+//            btn.hidden = YES;
+//        }
+        
+        ///测试专用
+        if (!image) {
             btn.hidden = YES;
         }
         
@@ -105,15 +110,15 @@
     ///技能时间轴
     if ([name isEqualToString:kArcher]) {
         
-        timeArr = @[@(30),@(15),@(10),@(20),@(20)];
+        timeArr = @[@(30),@(15),@(10),@(20),@(10)];
         
     }else if([name isEqualToString:kIceWizard]){
         
-        timeArr = @[@(30),@(15),@(10),@(10),@(10)];
+        timeArr = @[@(30),@(15),@(30),@(10),@(1000)];
         
     }else if([name isEqualToString:kKinght]){
         
-        timeArr = @[@(30),@(15),@(10),@(10),@(10)];
+        timeArr = @[@(10),@(30),@(20),@(30),@(45)];
         
     }else if([name isEqualToString:kNinja]){
         
@@ -211,11 +216,12 @@
                 
                 NSInteger index = btn.tag - 100;
                 NSString *skillName = [NSString stringWithFormat:@"%@_%ld",name,index];
-                if ([defaults boolForKey:skillName]) {
-                    btn.hidden = NO;
-                }else{
-                    btn.hidden = YES;
-                }
+                /// 测试状态，所以先注释掉
+//                if ([defaults boolForKey:skillName]) {
+//                    btn.hidden = NO;
+//                }else{
+//                    btn.hidden = YES;
+//                }
                 
             }
         }

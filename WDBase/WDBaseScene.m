@@ -19,6 +19,37 @@
 - (void)addObserveAction
 {
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(diedAction:) name:kNotificationForDied object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(cameBackToLife:) name:kNotificationForCameBackToLife object:nil];
+}
+
+- (void)cameBackToLife:(NSNotification *)notification
+{
+    
+    WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:self.textureManager.iceWizardModel.effect5Arr[0]];
+    [self addChild:node];
+    node.zPosition = 10000;
+    
+    SKAction *animation = [SKAction animateWithTextures:self.textureManager.iceWizardModel.effect5Arr timePerFrame:0.1];
+    SKAction *remo = [SKAction removeFromParent];
+    
+    __weak typeof(self)weakSelf = self;
+    [node runAction:[SKAction sequence:@[animation,remo]] completion:^{
+        [weakSelf cameBack];
+    }];
+}
+
+- (void)cameBack{
+    if (!_archerNode) {
+        [self archerNode];
+        [self addChild:_archerNode];
+    }else if(!_ninjaNode){
+        [self ninjaNode];
+        [self addChild:_ninjaNode];
+    }else if(!_kNightNode){
+        [self kNightNode];
+        [self addChild:_kNightNode];
+    }
 }
 
 - (void)diedAction:(NSNotification *)notification{
@@ -63,6 +94,7 @@
     //_selectNode = self.archerNode;
     //self.archerNode.arrowNode.hidden = NO;
     [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForChangeUser object:self.selectNode.name];
+    
 }
 
 

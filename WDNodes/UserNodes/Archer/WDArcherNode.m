@@ -71,6 +71,24 @@
         time = 0.03;
     }
     
+    if (self.skill5) {
+        WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:_archerModel.effect5Arr[0]];
+        node.xScale = 3.0;
+        node.yScale = 3.0;
+        node.zPosition = 10000;
+        node.position = CGPointMake(100, 0);
+        [self addChild:node];
+        SKAction *animation = [SKAction animateWithTextures:_archerModel.effect5Arr timePerFrame:0.1];
+        animation.timingMode = SKActionTimingEaseIn;
+        SKAction *removeAction = [SKAction removeFromParent];
+        [node runAction:[SKAction sequence:@[animation,removeAction]] completion:^{
+          
+        }];
+        
+        self.skill5 = NO;
+        self.attackNumber = self.trueAttackNumber * 3.0;
+    }
+    
     SKAction *att = [SKAction animateWithTextures:laArr timePerFrame:time];
     att.timingMode = SKActionTimingEaseIn;
     __weak typeof(self)weakSelf = self;
@@ -159,8 +177,9 @@
         
         [weakSelf.parent addChild:blueFire];
     }
-     
     
+    self.attackNumber = self.trueAttackNumber;
+
 }
 
 - (void)createArrow{
@@ -183,8 +202,6 @@
      body.categoryBitMask = ARROW_CATEGORY;
      body.collisionBitMask = 0;
      [weakSelf.parent addChild:arrowN];
-     
-    
      
      CGFloat distance = [WDCalculateTool distanceBetweenPoints:arrowN.position seconde:weakSelf.targetMonster.position];
      NSTimeInterval time = distance / 2000;
@@ -210,6 +227,7 @@
      }];
      
      [weakSelf.parent addChild:blueFire];
+    self.attackNumber = self.trueAttackNumber;
 }
 
 
@@ -255,7 +273,9 @@
     NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_1];
     self.skill1 = YES;
     [WDSkillManager endSkillActionWithTarget:self skillType:@"1" time:time];
-   
+    
+    [self createSkillEffectWithPosition:CGPointMake(0, 270) skillArr:_archerModel.skill1Arr scale:1];
+
 }
 
 - (void)skill2Action
@@ -263,6 +283,8 @@
     self.skill2 = YES;
     NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_2];
     [WDSkillManager endSkillActionWithTarget:self skillType:@"2" time:time];
+    
+    [self createSkillEffectWithPosition:CGPointMake(0, 270) skillArr:_archerModel.skill2Arr scale:1];
 }
 
 - (void)skill3Action
@@ -272,16 +294,22 @@
     self.moveSpeed = _speed + 200;
     [WDSkillManager endSkillActionWithTarget:self skillType:@"3" time:time];
 
+    [self createSkillEffectWithPosition:CGPointMake(0, 0) skillArr:_archerModel.skill3Arr scale:1];
 }
 
 - (void)skill4Action
 {
-    NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_3];
+    NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_4];
     self.skill4 = YES;
     [WDSkillManager endSkillActionWithTarget:self skillType:@"4" time:time];
 
+    [self createSkillEffectWithPosition:CGPointMake(0, 270) skillArr:_archerModel.skill4Arr scale:1];
 }
 
+- (void)skill5Action
+{
+    self.skill5 = YES;
+}
 
 
 - (void)dealloc

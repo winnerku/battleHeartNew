@@ -11,9 +11,8 @@
 @implementation WDIceWizardNode
 {
     WDIceWizardModel *_iceModel;
-    SKAction         *_cureAction;
-    CGFloat           _addNumber;
-    BOOL              _isDead;
+
+    BOOL _isCameBackToLife;
 }
 
 + (instancetype)initWithModel:(WDBaseNodeModel *)model
@@ -51,7 +50,6 @@
      [self setBloodNodeNumber:0];
     
     
-    _addNumber = self.cureNumber;
 //    SKSpriteNode *coloc = [SKSpriteNode spriteNodeWithColor:[UIColor orangeColor] size:self.size];
 //    [self addChild:coloc];
     
@@ -138,7 +136,6 @@
     SKAction *time = [SKAction waitForDuration:0.15];
     SKAction *seq = [SKAction sequence:@[texture,time]];
     seq.timingMode = SKActionTimingEaseIn;
-    _cureAction = seq;
     __weak typeof(self)weakSelf = self;
     [self runAction:seq completion:^{
         [weakSelf addBuffActionWithNode:node];
@@ -249,27 +246,84 @@
 - (void)skill1Action
 {
     self.skill1 = YES;
-    self.cureNumber = _addNumber + _addNumber;
-    [self performSelector:@selector(cd1) withObject:nil afterDelay:10];
+    self.cureNumber = self.trueCureNumber + self.trueCureNumber;
+    NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_1];
+    [WDSkillManager endSkillActionWithTarget:self skillType:@"1" time:time];
 }
 
-
-- (void)cd1{
-    self.cureNumber = _addNumber;
-    self.skill1 = NO;
-}
 
 - (void)skill2Action
 {
     NSArray *nodes = self.parent.children;
     for (WDBaseNode *node in nodes) {
         if ([node isKindOfClass:[WDUserNode class]]) {
-            [node skillCureAction];
+            [node setBloodNodeNumber:-self.cureNumber];
+            [node createSkillEffectWithPosition:CGPointMake(0, 0) skillArr:[WDTextureManager shareTextureManager].archerModel.skill3Arr scale:1];
         }
     }
     
 }
 
+- (void)skill3Action
+{
+    self.skill3 = YES;
+    self.iceWizardReduceAttack = YES;
+    NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kIceWizard_skill_3];
+    [WDSkillManager endSkillActionWithTarget:self skillType:@"3" time:time];
+    
+    
+    CGPoint point = CGPointMake(0, 0);
+    CGFloat scale = 4;
+    NSArray *skillArr = _iceModel.effect1Arr;
+    WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:skillArr[0]];
+    node.alpha = 1;
+    node.name = @"define";
+    [self addChild:node];
+    node.position = point;
+    node.xScale = scale;
+    node.yScale = scale;
+    SKAction *an = [SKAction animateWithTextures:skillArr timePerFrame:0.1];
+    an.timingMode = SKActionTimingEaseIn;
+    SKAction *rep = [SKAction repeatActionForever:an];
+    //__weak typeof(self)weakSelf = self;
+    [node runAction:rep completion:^{
+    }];
+}
+
+- (void)skill4Action
+{
+    self.skill4 = YES;
+    self.iceWizardNotDead = YES;
+    NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kIceWizard_skill_4];
+    [WDSkillManager endSkillActionWithTarget:self skillType:@"4" time:time];
+    
+    CGPoint point = CGPointMake(0, 0);
+    CGFloat scale = 3;
+    NSArray *skillArr = _iceModel.effect4Arr;
+    WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:skillArr[0]];
+    node.alpha = 1;
+    node.name = @"notDead";
+    node.zPosition = -1;
+    [self addChild:node];
+    node.position = point;
+    node.xScale = scale;
+    node.yScale = scale;
+    SKAction *an = [SKAction animateWithTextures:skillArr timePerFrame:0.1];
+    an.timingMode = SKActionTimingEaseIn;
+    SKAction *rep = [SKAction repeatActionForever:an];
+    //__weak typeof(self)weakSelf = self;
+    [node runAction:rep completion:^{
+    }];
+}
+
+- (void)skill5Action
+{
+    if (_isCameBackToLife) {
+        return;
+    }
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForCameBackToLife object:nil];
+}
 
 - (void)dealloc
 {

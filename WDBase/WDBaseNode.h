@@ -23,6 +23,12 @@ typedef NS_ENUM(NSInteger,SpriteAffect) {
 };
 
 
+typedef NS_ENUM(NSInteger,SpriteSkillCommon) {
+    
+    SpriteSkill_reduceAttack = 6, /// 减伤盾
+    
+};
+
 typedef NS_ENUM(NSInteger,SpriteState) {
      
     /// 创建中
@@ -51,7 +57,7 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 
 @interface WDBaseNode : SKSpriteNode
 
-
+#pragma mark - 精灵子视图 -
 /// 图片真实的显示区域
 @property (nonatomic,assign)CGSize realSize;
 
@@ -64,17 +70,96 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 @property (nonatomic,strong)WDBaseNode *__nullable targetMonster;
 /// 当前目标玩家
 @property (nonatomic,strong)WDBaseNode *__nullable targetUser;
-
 /// 血条
 @property (nonatomic,strong)WDBaseNode *bloodBgNode;
 /// 对话框
 @property (nonatomic,strong)WDTalkNode *talkNode;
 /// 表情
 @property (nonatomic,strong)WDBalloonNode *balloonNode;
+
+
+
+@property (nonatomic,copy)void (^moveFinish)(void);
+
+
+
+
+
+
+
+
+
+#pragma mark - 特殊技能状态 -
+#pragma mark - 冰女 -
+/// 减少伤害(冰女技能)(骑士技能....)
+@property (nonatomic,assign)BOOL iceWizardReduceAttack;
+/// 薄葬(在技能持续期间不会死亡)
+@property (nonatomic,assign)BOOL iceWizardNotDead;
+
+#pragma mark - 骑士 -
+/// 反伤（一半）
+@property (nonatomic,assign)BOOL kinghtReboundAttack;
+
+
+
+#pragma mark - 通用状态 -
+/// 技能是否在释放状态
+@property (nonatomic,assign)BOOL skill1;
+@property (nonatomic,assign)BOOL skill2;
+@property (nonatomic,assign)BOOL skill3;
+@property (nonatomic,assign)BOOL skill4;
+@property (nonatomic,assign)BOOL skill5;
+
 /// 正在减血，不用再放动画了
 @property (nonatomic,assign)BOOL reduceBloodNow;
+/// 增益或者驱散BUFF的职业(区别选中态)
+@property (nonatomic,assign)BOOL addBuff;
 
+@property (nonatomic,assign)BOOL isMoveAnimation;
+/// 正在治疗
+@property (nonatomic,assign)BOOL isCure;
+/// 朝向
+@property (nonatomic,assign)BOOL isRight;
+/// 初始地方Z坐标不一样
+@property (nonatomic,assign)BOOL isPubScene;
 
+/// 方向: 左 又
+@property (nonatomic,strong)NSString *direction;
+@property (nonatomic,assign)CGFloat directionNumber;
+
+#pragma mark - 精灵数值
+/// 治愈量（会随着技能变动）
+@property (nonatomic,assign)int cureNumber;
+/// 实际治愈量
+@property (nonatomic,assign)int trueCureNumber;
+/// 血量
+@property (nonatomic,assign)int blood;
+/// 剩余血量
+@property (nonatomic,assign)int lastBlood;
+/// 攻击距离
+@property (nonatomic,assign)CGFloat attackDistance;
+/// 攻击力（会随着技能变动）
+@property (nonatomic,assign)int attackNumber;
+/// 实际攻击力
+@property (nonatomic,assign)int trueAttackNumber;
+/// 上下浮动的数据
+@property (nonatomic,assign)int floatAttackNumber;
+/// 防御力
+@property (nonatomic,assign)int defense;
+/// 动画过程中的移动速度(不会改变)
+@property (nonatomic,assign)CGFloat trueMoveSpeed;
+/// 动画过程中的移动速度(可能会改变)
+@property (nonatomic,assign)CGFloat moveSpeed;
+/// 实时的移动速度
+@property (nonatomic,assign)CGFloat moveCADisplaySpeed;
+/// 精灵状态
+@property (nonatomic,assign)SpriteState state;
+@property (nonatomic,assign)SpriteAffect affect;
+
+/// 人物与怪物之间的最小距离增加一个横向随机数，避免怪物重叠问题
+@property (nonatomic,assign)CGFloat randomDistanceX;
+@property (nonatomic,assign)CGFloat randomDistanceY;
+@property (nonatomic,assign)BOOL testRelease;
 
 /// 血条
 @property (nonatomic,assign)CGFloat bloodWidth;
@@ -84,49 +169,8 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 @property (nonatomic,assign)CGFloat bloodY;
 
 
-/// 方向: 左 又
-@property (nonatomic,strong)NSString *direction;
-@property (nonatomic,assign)CGFloat directionNumber;
-
-@property (nonatomic,copy)void (^moveFinish)(void);
-
-
-
-/// 人物与怪物之间的最小距离增加一个横向随机数，避免怪物重叠问题
-@property (nonatomic,assign)CGFloat randomDistanceX;
-@property (nonatomic,assign)CGFloat randomDistanceY;
-
-@property (nonatomic,assign)BOOL testRelease;
-
-#pragma mark - 精灵状态
-/// 精灵状态
-@property (nonatomic,assign)SpriteState state;
-@property (nonatomic,assign)SpriteAffect affect;
-@property (nonatomic,assign)BOOL isMoveAnimation;
-/// 正在治疗
-@property (nonatomic,assign)BOOL isCure;
-/// 朝向
-@property (nonatomic,assign)BOOL isRight;
-/// 初始地方Z坐标不一样
-@property (nonatomic,assign)BOOL isPubScene;
-
-#pragma mark - 精灵数值
-/// 治愈量
-@property (nonatomic,assign)int cureNumber;
-/// 血量
-@property (nonatomic,assign)int blood;
-/// 剩余血量
-@property (nonatomic,assign)int lastBlood;
-/// 攻击距离
-@property (nonatomic,assign)CGFloat attackDistance;
-/// 攻击力
-@property (nonatomic,assign)int attackNumber;
-/// 上下浮动的数据
-@property (nonatomic,assign)int floatAttackNumber;
-/// 增益或者驱散BUFF的职业(区别选中态)
-@property (nonatomic,assign)BOOL addBuff;
-/// 防御力 
-@property (nonatomic,assign)int defense;
++ (instancetype)initWithModel:(WDBaseNodeModel *)model;
+- (void)setChildNodeWithModel:(WDBaseNodeModel *)model;
 
 
 - (void)skill1Action;
@@ -134,25 +178,6 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 - (void)skill3Action;
 - (void)skill4Action;
 - (void)skill5Action;
-
-/// 技能是否在释放状态
-@property (nonatomic,assign)BOOL skill1;
-@property (nonatomic,assign)BOOL skill2;
-@property (nonatomic,assign)BOOL skill3;
-@property (nonatomic,assign)BOOL skill4;
-@property (nonatomic,assign)BOOL skill5;
-
-/// 动画过程中的移动速度(不会改变)
-@property (nonatomic,assign)CGFloat trueMoveSpeed;
-/// 动画过程中的移动速度(可能会改变)
-@property (nonatomic,assign)CGFloat moveSpeed;
-/// 实时的移动速度
-@property (nonatomic,assign)CGFloat moveCADisplaySpeed;
-
-
-+ (instancetype)initWithModel:(WDBaseNodeModel *)model;
-- (void)setChildNodeWithModel:(WDBaseNodeModel *)model;
-
 
 - (void)setBodyCanUse;
 
@@ -234,6 +259,13 @@ typedef NS_ENUM(NSInteger,SpriteState) {
                    point:(CGPoint)point
                    scale:(CGFloat)scale
                    count:(NSInteger)count;
+
+
+
+/// 创建特效技能
+- (void)createSkillEffectWithPosition:(CGPoint)point
+                             skillArr:(NSArray *)skillArr
+                                scale:(CGFloat)scale;
 
 @end
 

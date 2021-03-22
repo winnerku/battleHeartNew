@@ -8,10 +8,10 @@
 
 #import "WDKinghtNode.h"
 #import "WDKinghtModel.h"
-
+#import "WDBaseScene.h"
 @implementation WDKinghtNode
 {
-    WDKinghtModel *_kinghtModel;
+    WDKinghtModel *_knightModel;
 }
 
 + (instancetype)initWithModel:(WDBaseNodeModel *)model
@@ -28,7 +28,7 @@
      self.xScale = 0.5;
      self.yScale = 0.5;
 
-     _kinghtModel = (WDKinghtModel *)model;
+     _knightModel = (WDKinghtModel *)model;
      self.model = model;
      self.realSize = CGSizeMake(self.size.width - 150, self.size.height - 60);
      SKPhysicsBody *body = [SKPhysicsBody bodyWithRectangleOfSize:self.realSize center:CGPointMake(0, 0)];
@@ -241,11 +241,122 @@
     }
 }
 
+- (void)skill2Action
+{
+    self.iceWizardReduceAttack = YES;
+    self.skill2 = YES;
+    NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kKinght_skill_2];
+    [WDSkillManager endSkillActionWithTarget:self skillType:@"2" time:time];
+    
+    CGPoint point = CGPointMake(0, 0);
+    CGFloat scale = 2;
+    NSArray *skillArr = _knightModel.effect2Arr;
+    WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:skillArr[0]];
+    node.alpha = 0.8;
+    node.name = @"define";
+    [self addChild:node];
+    node.position = point;
+    node.xScale = scale;
+    node.yScale = scale;
+    SKAction *an = [SKAction animateWithTextures:skillArr timePerFrame:0.1];
+    an.timingMode = SKActionTimingEaseIn;
+    SKAction *rep = [SKAction repeatActionForever:an];
+    //__weak typeof(self)weakSelf = self;
+    [node runAction:rep completion:^{
+    }];
+}
+
+- (void)skill3Action
+{
+    self.skill2 = YES;
+    
+    WDBaseScene *scene = (WDBaseScene *)self.parent;
+    WDBaseNode *bloodMiniNode = nil;
+    int blood = 10000;
+    for (WDBaseNode *node in scene.userArr) {
+        if (node.lastBlood < blood) {
+            bloodMiniNode = node;
+            blood = node.lastBlood;
+        }
+    }
+    
+    bloodMiniNode.iceWizardReduceAttack = YES;
+    
+    CGPoint point = CGPointMake(0, 120);
+    CGFloat scale = 1;
+    NSArray *skillArr = _knightModel.effect3Arr;
+    WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:skillArr[0]];
+    node.alpha = 0.8;
+    node.name = @"define";
+    [bloodMiniNode addChild:node];
+    node.position = point;
+    node.xScale = scale;
+    node.yScale = scale;
+    SKAction *an = [SKAction animateWithTextures:skillArr timePerFrame:0.1];
+    an.timingMode = SKActionTimingEaseIn;
+    SKAction *rep = [SKAction repeatActionForever:an];
+    //__weak typeof(self)weakSelf = self;
+    [node runAction:rep completion:^{
+    }];
+    
+    NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kKinght_skill_3];
+    [WDSkillManager endSkillActionWithTarget:bloodMiniNode skillType:@"6" time:time];
+}
+
+- (void)skill4Action
+{
+    self.skill4 = YES;
+    self.kinghtReboundAttack = YES;
+    NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kKinght_skill_4];
+    [WDSkillManager endSkillActionWithTarget:self skillType:@"4" time:time];
+    
+    CGPoint point = CGPointMake(0, 0);
+    CGFloat scale = 1;
+    NSArray *skillArr = _knightModel.effect4Arr;
+    WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:skillArr[0]];
+    node.alpha = 0.5;
+    node.name = @"rebound";
+    [self addChild:node];
+    node.position = point;
+    node.xScale = scale;
+    node.yScale = scale;
+    SKAction *an = [SKAction animateWithTextures:skillArr timePerFrame:0.1];
+    an.timingMode = SKActionTimingEaseIn;
+    SKAction *rep = [SKAction repeatActionForever:an];
+    //__weak typeof(self)weakSelf = self;
+    [node runAction:rep completion:^{
+    }];
+}
+
+- (void)skill5Action
+{
+    CGPoint point = CGPointMake(0, 250);
+    CGFloat scale = 1.5;
+    NSArray *skillArr = _knightModel.effect5Arr;
+    WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:skillArr[0]];
+    node.alpha = 1;
+    node.name = @"rebound";
+    [self addChild:node];
+    node.position = point;
+    node.xScale = scale;
+    node.yScale = scale;
+    NSArray *animationArr1 = [skillArr subarrayWithRange:NSMakeRange(0, 13)];
+    NSArray *subArr = [skillArr subarrayWithRange:NSMakeRange(13, skillArr.count - 13)];
+    SKAction *an = [SKAction animateWithTextures:animationArr1 timePerFrame:0.1];
+    an.timingMode = SKActionTimingEaseIn;
+    __weak typeof(self)weakSelf = self;
+    [node runAction:an completion:^{
+        [node runAction:[SKAction sequence:@[[SKAction animateWithTextures:subArr timePerFrame:0.1],[SKAction removeFromParent]]]];
+        [weakSelf setBloodNodeNumber:-10000];
+    }];
+}
+
+
 - (void)dealloc
 {
     NSLog(@"骑士销毁了");
     [[NSNotificationCenter defaultCenter]removeObserver:self];
-    _kinghtModel = nil;
+    _knightModel = nil;
 }
 
 @end

@@ -14,6 +14,110 @@
 {
     
 }
+
+- (void)setSkillTexturesWithName:(NSString *)name
+                    skill1Number:(int)skill1Number
+                    skill2Number:(int)skill2Number
+                    skill3Number:(int)skill3Number
+                    skill4Number:(int)skill4Number
+                    skill5Number:(int)skill5Number
+{
+    NSArray *bigArr = @[@(skill1Number),@(skill2Number),@(skill3Number),@(skill4Number),@(skill5Number)];
+    int big = 0;
+    for (NSNumber *number in bigArr) {
+        if ([number intValue] > big) {
+            big = [number intValue];
+        }
+    }
+    
+    NSMutableArray *skill1Arr = [NSMutableArray array];
+    NSMutableArray *skill2Arr = [NSMutableArray array];
+    NSMutableArray *skill3Arr = [NSMutableArray array];
+    NSMutableArray *skill4Arr = [NSMutableArray array];
+    NSMutableArray *skill5Arr = [NSMutableArray array];
+
+    SKTextureAtlas *atlas = [SKTextureAtlas atlasNamed:name];
+    for (int i = 0; i < big; i ++) {
+        if (i < skill1Number) {
+            [self createNameWithString:name actionName:@"skill1" index:i arr:skill1Arr atlas:atlas];
+        }
+        
+        if (i < skill2Number) {
+            [self createNameWithString:name actionName:@"skill2" index:i arr:skill2Arr atlas:atlas];
+        }
+        
+        if (i < skill3Number) {
+            [self createNameWithString:name actionName:@"skill3" index:i arr:skill3Arr atlas:atlas];
+        }
+        
+        if (i < skill4Number) {
+            [self createNameWithString:name actionName:@"skill4" index:i arr:skill4Arr atlas:atlas];
+        }
+        
+        if (i < skill5Number) {
+            [self createNameWithString:name actionName:@"skill5" index:i arr:skill5Arr atlas:atlas];
+        }
+    }
+    
+    self.skill1Arr = [skill1Arr copy];
+    self.skill2Arr = [skill2Arr copy];
+    self.skill3Arr = [skill3Arr copy];
+    self.skill4Arr = [skill4Arr copy];
+    self.skill5Arr = [skill5Arr copy];
+
+}
+
+- (void)setEffectTexturesWithName:(NSString *)name
+                     skill1Number:(int)skill1Number
+                     skill2Number:(int)skill2Number
+                     skill3Number:(int)skill3Number
+                     skill4Number:(int)skill4Number
+                     skill5Number:(int)skill5Number
+{
+    NSArray *bigArr = @[@(skill1Number),@(skill2Number),@(skill3Number),@(skill4Number),@(skill5Number)];
+    int big = 0;
+    for (NSNumber *number in bigArr) {
+        if ([number intValue] > big) {
+            big = [number intValue];
+        }
+    }
+    
+    NSMutableArray *skill1Arr = [NSMutableArray array];
+    NSMutableArray *skill2Arr = [NSMutableArray array];
+    NSMutableArray *skill3Arr = [NSMutableArray array];
+    NSMutableArray *skill4Arr = [NSMutableArray array];
+    NSMutableArray *skill5Arr = [NSMutableArray array];
+
+    SKTextureAtlas *atlas = [SKTextureAtlas atlasNamed:name];
+    for (int i = 0; i < big; i ++) {
+        if (i < skill1Number) {
+            [self createNameWithString:name actionName:@"effect1" index:i arr:skill1Arr atlas:atlas];
+        }
+        
+        if (i < skill2Number) {
+            [self createNameWithString:name actionName:@"effect2" index:i arr:skill2Arr atlas:atlas];
+        }
+        
+        if (i < skill3Number) {
+            [self createNameWithString:name actionName:@"effect3" index:i arr:skill3Arr atlas:atlas];
+        }
+        
+        if (i < skill4Number) {
+            [self createNameWithString:name actionName:@"effect4" index:i arr:skill4Arr atlas:atlas];
+        }
+        
+        if (i < skill5Number) {
+            [self createNameWithString:name actionName:@"effect5" index:i arr:skill5Arr atlas:atlas];
+        }
+    }
+    
+    self.effect1Arr = [skill1Arr copy];
+    self.effect2Arr = [skill2Arr copy];
+    self.effect3Arr = [skill3Arr copy];
+    self.effect4Arr = [skill4Arr copy];
+    self.effect5Arr = [skill5Arr copy];
+}
+
 - (void)setNormalTexturesWithName:(NSString *)name
                       standNumber:(int)standNumber
                         runNumber:(int)runNumber

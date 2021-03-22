@@ -220,6 +220,8 @@ static WDTextureManager *textureManager = nil;
         
         _kinghtModel = [[WDKinghtModel alloc] init];
         [_kinghtModel setNormalTexturesWithName:kKinght standNumber:10 runNumber:0 walkNumber:10 diedNumber:9 attack1Number:10];
+        
+        [_kinghtModel setEffectTexturesWithName:kKinght skill1Number:0 skill2Number:17 skill3Number:14 skill4Number:14 skill5Number:21];
     }
     
     return _kinghtModel;
@@ -233,6 +235,10 @@ static WDTextureManager *textureManager = nil;
         
         _iceWizardModel = [[WDIceWizardModel alloc] init];
         [_iceWizardModel setNormalTexturesWithName:kIceWizard standNumber:10 runNumber:0 walkNumber:10 diedNumber:0 attack1Number:9];
+        
+        [_iceWizardModel setSkillTexturesWithName:kIceWizard skill1Number:0 skill2Number:0 skill3Number:0 skill4Number:0 skill5Number:0];
+        
+        [_iceWizardModel setEffectTexturesWithName:kIceWizard skill1Number:8 skill2Number:0 skill3Number:0 skill4Number:9 skill5Number:12];
     }
     
     return _iceWizardModel;
@@ -244,38 +250,11 @@ static WDTextureManager *textureManager = nil;
 {
     if (!_archerModel) {
         _archerModel = [[WDArcherModel alloc] init];
-        
-        NSMutableArray *standArr = [NSMutableArray array];
-        NSMutableArray *walkArr = [NSMutableArray array];
-        NSMutableArray *diedArr = [NSMutableArray array];
-        NSMutableArray *attackArr1 = [NSMutableArray array];
-
-        for (int i = 0; i < 9; i ++) {
-            SKTextureAtlas *atlas = [SKTextureAtlas atlasNamed:@"Archer"];
-            NSString *stand = [NSString stringWithFormat:@"%@_stand_%d",kArcher,i];
-            [standArr addObject:[atlas textureNamed:stand]];
-            
-            NSString *walk = [NSString stringWithFormat:@"%@_walk_%d",kArcher,i];
-            [walkArr addObject:[atlas textureNamed:walk]];
-            
-            NSString *attack1 = [NSString stringWithFormat:@"%@_attack1_%d",kArcher,i];
-            [attackArr1 addObject:[atlas textureNamed:attack1]];
-            
-            NSString *died = [NSString stringWithFormat:@"%@_died_%d",kArcher,i];
-            [diedArr addObject:[atlas textureNamed:died]];
-            
-        }
-        _archerModel.standArr = [standArr copy];
-        _archerModel.walkArr  = [walkArr copy];
-        _archerModel.diedArr  = [diedArr copy];
-        _archerModel.attackArr1 = [attackArr1 copy];
-//        self.standArr = [self stateName:@"stand" textureName:name number:standNumber];
-//        self.runArr   = [self stateName:@"run" textureName:name number:runNumber];
-//        self.walkArr = [self stateName:@"walk" textureName:name number:walkNumber];
-//        self.diedArr = [self stateName:@"died" textureName:name number:diedNumber];
-//        self.attackArr1 = [self stateName:@"attack1" textureName:name number:attackNumber];
-        
         [_archerModel setNormalTexturesWithName:kArcher standNumber:10 runNumber:0 walkNumber:10 diedNumber:10 attack1Number:10];
+        
+        [_archerModel setSkillTexturesWithName:kArcher skill1Number:18 skill2Number:17 skill3Number:16 skill4Number:16 skill5Number:0];
+        
+        [_archerModel setEffectTexturesWithName:kArcher skill1Number:0 skill2Number:0 skill3Number:0 skill4Number:0 skill5Number:8];
     }
     
     return _archerModel;

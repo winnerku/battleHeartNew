@@ -69,8 +69,28 @@
         
         CGFloat x = (arc4random() % (int)kScreenWidth) ;
         CGFloat y = (arc4random() % (int)kScreenHeight) ;
-
+        
         point = CGPointMake(x * ax, y * ay);
+        
+        ///从屏幕外出现
+        if (arc4random() % 2 == 0) {
+            
+            if (point.x > 0) {
+                point.x = kScreenWidth;
+            }else{
+                point.x = -kScreenWidth;
+            }
+            
+        }else{
+            
+            if (point.y > 0) {
+                point.y = kScreenHeight;
+            }else{
+                point.y = -kScreenHeight;
+            }
+            
+        }
+        
     }
     
     return point;

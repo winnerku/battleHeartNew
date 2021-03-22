@@ -112,7 +112,24 @@ static CGFloat bloodPage = 0;
     [self setBodyCanUse];
 }
 
-
+- (void)createSkillEffectWithPosition:(CGPoint)point
+                             skillArr:(NSArray *)skillArr
+                                scale:(CGFloat)scale
+{
+    WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:skillArr[0]];
+    node.alpha = 1;
+    [self addChild:node];
+    node.position = point;
+    node.xScale = scale;
+    node.yScale = scale;
+    SKAction *an = [SKAction animateWithTextures:skillArr timePerFrame:0.1];
+    an.timingMode = SKActionTimingEaseIn;
+    SKAction *rem = [SKAction removeFromParent];
+    
+    //__weak typeof(self)weakSelf = self;
+    [node runAction:[SKAction sequence:@[an,rem]] completion:^{
+    }];
+}
 
 - (void)beAttackActionWithTargetNode:(WDBaseNode *)targetNode
 {
@@ -178,56 +195,76 @@ static CGFloat bloodPage = 0;
         return YES;
     }
 
-    [self bloodNode];
+    /*
+     attackNumber 为负数的时候说明是加血，为正数的
+     */
     BOOL isAddBlood = NO;
+    [self bloodNode];
+    
     if (bloodNumber > 0) {
+        ///减血情况下
+        isAddBlood = NO;
         /// 最终减血量 = 攻击数值 - 防御数值
         bloodNumber = bloodNumber - _defense;
         if (bloodNumber <= 0) {
             bloodNumber = 1;
         }
         
-        isAddBlood = NO;
-    }else{
-        isAddBlood = YES;
-    }
-    
-    [WDActionTool reduceBloodLabelAnimation:self reduceCount:bloodNumber];
-    
-    /*
-     attackNumber 为负数的时候说明是加血，为正数的
-     */
-    
-    /// 满血状态
-    if (isAddBlood && _lastBlood == _blood) {
-        self.bloodBgNode.alpha = 0;
-        return NO;
-    }
-    
-    self.bloodBgNode.alpha = 1;
-
-    CGFloat last = _lastBlood;
-    if (bloodNumber >= _lastBlood) {
-        bloodNumber = _lastBlood;
-    }
-    _lastBlood = _lastBlood - bloodNumber;
-    if (_lastBlood > _blood) {
+        self.bloodBgNode.alpha = 1;
+        if (bloodNumber >= _lastBlood) {
+            bloodNumber = _lastBlood;
+        }
         
-        //加满的份额
-        bloodNumber = _blood - last;
-        _lastBlood = _blood;
+        /// 冰女技能，伤害减半
+        if (self.iceWizardReduceAttack) {
+            bloodNumber = bloodNumber / 2.0;
+        }
+        
+        _lastBlood = _lastBlood - bloodNumber;
+        ///冰女技能，受到致命伤害，不死
+        if (_lastBlood <= 0) {
+            if (self.iceWizardNotDead) {
+                _lastBlood = 1;
+            }
+        }
+        
+        /// 没有血的状态
+        if (_lastBlood <= 0) {
+            self.state = SpriteState_dead;
+            [self reduceAnimation:bloodNumber];
+            ///这里这样处理是因为先走了死亡的处理之后又走的通知
+            [self performSelector:@selector(noBlood) withObject:nil afterDelay:0];
+            return YES;
+        }
+        
+        
+    }else{
+        ///加血情况下
+        isAddBlood = YES;
+        /// 满血状态，直接返回
+        if (_lastBlood == _blood) {
+            self.bloodBgNode.alpha = 0;
+            return NO;
+        }
+        
+        CGFloat last = _lastBlood;
+        _lastBlood = _lastBlood - bloodNumber;
+        if (_lastBlood > _blood) {
+            
+            //加满的份额
+            bloodNumber = _blood - last;
+            _lastBlood = _blood;
+        }
+
     }
     
-    /// 没有血的状态
-    if ( !isAddBlood && _lastBlood <= 0) {
-        self.state = SpriteState_dead;
-        [self reduceAnimation:bloodNumber];
-        ///这里这样处理是因为先走了死亡的处理之后又走的通知
-        [self performSelector:@selector(noBlood) withObject:nil afterDelay:0];
-        return YES;
+
+    /// 骑士技能，反伤
+    if (self.kinghtReboundAttack) {
+        [self.targetMonster setBloodNodeNumber:bloodNumber / 2.0];
     }
     
-    
+
     CGFloat percent = (float)_lastBlood / (float)_blood;
     if (_lastBlood <= 0) {
         percent = 0;
@@ -243,13 +280,21 @@ static CGFloat bloodPage = 0;
         
         //加血动画
         [self addBloodAnimation:bloodNumber];
+        if (bloodNumber > 0) {
+            [WDActionTool reduceBloodLabelAnimation:self reduceCount:-bloodNumber];
+        }else{
+            [WDActionTool reduceBloodLabelAnimation:self reduceCount:bloodNumber];
+        }
+        
+
        
     }else{
         
         //减血动画
         [self reduceAnimation:bloodNumber];
         [self beAttackActionWithTargetNode:nil];
-       
+        [WDActionTool reduceBloodLabelAnimation:self reduceCount:bloodNumber];
+
     }
     
     return NO;

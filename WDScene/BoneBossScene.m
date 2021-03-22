@@ -18,6 +18,8 @@
 {
     [super didMoveToView:view];
     
+    self.speed = 1;
+    
     self.textureManager.mapBigY_Up = 100;
     self.textureManager.mapBigY_down = 230;
     

@@ -29,17 +29,17 @@
     self.textureManager.mapBigY_Up = 100;
     self.textureManager.mapBigY_down = 230;
     
-    [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForChangeUser object:kNinja];
+    [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForChangeUser object:kKinght];
      [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForHiddenSkill object:@(1)];
     
     [self createMonsterWithName:kBoneKnight position:CGPointMake(10, 10)];
     for (WDBaseNode *node in self.monsterArr) {
         _bossNode2 = node;
     }
-    
-    self.iceWizardNode.lastBlood = 10000;
-    self.iceWizardNode.blood = 10000;
-    [self addChild:self.iceWizardNode];
+   
+//    self.iceWizardNode.lastBlood = 10000;
+//    self.iceWizardNode.blood = 10000;
+    [self addChild:self.kNightNode];
     
     
     

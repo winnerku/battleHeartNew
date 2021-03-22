@@ -25,23 +25,31 @@
 
 //骑士
 #define kKinght @"Knight"
-
+#define kKinght_skill_1 @"Knight_skill_1" //群嘲
+#define kKinght_skill_2 @"Knight_skill_2" //减伤
+#define kKinght_skill_3 @"Knight_skill_3" //冰巫师第3个技能，减伤
+#define kKinght_skill_4 @"Knight_skill_4" //冰巫师第4个技能，薄葬
+#define kKinght_skill_5 @"Knight_skill_5" //冰巫师第5个技能，复活
 
 //冰霜巫师
 #define kIceWizard @"IceWizard"
-
+#define kIceWizard_skill_1 @"IceWizard_skill_1" //双倍治疗
+#define kIceWizard_skill_2 @"IceWizard_skill_2" //群疗
+#define kIceWizard_skill_3 @"IceWizard_skill_3" //减伤
+#define kIceWizard_skill_4 @"IceWizard_skill_4" //薄葬
+#define kIceWizard_skill_5 @"IceWizard_skill_5" //复活
 
 //弓箭手
 #define kArcher @"Archer"
-#define kArcher_skill_1 @"Archer_skill_1" //射手第1个技能，增加攻速时间
-#define kArcher_skill_2 @"Archer_skill_2" //射手第2个技能，三连发
-#define kArcher_skill_3 @"Archer_skill_3" //射手第3个技能，增加移动速度
-#define kArcher_skill_4 @"Archer_skill_4" //射手第4个技能，攻击增加吸血
-#define kArcher_skill_5 @"Archer_skill_5" //射手第5个技能，待定
+#define kArcher_skill_1 @"Archer_skill_1" //增加攻速时间
+#define kArcher_skill_2 @"Archer_skill_2" //三连发
+#define kArcher_skill_3 @"Archer_skill_3" //增加移动速度
+#define kArcher_skill_4 @"Archer_skill_4" //攻击增加吸血
+#define kArcher_skill_5 @"Archer_skill_5" //三倍攻击，继承每一根箭
 
 // 忍者
 #define kNinja @"Ninja"
-#define kNinja_skill_1 @"Ninja_skill_1" //忍者第1个技能，斩杀
+#define kNinja_skill_1 @"Ninja_skill_1" //斩杀
 
 //石头人
 #define kStone @"Stone"
@@ -155,7 +163,8 @@ static const uint32_t ARROW_CATEGORY = 0X04;     //0100
 #define kNotificationForLearnSkill @"kNotificationForLearnSkill"
 /// 点击指示图标
 #define kNotificationForClickPrompt @"kNotificationForClickPrompt"
-
+/// 复活
+#define kNotificationForCameBackToLife    @"kNotificationForCameBackToLife"
 /// 全局link
 #define kNotificationForDisplayLink @"kNotificationForDisplayLink"
 

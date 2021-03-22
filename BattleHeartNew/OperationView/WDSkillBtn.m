@@ -29,13 +29,18 @@
 
 - (void)setTime:(CGFloat)time
 {
-   
-    _startTime = time;
-    _allTime = time;
-    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timeAction:) userInfo:nil repeats:YES];
-    self.alpha = 0.5;
-    self.timeLabel.hidden = NO;
-    self.timeLabel.text = [NSString stringWithFormat:@"%d",_allTime];
+    if (time == 1000) {
+        self.alpha = 0.2;
+    }else{
+        _startTime = time;
+        _allTime = time;
+        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timeAction:) userInfo:nil repeats:YES];
+        self.alpha = 0.5;
+        self.timeLabel.hidden = NO;
+        self.timeLabel.text = [NSString stringWithFormat:@"%d",_allTime];
+    }
+    
+    
 }
 
 - (void)timeAction:(NSTimer *)timer
