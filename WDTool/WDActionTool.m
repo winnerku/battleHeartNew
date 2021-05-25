@@ -39,7 +39,7 @@
                       reduceCount:(CGFloat)count
 {
    
-   
+    return;
     
     //27 36
     

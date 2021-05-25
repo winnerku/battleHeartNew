@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /// 最大可移动范围，不能出地图
++ (CGPoint)randomPositionWithNode:(WDBaseNode *)node;
 + (CGPoint)calculateBigPoint:(CGPoint)pos;
 
 + (CGFloat)distanceBetweenPoints:(CGPoint)first
@@ -77,6 +78,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 怪物搜索随机的玩家
 /// @param node 怪物
 + (WDBaseNode *)searchUserRandomNode:(WDBaseNode *)node;
+
+
++ (UIColor *)colorFromHexRGB:(NSString *)inColorString;
 
 @end
 

@@ -56,7 +56,7 @@ static CGFloat bloodPage = 0;
             self.xScale = fabs(self.xScale);
             self.directionNumber = 1;
            self.bloodBgNode.xScale = 1;
-           self.bloodBgNode.position = CGPointMake(-self.bloodBgNode.size.width / 2.0, self.bloodBgNode.position.y);
+           self.bloodBgNode.position = CGPointMake(-self.bloodBgNode.size.width / 2.0 + self.bloodX_adapt_right, self.bloodBgNode.position.y);
             self.talkNode.xScale = fabs(self.talkNode.xScale);
         }else{
             if ([self.name isEqualToString:kRedBat]) {
@@ -66,7 +66,7 @@ static CGFloat bloodPage = 0;
             self.xScale = -fabs(self.xScale);
             self.directionNumber = -1;
             self.bloodBgNode.xScale = -1;
-            self.bloodBgNode.position = CGPointMake(self.bloodBgNode.size.width / 2.0, self.bloodBgNode.position.y);
+            self.bloodBgNode.position = CGPointMake(self.bloodBgNode.size.width / 2.0 + self.bloodX_adapt_left, self.bloodBgNode.position.y);
             self.talkNode.xScale = -fabs(self.talkNode.xScale);
         }
     }
@@ -81,6 +81,8 @@ static CGFloat bloodPage = 0;
     }else{
         self.zPosition = [WDCalculateTool calculateZposition:self];
     }
+    
+   
 }
 
 - (void)createMonsterAttackPhysicBodyWithPoint:(CGPoint)point
@@ -118,6 +120,7 @@ static CGFloat bloodPage = 0;
 {
     WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:skillArr[0]];
     node.alpha = 1;
+    node.zPosition = 1000;
     [self addChild:node];
     node.position = point;
     node.xScale = scale;
@@ -130,6 +133,30 @@ static CGFloat bloodPage = 0;
     [node runAction:[SKAction sequence:@[an,rem]] completion:^{
     }];
 }
+
+- (void)createAimWithTexture:(SKTexture *)texture
+{
+    WDBaseNode *createNode = [WDBaseNode spriteNodeWithTexture:texture];
+    createNode.position =CGPointMake(0, 0);
+    createNode.zPosition = 10000;
+    createNode.xScale = 1;
+    createNode.yScale = 1;
+    createNode.name = @"aim";
+    [self addChild:createNode];
+    
+    SKAction *scale = [SKAction scaleTo:3.0 duration:0.3];
+    SKAction *scale2 = [SKAction scaleTo:1.0 duration:0.3];
+    SKAction *seq = [SKAction sequence:@[scale,scale2]];
+    SKAction *rep = [SKAction repeatActionForever:seq];
+    [createNode runAction:rep];
+}
+
+- (void)removeAim{
+    WDBaseNode *aim = (WDBaseNode *)[self childNodeWithName:@"aim"];
+    [aim removeAllActions];
+    [aim removeFromParent];
+}
+
 
 - (void)beAttackActionWithTargetNode:(WDBaseNode *)targetNode
 {
@@ -239,6 +266,15 @@ static CGFloat bloodPage = 0;
         
         
     }else{
+        
+        self.poisonNumber = 0;
+        [self.poisonNode removeFromParent];
+        _poisonNode = nil;
+        if (_poisonLink) {
+            [_poisonLink invalidate];
+            _poisonLink = nil;
+        }
+        
         ///加血情况下
         isAddBlood = YES;
         /// 满血状态，直接返回
@@ -416,7 +452,7 @@ static CGFloat bloodPage = 0;
     SKAction *remove = [SKAction removeFromParent];
     SKAction *seq = [SKAction sequence:@[rep,remove]];
     
-    if (self.affect & SpriteAffect_reduce) {
+    if (self.affect & SpriteAffect_reduceSpeed) {
         self.moveSpeed = self.trueMoveSpeed;
         self.moveSpeed = self.moveSpeed - self.moveSpeed * 0.5;
     }
@@ -428,15 +464,43 @@ static CGFloat bloodPage = 0;
     }];
 }
 
+
+/// 设置状态
+- (void)setAffectWithType:(SpriteAffect)state
+{
+    self.affect = self.affect | state;
+    /// 中毒
+    if (state & SpriteAffect_poison) {
+        
+        _poisonNumber = 1;
+        [self poisonNode];
+        if (!_poisonLink) {
+            _poisonLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(poisonReduceBlood)];
+            _poisonLink.preferredFramesPerSecond = 15;
+            [_poisonLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+        }
+    }
+}
+
+- (void)poisonReduceBlood{
+    [self setBloodNodeNumber:self.poisonNumber];
+}
+
 #pragma mark - 行为 -
 /// 站立
 - (void)standAction
 {
+    if (self.model.standArr.count == 0) {
+        return;
+    }
+    
     if (self.lastBlood <= 0) {
         return;
     }
     if (self.state & SpriteState_movie) {
         self.state = SpriteState_stand | SpriteState_movie;
+    }else if(self.state & SpriteState_dead){
+        self.state = SpriteState_stand | SpriteState_dead;
     }else{
         self.state = SpriteState_stand;
     }
@@ -481,6 +545,10 @@ static CGFloat bloodPage = 0;
    
 }
 
+- (void)removeDefenseAction
+{
+    
+}
 
 /// 牧师技能
 - (void)skillCureAction
@@ -601,6 +669,11 @@ static CGFloat bloodPage = 0;
 /// 死亡释放资源
 - (void)releaseAction
 {
+    if (self.poisonLink) {
+        [self.poisonLink invalidate];
+        [self.poisonNode removeFromParent];
+    }
+    
     [self removeObserver:self forKeyPath:@"isRight"];
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
@@ -701,6 +774,9 @@ static CGFloat bloodPage = 0;
         
         
         UIColor *color2 = UICOLOR_RGB(127, 255, 0, 1);
+        if ([self isKindOfClass:[WDMonsterNode class]]) {
+            color2 = UICOLOR_RGB(255, 227, 132, 1);
+        }
         _bloodNode = [WDBaseNode spriteNodeWithColor:color2 size:CGSizeMake(self.realSize.width / fabs(self.xScale), self.bloodHeight - bloodPage * 2.0)];
         _bloodNode.zPosition = 1;
         _bloodNode.position = CGPointMake(0, bloodPage);
@@ -748,6 +824,20 @@ static CGFloat bloodPage = 0;
     return _balloonNode;
 }
 
+- (SKEmitterNode *)poisonNode
+{
+    if (!_poisonNode) {
+        SKEmitterNode *poison = [SKEmitterNode nodeWithFileNamed:@"poisonFire"];
+        [self addChild:poison];
+        poison.name = @"poisonFire";
+        poison.zPosition = 100;
+        poison.targetNode = self.parent;
+        poison.position = CGPointMake(0, self.realSize.height - 60);
+        _poisonNode = poison;
+    }
+    
+    return _poisonNode;
+}
 
 @end
 

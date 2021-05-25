@@ -250,7 +250,7 @@
     }
     
 
-    if (self.targetMonster) {
+    if (self.targetMonster && !(self.targetMonster.state & SpriteState_movie)) {
         [self attackActionWithEnemyNode:self.targetMonster];
         return;
     }
@@ -274,7 +274,7 @@
     self.skill1 = YES;
     [WDSkillManager endSkillActionWithTarget:self skillType:@"1" time:time];
     
-    [self createSkillEffectWithPosition:CGPointMake(0, 270) skillArr:_archerModel.skill1Arr scale:1];
+    [self createSkillEffectWithPosition:CGPointMake(0, 270) skillArr:_archerModel.skill1Arr scale:2];
 
 }
 
@@ -284,7 +284,7 @@
     NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_2];
     [WDSkillManager endSkillActionWithTarget:self skillType:@"2" time:time];
     
-    [self createSkillEffectWithPosition:CGPointMake(0, 270) skillArr:_archerModel.skill2Arr scale:1];
+    [self createSkillEffectWithPosition:CGPointMake(0, 270) skillArr:_archerModel.skill2Arr scale:2];
 }
 
 - (void)skill3Action
@@ -303,7 +303,7 @@
     self.skill4 = YES;
     [WDSkillManager endSkillActionWithTarget:self skillType:@"4" time:time];
 
-    [self createSkillEffectWithPosition:CGPointMake(0, 270) skillArr:_archerModel.skill4Arr scale:1];
+    [self createSkillEffectWithPosition:CGPointMake(0, 270) skillArr:_archerModel.skill4Arr scale:2];
 }
 
 - (void)skill5Action

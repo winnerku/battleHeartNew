@@ -48,6 +48,9 @@
 //
     [self createMonsterWithName:kBoneSolider position:CGPointMake(-400, 0)];
     _boneSolider = self.monsterArr[0];
+    
+    [self createSnowEmitter];
+
 }
 
 
@@ -167,23 +170,51 @@
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
+- (void)changeActionForMonster:(NSString *)sceneName{
+   
+    if (self.changeSceneWithNameBlock) {
+        self.changeSceneWithNameBlock(sceneName);
+    }
+}
+
 - (void)diedAction:(NSNotification *)notification{
     
     [super diedAction:notification];
     
+    for (WDBaseNode *node in self.userArr) {
+        if (node.state & SpriteState_dead) {
+            
+            [self.userArr removeObject:node];
+            [node releaseAction];
+            
+            if ([node.name isEqualToString:self.selectNode.name]) {
+                self.selectNode = self.userArr.firstObject;
+                [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForChangeUser object:self.selectNode.name];
+                [self.selectNode selectSpriteAction];
+            }
+            
+            if (self.userArr.count == 0) {
+                //被小怪杀干净
+                self.textureManager.goText = @"再接再厉吧\n记得多走位!";
+                [self performSelector:@selector(changeActionForMonster:) withObject:@"RealPubScene" afterDelay:2];
+            }
+        }
+    
+    }
+    
     for (WDBaseNode *node in self.monsterArr) {
         if (node.state & SpriteState_dead){
             [node releaseAction];
+            [self.monsterArr removeObject:node];
+            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:kNinjaFirst];
+            [[NSUserDefaults standardUserDefaults]setBool:YES forKey:kPassCheckPoint2];
+            __weak typeof(self)weakSelf = self;
+            [self.ninjaNode.talkNode setText:@"此地不宜久留\n先回去再说！" hiddenTime:2 completeBlock:^{
+                [weakSelf backToRealPubScene];
+            }];
+            
+            break;
         }
-        [self.monsterArr removeObject:node];
-        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:kNinjaFirst];
-        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:kPassCheckPoint2];
-        __weak typeof(self)weakSelf = self;
-        [self.ninjaNode.talkNode setText:@"此地不宜久留\n先回去再说！" hiddenTime:2 completeBlock:^{
-            [weakSelf backToRealPubScene];
-        }];
-        
-        break;
     }
 }
 

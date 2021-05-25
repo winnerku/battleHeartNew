@@ -56,7 +56,6 @@ static WDTextureManager *textureManager = nil;
     SKAction *rep = [SKAction repeatActionForever:seq];
     [arrow runAction:rep];
        
-   
 }
 
 - (void)arrowMoveActionWithPos:(CGPoint)pos
@@ -200,6 +199,21 @@ static WDTextureManager *textureManager = nil;
     _boss2Model = nil;
 }
 
+- (void)releaseBoss3Model
+{
+    _boss3Model = nil;
+}
+
+- (void)releaseBoss4Model
+{
+    _boss4Model = nil;
+}
+
+- (void)releaseBoss5Model
+{
+    _boss5Model = nil;
+}
+
 - (void)releaseAllModel
 {
     [self releaseKinghtModel];          //骑士
@@ -210,6 +224,9 @@ static WDTextureManager *textureManager = nil;
     [self releaseBoneSoliderModel];     //骷髅士兵
     [self releaseBoss1Model];           //boss1
     [self releaseBoss2Model];           //boss2
+    [self releaseBoss3Model];           //boss3
+    [self releaseBoss4Model];           //boss4
+    [self releaseBoss5Model];           //boss5
 }
 
 #pragma mark - 玩家人物 -
@@ -314,6 +331,46 @@ static WDTextureManager *textureManager = nil;
     }
     
     return _boss2Model;
+}
+
+- (Boss3Model *)boss3Model
+{
+    if (!_boss3Model) {
+        _boss3Model = [[Boss3Model alloc] init];
+        [_boss3Model setNormalTexturesWithName:kZombie standNumber:0 runNumber:0 walkNumber:3 diedNumber:11 attack1Number:15];
+    }
+    
+    return _boss3Model;
+}
+
+- (Boss4Model *)boss4Model
+{
+    if (!_boss4Model) {
+        _boss4Model = [[Boss4Model alloc] init];
+        [_boss4Model setNormalTexturesWithName:kOX standNumber:8 runNumber:0 walkNumber:6 diedNumber:10 attack1Number:6];
+    }
+    
+    return _boss4Model;
+}
+
+- (Boss5Model *)boss5Model
+{
+    if (!_boss5Model) {
+        _boss5Model = [[Boss5Model alloc] init];
+        [_boss5Model setNormalTexturesWithName:kGhost standNumber:0 runNumber:0 walkNumber:5 diedNumber:7 attack1Number:19];
+    }
+    
+    return _boss5Model;
+}
+
+- (Boss6Model *)boss6Model
+{
+    if (!_boss6Model) {
+        _boss6Model = [[Boss6Model alloc] init];
+        [_boss6Model setNormalTexturesWithName:kDog standNumber:4 runNumber:0 walkNumber:8 diedNumber:5 attack1Number:12];
+    }
+    
+    return _boss6Model;
 }
 
 - (WDBoneSoliderModel *)boneSoliderModel

@@ -104,7 +104,9 @@
         //如果引导线没隐藏，添加buff效果
         if (self.selectNode.addBuff && self.selectLine.hidden == NO) {
             [self addBuf:userNode];
-            userNode.arrowNode.hidden = YES;
+            if (![self.selectNode.name isEqualToString:userNode.name]) {
+                userNode.arrowNode.hidden = YES;
+            }
             canMove = NO;
         }else if(![self.selectNode.name isEqualToString:userNode.name]){
             //切换选中的玩家
@@ -175,8 +177,8 @@
         return YES;
     }
     
-    CGFloat distanceX = fabs(monster.position.x - pos.x);
-    CGFloat distanceY = fabs(monster.position.y - pos.y);
+    CGFloat distanceX = fabs(monster.position.x - pos.x + monster.realBodyX);
+    CGFloat distanceY = fabs(monster.position.y - pos.y + monster.realBodyY);
     //创建的图片比实际显示图片要大
     if (distanceX < monster.realSize.width / 2.0 && distanceY < monster.realSize.height / 2.0) {
         

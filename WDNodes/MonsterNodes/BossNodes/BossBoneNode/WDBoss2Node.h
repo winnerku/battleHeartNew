@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign)BOOL isRush;
 @property (nonatomic,strong)SKEmitterNode *doubleKill;
 @property (nonatomic,assign)int iceAttackNumber;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

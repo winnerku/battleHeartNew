@@ -17,9 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// 效果：如减速、加速、双倍伤害等等
 typedef NS_ENUM(NSInteger,SpriteAffect) {
     
-    SpriteAffect_none     = 0,
+    SpriteAffect_none          = 0,       ///0000 0000
     
-    SpriteAffect_reduce   = 1 << 0,  ///0000 0000
+    SpriteAffect_reduceSpeed   = 1 << 0,  ///0000 0001  减速
+    
+    SpriteAffect_poison        = 1 << 1,  ///0000 0010  中毒
 };
 
 
@@ -77,14 +79,7 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 /// 表情
 @property (nonatomic,strong)WDBalloonNode *balloonNode;
 
-
-
 @property (nonatomic,copy)void (^moveFinish)(void);
-
-
-
-
-
 
 
 
@@ -123,9 +118,14 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 /// 初始地方Z坐标不一样
 @property (nonatomic,assign)BOOL isPubScene;
 
-/// 方向: 左 又
+/// 判断武器攻击是否会反伤自己
+@property (nonatomic,assign)BOOL isAttackSelf;
+
+/// 方向: 左 右
 @property (nonatomic,strong)NSString *direction;
 @property (nonatomic,assign)CGFloat directionNumber;
+/// 近战专属的上下占位数值，避免重合
+@property (nonatomic,assign)CGFloat upPositionY;
 
 #pragma mark - 精灵数值
 /// 治愈量（会随着技能变动）
@@ -156,6 +156,11 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 @property (nonatomic,assign)SpriteState state;
 @property (nonatomic,assign)SpriteAffect affect;
 
+/// 毒气
+@property (nonatomic,strong)SKEmitterNode *poisonNode;
+@property (nonatomic,assign)int poisonNumber;
+@property (nonatomic,strong)CADisplayLink *poisonLink;
+
 /// 人物与怪物之间的最小距离增加一个横向随机数，避免怪物重叠问题
 @property (nonatomic,assign)CGFloat randomDistanceX;
 @property (nonatomic,assign)CGFloat randomDistanceY;
@@ -165,7 +170,18 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 @property (nonatomic,assign)CGFloat bloodWidth;
 @property (nonatomic,assign)CGFloat bloodHeight;
 @property (nonatomic,assign)CGFloat bloodX; ///血条右侧的X
-@property (nonatomic,assign)CGFloat bloodX_Left;
+@property (nonatomic,assign)CGFloat bloodX_adapt_left; /// 适配未居中图片位置
+@property (nonatomic,assign)CGFloat bloodX_adapt_right; /// 适配未居中图片位置
+
+/// 真实的物理尺寸坐标，也就是真实的锚点
+@property (nonatomic,assign)CGFloat realBodyX;
+@property (nonatomic,assign)CGFloat realBodyY;
+
+@property (nonatomic,assign)CGFloat realCenterX;
+@property (nonatomic,assign)CGFloat realCenterY;
+
+
+
 @property (nonatomic,assign)CGFloat bloodY;
 
 
@@ -237,6 +253,9 @@ typedef NS_ENUM(NSInteger,SpriteState) {
 /// 玩家独有的增强BUFF方法
 - (void)addBuffActionWithNode:(WDBaseNode *)node;
 
+/// 移除防御
+- (void)removeDefenseAction;
+
 /// 被治愈状态
 - (void)beCureActionWithCureNode:(WDBaseNode *)cureNode;
 
@@ -260,12 +279,18 @@ typedef NS_ENUM(NSInteger,SpriteState) {
                    scale:(CGFloat)scale
                    count:(NSInteger)count;
 
-
+/// 设置状态
+- (void)setAffectWithType:(SpriteAffect)state;
 
 /// 创建特效技能
 - (void)createSkillEffectWithPosition:(CGPoint)point
                              skillArr:(NSArray *)skillArr
                                 scale:(CGFloat)scale;
+
+
+/// 牛头关卡，设置目标
+- (void)createAimWithTexture:(SKTexture *)texture;
+- (void)removeAim;
 
 @end
 

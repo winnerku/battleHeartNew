@@ -14,6 +14,7 @@
     Boss2Model *_bossModel;
     SKEmitterNode *_doubleKill;
     BOOL _isRush;
+    WDBaseNode *_rewardNode;
 
 }
 
@@ -53,8 +54,7 @@
     [self standAction];
     
     [self createRealSizeNode];
-    
-   
+  
 }
 
 - (void)attackActionWithEnemyNode:(WDBaseNode *)enemyNode
@@ -64,6 +64,7 @@
     if (!_doubleKill) {
         _doubleKill = [SKEmitterNode nodeWithFileNamed:@"doubleKill"];
         [self.parent addChild:_doubleKill];
+        _doubleKill.name = @"black";
         _doubleKill.targetNode = self.parent;
         _doubleKill.position = CGPointMake(self.position.x, self.position.y - 75);
     }
@@ -247,6 +248,8 @@
     SKAction *rep = [SKAction repeatActionForever:stand];
     [self runAction:rep withKey:@"stand"];
 }
+
+
 
 #pragma mark - 移动逻辑 -
 - (void)observedNode

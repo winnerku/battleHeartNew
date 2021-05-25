@@ -9,7 +9,6 @@
 #import <SpriteKit/SpriteKit.h>
 #import "WDBaseNode.h"
 
-
 //玩家单位
 #import "WDKinghtNode.h"
 #import "WDIceWizardNode.h"
@@ -21,6 +20,10 @@
 #import "WDRedBatNode.h"
 #import "WDBoneSoliderNode.h"
 #import "WDBoss2Node.h"
+#import "WDBoss3Node.h"
+#import "WDBoss4Node.h"
+#import "WDBoss5Node.h"
+#import "WDBoss6Node.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,strong)WDBaseNode *selectNode;
 
+/// 关卡 kPassCheckPoint%d
+@property (nonatomic,copy)NSString *passStr;
 
 /// 停止一切互动
 @property (nonatomic,assign)BOOL isPauseClick;
@@ -47,6 +52,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 显示技能选择
 @property (nonatomic,copy)void (^showSkillSelectBlock)(NSString *userName);
+
+/// 挂了，外边选中按钮删除
+@property (nonatomic,copy)void (^diedBlock)(NSString *userName);
 
 /// 设置对话
 @property (nonatomic,copy)void (^talkBlock)(NSString *text,NSString *name);
@@ -70,6 +78,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)WDNinjaNode *ninjaNode;
 
 
+/// 奖励
+@property (nonatomic,strong)WDBaseNode *rewardNode;
+
+
+
 - (void)touchDownAtPoint:(CGPoint)pos;
 - (void)touchMovedToPoint:(CGPoint)pos;
 - (void)touchUpAtPoint:(CGPoint)pos;
@@ -78,11 +91,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)releaseAction;
 
+/// 创建雪
+- (void)createSnowEmitter;
+
 - (void)createMonsterWithName:(NSString *)name
                      position:(CGPoint)point;
 
 - (void)arrowAction:(CGPoint)pos;
 
+/// 外部选择人物
+- (void)selectUserWithName:(NSString *)name;
 
 /// 返回主城
 - (void)backToRealPubScene;

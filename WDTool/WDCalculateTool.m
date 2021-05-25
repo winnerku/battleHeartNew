@@ -11,6 +11,48 @@
 
 @implementation WDCalculateTool
 
++ (CGPoint)randomPositionWithNode:(WDBaseNode *)node
+{
+    CGFloat x = 0;
+    CGFloat y = 0;
+    
+    int ax = 1;
+    int ay = 1;
+    if (arc4random() % 2 == 0) {
+        ax = -1;
+    }
+    if (arc4random() % 2 == 0) {
+        ay = -1;
+    }
+    
+    x = (arc4random() % (int)kScreenWidth);
+    y = (arc4random() % (int)kScreenHeight);
+    
+    x = x * ax;
+    y = y * ay;
+
+    
+    WDTextureManager *m = [WDTextureManager shareTextureManager];
+
+    if (x + node.realSize.width  > kScreenWidth - m.mapBigX) {
+        x = kScreenWidth - node.realSize.width - m.mapBigX;
+    }else if(x - node.realSize.width  < -kScreenWidth + m.mapBigX){
+        x = -kScreenWidth + node.realSize.width + m.mapBigX;
+    }
+    
+    if (y + node.realSize.height  > kScreenHeight - m.mapBigY) {
+        y = kScreenHeight - node.realSize.height - m.mapBigX;
+    }else if(y - node.realSize.height  < -kScreenHeight + m.mapBigY){
+        y = -kScreenHeight + node.realSize.height + m.mapBigY;
+    }
+    
+    if (x < 0) {
+//        NSLog(@"我是是is哒哒哒哒哒哒多多多多多多多多多多多多多多多");
+    }
+    
+    return CGPointMake(x, y);
+}
+
 + (CGPoint)calculateBigPoint:(CGPoint)pos
 {
     CGFloat x = pos.x;
@@ -69,16 +111,18 @@
     CGPoint userPoint = user.position;
     CGPoint monsterPoint = monster.position;
     
+    /// 玩家需要前进到的坐标距离
     CGFloat minDistance = user.realSize.width / 2.0 + monster.realSize.width / 2.0 + monster.randomDistanceX;
     //CGFloat minY = monster.randomDistanceY;
     
     //近战
     if (user.attackDistance == 0) {
         
-        //玩家在右边，怪物在左边
+        //玩家在左边，怪物在右边
         if (userPoint.x < monsterPoint.x) {
         
-            x = monsterPoint.x - minDistance;
+            
+            x = monsterPoint.x - minDistance - fabs(monster.realCenterX) * monster.directionNumber;
             
             user.direction = @"right";
             user.isRight = YES;
@@ -86,15 +130,15 @@
             
         }else{
             
-            //玩家在左边，怪物在右边
-            x = monsterPoint.x + minDistance;
+            //玩家在右边，怪物在左边
+            x = monsterPoint.x + minDistance - fabs(monster.realCenterX) * monster.directionNumber;
             
             user.direction = @"left";
             user.isRight = NO;
             user.xScale = -fabs(user.xScale);
         }
         
-        y = monsterPoint.y;
+        y = monsterPoint.y + user.upPositionY;
 
     }else{
         //远程
@@ -186,7 +230,7 @@
     CGPoint userPoint = user.position;
     CGPoint monsterPoint = monster.position;
     
-    CGFloat minDistance = user.realSize.width / 2.0 + monster.realSize.width / 2.0 + monster.randomDistanceX;
+    CGFloat minDistance = user.realSize.width / 2.0 + monster.realSize.width / 2.0 + monster.randomDistanceX + monster.realCenterX * monster.directionNumber;
 
     //玩家在右边，怪物在左边，怪物要走在玩家靠左边边的位置
     if (userPoint.x > monsterPoint.x) {
@@ -341,12 +385,50 @@
         a = -1;
     }
     
-    if (floatNumber == 0) {
+    if (floatNumber <= 0) {
         floatNumber = 1;
     }
     
     CGFloat numer = attack + (arc4random() % floatNumber) * a;
+    if (numer > 1000) {
+        NSLog(@"攻击力%lf",numer);
+    }
     return numer;
+}
+
++ (UIColor *)colorFromHexRGB:(NSString *)inColorString {
+  NSString *cString = [[inColorString
+      stringByTrimmingCharactersInSet:
+          [NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
+
+  // String should be 6 or 8 characters
+  if ([cString length] < 6)
+    return [UIColor whiteColor];
+
+  // strip 0X if it appears
+  if ([cString hasPrefix:@"0X"])
+    cString = [cString substringFromIndex:2];
+  if ([cString hasPrefix:@"#"])
+    cString = [cString substringFromIndex:1];
+  if ([cString length] != 6)
+    return [UIColor whiteColor];
+
+  UIColor *result = nil;
+  unsigned int colorCode = 0;
+  unsigned char redByte, greenByte, blueByte;
+
+  if (nil != cString) {
+    NSScanner *scanner = [NSScanner scannerWithString:cString];
+    (void)[scanner scanHexInt:&colorCode]; // ignore error
+  }
+  redByte = (unsigned char)(colorCode >> 16);
+  greenByte = (unsigned char)(colorCode >> 8);
+  blueByte = (unsigned char)(colorCode); // masks off high bits
+  result = [UIColor colorWithRed:(float)redByte / 0xff
+                           green:(float)greenByte / 0xff
+                            blue:(float)blueByte / 0xff
+                           alpha:1.0];
+  return result;
 }
 
 @end

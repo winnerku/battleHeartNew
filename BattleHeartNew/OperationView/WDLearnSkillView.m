@@ -46,7 +46,7 @@
     NSInteger time3 = [defaults integerForKey:kKinght_skill_3];
     NSInteger time4 = [defaults integerForKey:kKinght_skill_4];
 
-    NSString *str1 = [NSString stringWithFormat:@"群体嘲讽\n有时不好用..\nCD:10秒"];
+    NSString *str1 = [NSString stringWithFormat:@"群体嘲讽\n有时不好用..\nCD:5秒"];
     NSString *str2 = [NSString stringWithFormat:@"伤害减免\n持续%ld秒\nCD:30秒",time2];
     NSString *str3 = [NSString stringWithFormat:@"友军伤害减免\n持续%ld秒\nCD:20秒",time3];
     NSString *str4 = [NSString stringWithFormat:@"反弹伤害\n持续%ld秒\nCD:30秒",time4];
@@ -110,8 +110,8 @@
     NSInteger time3 = [defaults integerForKey:kIceWizard_skill_3];
     NSInteger time4 = [defaults integerForKey:kIceWizard_skill_4];
 
-    NSString *str1 = [NSString stringWithFormat:@"增加治疗量\n持续%ld秒\nCD:30秒",time1];
-    NSString *str2 = [NSString stringWithFormat:@"群体治疗\n效果受增益加成\nCD:15秒"];
+    NSString *str2 = [NSString stringWithFormat:@"增加治疗量\n持续%ld秒\nCD:15秒",time1];
+    NSString *str1 = [NSString stringWithFormat:@"群体治疗\n效果受增益加成\nCD:30秒"];
     NSString *str3 = [NSString stringWithFormat:@"减少受到的伤害\n持续%ld秒\nCD:30秒",time3];
     NSString *str4 = [NSString stringWithFormat:@"阻止死亡\n持续%ld秒\nCD:20秒",time4];
     NSString *str5 = [NSString stringWithFormat:@"随机复活队友\n也可能是对手?\n仅限一次"];

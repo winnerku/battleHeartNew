@@ -27,7 +27,7 @@
     [btn addTarget:self action:@selector(backPackAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:btn];
     
-    btn.backgroundColor = [[UIColor whiteColor]colorWithAlphaComponent:0.7];
+    btn.backgroundColor = [[UIColor whiteColor]colorWithAlphaComponent:0.7]; 
     btn.layer.masksToBounds = YES;
     btn.layer.cornerRadius  = btnWidth / 2.0;
     

@@ -17,6 +17,10 @@
 #import "WDNinjaModel.h"
 #import "WDBoneSoliderModel.h"
 #import "Boss2Model.h"
+#import "Boss3Model.h"
+#import "Boss4Model.h"
+#import "Boss5Model.h"
+#import "Boss6Model.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -47,8 +51,20 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)Boss1Model *boss1Model;
 /// boss2 骷髅骑士
 @property (nonatomic,strong)Boss2Model *boss2Model;
+/// boss3 僵尸男
+@property (nonatomic,strong)Boss3Model *boss3Model;
+/// boss4 牛
+@property (nonatomic,strong)Boss4Model *boss4Model;
+/// boss5 鬼魂
+@property (nonatomic,strong)Boss5Model *boss5Model;
+/// boss6 狗
+@property (nonatomic,strong)Boss6Model *boss6Model;
+
+
 /// 骷髅兵
 @property (nonatomic,strong)WDBoneSoliderModel *boneSoliderModel;
+
+
 
 
 /** 小怪出场光效 */
@@ -108,6 +124,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign)CGFloat mapBigY_Up;
 @property (nonatomic,assign)CGFloat mapBigY_down;
 
+@property (nonatomic,assign)CGFloat mapBigX;
+@property (nonatomic,assign)CGFloat mapBigY;
 
 /// 根据左右控制小怪位置
 @property (nonatomic,assign)CGFloat redBatX;

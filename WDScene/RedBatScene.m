@@ -52,9 +52,12 @@
     [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
     [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
     [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
+    [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
 
-    _batNumber = 3;
-    _bossNumber = 5;
+    [self createSnowEmitter];
+
+    _batNumber = 4;
+    _bossNumber = 15;
  //   [self createBoss2];
    
 }
@@ -105,7 +108,7 @@
                         }];
                         
                     }else{
-                        [_boss.talkNode setText:@"再接再厉吧\n记得多走位!" hiddenTime:2 completeBlock:^{
+                        [_boss.talkNode setText:@"还差得远呢\nMADAMADA!" hiddenTime:2 completeBlock:^{
                             if (weakSelf.changeSceneWithNameBlock) {
                                 weakSelf.changeSceneWithNameBlock(@"RealPubScene");
                             }

@@ -62,9 +62,9 @@
     point = self.targetMonster.position;
     CGFloat distanceX = self.position.x - point.x;
     CGFloat distanceY = self.position.y - point.y;
-    CGFloat minDistance = self.realSize.width / 2.0 + self.targetMonster.realSize.width / 2.0 + self.targetMonster.randomDistanceX;
+    CGFloat minDistance = self.realSize.width / 2.0 + self.targetMonster.realSize.width / 2.0 + self.targetMonster.randomDistanceX + self.realCenterX * self.directionNumber;
     
-    if (fabs(distanceX) < minDistance && fabs(distanceY) < 30) {
+    if (fabs(distanceX) < minDistance + 5 && fabs(distanceY) < 30) {
         return YES;
     }else{
         return NO;

@@ -119,11 +119,11 @@
     node.moveSpeed = 300;
     node.trueMoveSpeed = 300;
     node.moveCADisplaySpeed = 2.5;
-    node.trueAttackNumber = 20;
     node.blood     = 100;
     node.lastBlood = 100;
     node.zPosition = 10;
     node.attackNumber = 20;
+    node.trueAttackNumber = 20;
     node.floatAttackNumber = 10;
 }
 
@@ -139,7 +139,7 @@
     node.zPosition = 10;
     node.attackNumber = 30;
     node.floatAttackNumber = 10;
-}
+}  
 
 /// 石头人
 + (void)initStone:(WDBaseNode *)node
@@ -185,8 +185,8 @@
 {
     node.name = kBoneKnight;
     node.moveSpeed = 300;
-    node.blood     = 1500;
-    node.lastBlood = 1500;
+    node.blood     = 2000;
+    node.lastBlood = 2000;
     node.attackDistance = 0;
     node.moveCADisplaySpeed = 2;
     node.attackNumber = 40;
@@ -204,6 +204,62 @@
     node.attackDistance = 0;
     node.moveCADisplaySpeed = 2;
     node.attackNumber = 25;
+    node.isRight = YES;
+    node.floatAttackNumber = 25;
+}
+
+/// 僵尸
++ (void)initZombie:(WDBaseNode *)node
+{
+    node.name = kZombie;
+    node.moveSpeed = 300;
+    node.blood     = 3000;
+    node.lastBlood = 3000;
+    node.attackDistance = 0;
+    node.moveCADisplaySpeed = 2;
+    node.attackNumber = 25;
+    node.isRight = YES;
+    node.floatAttackNumber = 25;
+}
+
+/// 牛
++ (void)initOX:(WDBaseNode *)node
+{
+    node.name = kOX;
+    node.moveSpeed = 300;
+    node.blood     = 4000;
+    node.lastBlood = 4000;
+    node.attackDistance = 0;
+    node.moveCADisplaySpeed = 2;
+    node.attackNumber = 40;
+    node.isRight = YES;
+    node.floatAttackNumber = 25;
+}
+
+/// 鬼魂
++ (void)initGhost:(WDBaseNode *)node
+{
+    node.name = kGhost;
+    node.moveSpeed = 300;
+    node.blood     = 6000;
+    node.lastBlood = 6000;
+    node.attackDistance = 0;
+    node.moveCADisplaySpeed = 2;
+    node.attackNumber = 40;
+    node.isRight = YES;
+    node.floatAttackNumber = 25;
+}
+
+/// 狗
++ (void)initDog:(WDBaseNode *)node
+{
+    node.name = kGhost;
+    node.moveSpeed = 300;
+    node.blood     = 600000;
+    node.lastBlood = 600000;
+    node.attackDistance = 0;
+    node.moveCADisplaySpeed = 2;
+    node.attackNumber = 40;
     node.isRight = YES;
     node.floatAttackNumber = 25;
 }

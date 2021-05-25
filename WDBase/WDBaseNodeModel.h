@@ -37,6 +37,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 攻击1
 @property (nonatomic,copy)NSArray <SKTexture *>*attackArr1;
+/// 攻击2
+@property (nonatomic,copy)NSArray <SKTexture *>*attackArr2;
+/// 攻击3
+@property (nonatomic,copy)NSArray <SKTexture *>*attackArr3;
 /// 被攻击硬直
 @property (nonatomic,copy)NSArray <SKTexture *>*beHurtArr;
 /// 状态<减速>

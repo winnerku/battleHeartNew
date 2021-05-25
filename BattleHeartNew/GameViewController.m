@@ -20,6 +20,7 @@
 #import "LoadingScene.h"
 @interface GameViewController ()
 @property (nonatomic,strong)WDHomePageUIView *uiView;
+@property (nonatomic,strong)NSArray *userBtnArr;
 @end
 
 
@@ -29,6 +30,7 @@
     WDSkillView *_skillView;
     WDTalkView  *_talkView;
     WDHomePageUIView *_uiView;
+    UIView      *_userView; /// 玩家人物辅助面板
 }
 
 
@@ -48,6 +50,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(isHiddenOrShow:) name:kNotificationForHiddenSkill object:nil];
     
     [self initUserSkill];
 
@@ -75,22 +79,21 @@
         [self createSceneWithName:@"RealPubScene"];
     }
   
-//    [self createSceneWithName:@"TestScene"];
-//    [self showLearnSkillViewControllerWithName:kArcher];
+//   [self createSceneWithName:@"TestScene"];
+//   [self showLearnSkillViewControllerWithName:kArcher];
 }
-
 
 
 - (void)createTalkView
 {
     _talkView = [[WDTalkView alloc] initWithFrame:CGRectMake(0, kScreenHeight - kScreenHeight / 2.0, kScreenWidth, kScreenHeight / 2.0)];
-    _talkView.hidden = YES;
+    _talkView.hidden = YES; 
     [self.view addSubview:_talkView];
 }
 
 
 - (WDHomePageUIView *)uiView
-{
+{ 
     if(!_uiView){
         _uiView = [[WDHomePageUIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
         [self.view addSubview:_uiView];
@@ -125,15 +128,18 @@
     }];
 }
 
+/// 玩家技能以及辅助选中界面
 - (void)createSkillView
 {
     CGFloat page = 0;
+    CGFloat page2 = 20;
+    CGFloat page3 = 20;
+
     if (IS_IPHONEX) {
         page = 20;
     }
     CGFloat width = 4 * 10 + 50 * 5;
     CGFloat x = (kScreenWidth - width) / 2.0;
-    
     
     
     _skillView = [[WDSkillView alloc] initWithFrame:CGRectMake(x,kScreenHeight - 50 - page, width , 50)];
@@ -145,6 +151,63 @@
         [weakSelf skillActionWithTag:tag];
     }];
 
+//    CGFloat widthU = kScreenWidth - _skillView.right - page2 * 2.0;
+//    _userView = [[UIView alloc] initWithFrame:CGRectMake(_skillView.right + page2, kScreenHeight - 50 - page, widthU, 50)];
+//    //_userView.backgroundColor = [UIColor orangeColor];
+//    [self.view addSubview:_userView];
+//    
+//    NSArray *images = @[@"Knight_stand_0",@"IceWizard_stand_0",@"Archer_stand_0",@"Ninja_stand_0"];
+//    NSArray *colors = @[@"#00BFFF",@"#2E8B57",@"#F08080",@"#696969"];
+//    CGFloat smallWidth = (widthU - 3 * page3) / 4.0;
+//    NSMutableArray *btnArr = [NSMutableArray array];
+//    for (int i = 0; i < 4; i ++) {
+//        CGFloat x = smallWidth * i + page3 * i;
+//        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(x, 0, smallWidth, 50)];
+//        //view.backgroundColor = [WDCalculateTool colorFromHexRGB:colors[i]];
+//        [_userView addSubview:view];
+//        
+//        view.layer.masksToBounds = YES;
+//        view.layer.cornerRadius = 50 / 2.0;
+//        
+//        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, smallWidth, 50)];
+//        [btn setImage:[UIImage imageNamed:images[i]] forState:UIControlStateNormal];
+//        [btn addTarget:self action:@selector(selectUser:) forControlEvents:UIControlEventTouchUpInside];
+//        btn.tag = 100 + i;
+//        [view addSubview:btn];
+//        
+//        [btnArr addObject:btn];
+//    }
+//    
+//    self.userBtnArr = [btnArr copy];
+}
+
+/// 辅助选中英雄
+- (void)selectUser:(UIButton *)sender
+{
+    NSArray *nameArr = @[kKinght,kIceWizard,kArcher,kNinja];
+    [_selectScene selectUserWithName:nameArr[sender.tag - 100]];
+    
+}
+
+/// 一局中玩家死亡，暂时置灰
+- (void)userDiedWithName:(NSString *)name
+{
+    NSDictionary *dic = @{kKinght:@"100",kIceWizard:@"101",kArcher:@"102",kNinja:@"103"};
+    NSInteger tag = [dic[name]integerValue];
+    
+    UIButton *btn = [_userView viewWithTag:tag];
+    btn.userInteractionEnabled = NO;
+    btn.alpha = 0.3;
+}
+
+- (void)isHiddenOrShow:(NSNotification *)notifiaction
+{
+    int a = [notifiaction.object intValue];
+    if (a == 0) {
+        _userView.hidden = YES;
+    }else{
+        _userView.hidden = NO;
+    }
 }
 
 
@@ -194,11 +257,11 @@
 /// @param name 类名
 - (void)createSceneWithName:(NSString *)name
 {
-    if ([name isEqualToString:@"RealPubScene"] && [[NSUserDefaults standardUserDefaults]boolForKey:kSkillNPC]) {
-        self.uiView.hidden = NO;
-    }else{
-        self.uiView.hidden = YES;
-    }
+//    if ([name isEqualToString:@"RealPubScene"] && [[NSUserDefaults standardUserDefaults]boolForKey:kSkillNPC]) {
+//        self.uiView.hidden = NO;
+//    }else{
+//        self.uiView.hidden = YES;
+//    }
     
     [_skillView reloadAction];
     
@@ -208,6 +271,12 @@
 
 - (void)withName:(NSString *)name{
    
+    /// 辅助选中功能的按钮
+    for (UIButton *btn in self.userBtnArr) {
+        btn.userInteractionEnabled = YES;
+        btn.alpha = 1;
+    }
+    
     
     Class class = NSClassFromString(name);
     WDBaseScene *scene = [class nodeWithFileNamed:name];
@@ -216,7 +285,7 @@
     scene.scaleMode = SKSceneScaleModeAspectFill;
        
     SKView *skView = (SKView *)self.view;
-       
+    skView.ignoresSiblingOrder = YES;
     SKTransition *tr = [SKTransition fadeWithDuration:1];
 
     // Present the scene
@@ -240,6 +309,10 @@
     
     [_selectScene setShowSkillSelectBlock:^(NSString * _Nonnull userName) {
         [weakSelf showLearnSkillViewControllerWithName:userName];
+    }];
+    
+    [_selectScene setDiedBlock:^(NSString * _Nonnull userName) {
+        [weakSelf userDiedWithName:userName];
     }];
     
     [skView presentScene:scene transition:tr];
@@ -266,10 +339,6 @@
     middleLine2.backgroundColor = [UIColor orangeColor];
     [self.view addSubview:middleLine2];
 }
-
-
-
-
 
 
 

@@ -60,7 +60,7 @@
 {
     [super observedNode];
     
-    if (self.state & SpriteState_move || self.state & SpriteState_movie || self.state & SpriteState_init || self.state & SpriteState_attack || self.state & SpriteState_stagger) {
+    if (self.state & SpriteState_move || self.state & SpriteState_movie || self.state & SpriteState_init || self.state & SpriteState_attack || self.state & SpriteState_stagger || self.state & SpriteState_dead) {
         return;
     }
     
@@ -76,7 +76,7 @@
         return;
     }
     
-    if (self.targetMonster) {
+    if (self.targetMonster && !(self.targetMonster.state & SpriteState_movie)) {
         [self attackActionWithEnemyNode:self.targetMonster];
         return;
     }
@@ -177,12 +177,13 @@
 - (void)attackActionWithEnemyNode:(WDBaseNode *)enemyNode
 {
     [super attackActionWithEnemyNode:enemyNode];
-        
+//        
     [self performSelector:@selector(iceFireAction:) withObject:enemyNode afterDelay:5 * 0.1];
-    
+//    
     SKAction *attackAnimation = [SKAction animateWithTextures:_iceModel.attackArr1 timePerFrame:0.1];
     __weak typeof(self)weakSelf = self;
     [self runAction:attackAnimation completion:^{
+    
         weakSelf.state = SpriteState_stand;
     }];
     
@@ -193,7 +194,7 @@
     if (self.state & SpriteState_move || self.state & SpriteState_dead) {
         return;
     }
-    
+        
     CGFloat x = 0;
     if (self.isRight) {
         x = 60;
@@ -245,15 +246,6 @@
 
 - (void)skill1Action
 {
-    self.skill1 = YES;
-    self.cureNumber = self.trueCureNumber + self.trueCureNumber;
-    NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kArcher_skill_1];
-    [WDSkillManager endSkillActionWithTarget:self skillType:@"1" time:time];
-}
-
-
-- (void)skill2Action
-{
     NSArray *nodes = self.parent.children;
     for (WDBaseNode *node in nodes) {
         if ([node isKindOfClass:[WDUserNode class]]) {
@@ -261,7 +253,14 @@
             [node createSkillEffectWithPosition:CGPointMake(0, 0) skillArr:[WDTextureManager shareTextureManager].archerModel.skill3Arr scale:1];
         }
     }
-    
+}
+
+- (void)skill2Action
+{
+    self.skill2 = YES;
+    self.cureNumber = self.trueCureNumber + self.trueCureNumber;
+    NSInteger time = [[NSUserDefaults standardUserDefaults]integerForKey:kIceWizard_skill_2];
+    [WDSkillManager endSkillActionWithTarget:self skillType:@"2" time:time];
 }
 
 - (void)skill3Action

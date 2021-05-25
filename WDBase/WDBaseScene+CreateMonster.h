@@ -18,6 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)redBatWithPosition:(CGPoint)point;
 - (void)boneSoliderWithPosition:(CGPoint)point;
 - (void)boneKnightWithPosition:(CGPoint)point;
+- (void)zombieWithPosition:(CGPoint)point;
+- (void)oxWithPosition:(CGPoint)point;
+- (void)ghostWithPosition:(CGPoint)point;
+- (void)dogWithPosition:(CGPoint)point;
 
 @end
 

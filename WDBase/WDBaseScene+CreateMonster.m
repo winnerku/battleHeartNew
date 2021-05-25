@@ -25,7 +25,6 @@
 }
 
 #pragma mark - 骷髅士兵 -
-///骷髅士兵
 - (void)boneSoliderWithPosition:(CGPoint)point
 {
     point = [self appearPoint:point];
@@ -47,11 +46,62 @@
     node.position = point;
     node.targetMonster = [self targetNode:point];
 
-    node.alpha = 0;
     [self addChild:node];
-    [self appearNodeWithName:kBoneKnight node:node];
+    [self bossAppearNodeWithName:kBoneKnight node:node];
+
 }
 
+#pragma mark - 僵尸男 -
+- (void)zombieWithPosition:(CGPoint)point{
+   
+    point = [self appearPoint:point];
+    
+    WDBoss3Node *node = [WDBoss3Node initWithModel:[WDTextureManager shareTextureManager].boss3Model];
+    node.position = point;
+    node.targetMonster = [self targetNode:point];
+
+    [self addChild:node];
+    [self bossAppearNodeWithName:kZombie node:node];
+}
+
+#pragma mark - 牛！ -
+- (void)oxWithPosition:(CGPoint)point
+{
+    point = [self appearPoint:point];
+    
+    WDBoss4Node *node = [WDBoss4Node initWithModel:[WDTextureManager shareTextureManager].boss4Model];
+    node.position = point;
+    node.targetMonster = [self targetNode:point];
+
+    [self addChild:node];
+    [self bossAppearNodeWithName:kOX node:node];
+}
+
+#pragma mark - 鬼魂 -
+- (void)ghostWithPosition:(CGPoint)point
+{
+    point = [self appearPoint:point];
+    
+    WDBoss5Node *node = [WDBoss5Node initWithModel:[WDTextureManager shareTextureManager].boss5Model];
+    node.position = point;
+    node.targetMonster = [self targetNode:point];
+
+    [self addChild:node];
+    [self bossAppearNodeWithName:kGhost node:node];
+}
+
+#pragma mark - 狗 -
+- (void)dogWithPosition:(CGPoint)point
+{
+    point = [self appearPoint:point];
+    
+    WDBoss6Node *node = [WDBoss6Node initWithModel:[WDTextureManager shareTextureManager].boss6Model];
+    node.position = point;
+    node.targetMonster = [self targetNode:point];
+
+    [self addChild:node];
+    [self bossAppearNodeWithName:kDog node:node];
+}
 
 /// 出场的位置
 - (CGPoint)appearPoint:(CGPoint)point
@@ -122,8 +172,26 @@
     }
 }
 
+/// 设置出场动画(BOSS)
+- (void)bossAppearNodeWithName:(NSString *)name
+                          node:(WDBaseNode *)node
+{
+    node.position = CGPointMake(kScreenWidth + node.realSize.width / 2.0, 0);
+    node.xScale = -fabs(node.xScale);
+    node.state = SpriteState_movie;
+    node.directionNumber = -1;
+    SKAction *move = [SKAction moveTo:CGPointMake(kScreenWidth - node.realSize.width - 150, 0) duration:2];
+    SKAction *animation = [SKAction animateWithTextures:node.model.walkArr timePerFrame:0.1];
+    SKAction *rep = [SKAction repeatAction:animation count:2 / (node.model.walkArr.count * 0.1)];
+    SKAction *gr = [SKAction group:@[move,rep]];
+    __weak typeof(self)weakSelf = self;
+    [node runAction:gr completion:^{
+        node.state = SpriteState_stand;
+        [weakSelf.monsterArr addObject:node];
+    }];
+}
 
-/// 设置出场动画
+/// 设置出场动画(小怪)
 - (void)appearNodeWithName:(NSString *)name
                       node:(WDBaseNode *)node
 {

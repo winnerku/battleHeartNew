@@ -57,6 +57,8 @@
     self.talkNode.position = CGPointMake(0, self.realSize.height + 70);
     self.talkNode.xScale = 2.5;
     self.talkNode.yScale = 2.5;
+    
+    self.upPositionY = 30;
 }
 
 - (void)beAttackActionWithTargetNode:(WDBaseNode *)targetNode
@@ -72,13 +74,37 @@
 
 - (BOOL)canAttack{
    
-    CGPoint point = [WDCalculateTool calculateUserMovePointWithUserNode:self monsterNode:self.targetMonster];
-    point = self.targetMonster.position;
-    CGFloat distanceX = self.position.x - point.x;
-    CGFloat distanceY = self.position.y - point.y;
+    CGPoint monsterPoint = self.targetMonster.position;
+    CGFloat distanceX = self.position.x - monsterPoint.x;
+    CGFloat distanceY = self.position.y - monsterPoint.y;
     CGFloat minDistance = self.realSize.width / 2.0 + self.targetMonster.realSize.width / 2.0 + self.targetMonster.randomDistanceX;
     
-    if (fabs(distanceX) < minDistance && fabs(distanceY) < 30) {
+    
+    /// 额外距离，当图片不处于中心位置时的设置
+    if (self.targetMonster.directionNumber > 0) {
+        /// 正方向
+        if (self.position.x < monsterPoint.x) {
+            minDistance += fabs(self.targetMonster.realCenterX);
+        }else{
+            minDistance -= fabs(self.targetMonster.realCenterX);
+        }
+    }else{
+        /// 反方向
+        if (self.position.x < monsterPoint.x) {
+            minDistance -= fabs(self.targetMonster.realCenterX);
+        }else{
+            minDistance += fabs(self.targetMonster.realCenterX);
+        }
+    }
+    
+    
+    CGFloat floatOptationNumber = arc4random() % 10;
+    
+    if ([self.targetMonster.name isEqualToString:kRedBat]) {
+        floatOptationNumber = 100;
+    }
+    
+    if (fabs(distanceX) <= minDistance && fabs(distanceX) >= minDistance - floatOptationNumber) {
         return YES;
     }else{
         return NO;
@@ -99,15 +125,19 @@
         return;
     }
     
-    
+    ///非自动攻击
     if (!self.targetMonster) {
-        WDBaseNode *target = [WDCalculateTool searchMonsterNearNode:self];
-        if (target) {
-            self.targetMonster = target;
-        }
-        [self standAction];
         return;
     }
+    
+//    if (!self.targetMonster) {
+//        WDBaseNode *target = [WDCalculateTool searchMonsterNearNode:self];
+//        if (target) {
+//            self.targetMonster = target;
+//        }
+//        [self standAction];
+//        return;
+//    }
     
    
     /// 玩家目标死亡
@@ -123,7 +153,7 @@
         return;
     }
     
-    CGPoint point = [WDCalculateTool calculateMonsterMovePointWithMonsterNode:self userNode:self.targetMonster];
+    CGPoint point = [WDCalculateTool calculateUserMovePointWithUserNode:self monsterNode:self.targetMonster];
     
     
     CGFloat distanceX = self.position.x - point.x;
@@ -174,7 +204,6 @@
 - (void)doubleAttack:(WDBaseNode *)enemyNode
 {
     self.state = SpriteState_attack;
-    
     WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:[WDTextureManager shareTextureManager].smokeArr[0]];
     
     node.position = self.position;
@@ -213,7 +242,7 @@
             [weakSelf runAction:[SKAction animateWithTextures:attackArr1 timePerFrame:0.05] completion:^{
                 
                 BOOL isDead = NO;
-                if ([self canAttack]) {
+//                if ([self canAttack]) {
                    
                     int attackNumber = weakSelf.attackNumber * 2.0;
                     int targetLastBlood = weakSelf.targetMonster.lastBlood;
@@ -244,7 +273,7 @@
                     if (isDead) {
                         weakSelf.targetMonster = nil;
                     }
-                }
+//                }
                 
                 weakSelf.state = SpriteState_stand;
                 weakSelf.skill1 = NO;

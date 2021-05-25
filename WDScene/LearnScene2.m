@@ -76,7 +76,7 @@
 }
 
 - (void)next2{
-    [self.archerNode.talkNode setText:@"啊！要赶紧回去\n不然要被骂死！" hiddenTime:5];
+    [self.archerNode.talkNode setText:@"要赶紧回去\n不然老头又念叨" hiddenTime:5];
     __weak typeof(self)weakSelf = self;
     [self.archerNode moveActionWithPoint:CGPointMake(kScreenWidth + 200, 0) moveComplete:^{
         [[NSUserDefaults standardUserDefaults]setBool:YES forKey:kPassLearn2];
@@ -101,7 +101,6 @@
     self.archerNode.position = CGPointMake(-kScreenWidth, 0);
     self.bgNode.texture = [SKTexture textureWithImage:[UIImage imageNamed:@"LearnScene.jpg"]];
     [self performSelector:@selector(a) withObject:nil afterDelay:1];
-
 }
 
 - (void)a{

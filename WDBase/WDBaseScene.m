@@ -14,7 +14,6 @@
 
 @implementation WDBaseScene
 
-
 #pragma mark - 通知方法 -
 - (void)addObserveAction
 {
@@ -27,33 +26,55 @@
 {
     
     WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:self.textureManager.iceWizardModel.effect5Arr[0]];
+    node.xScale = 2.0;
+    node.yScale = 2.0;
     [self addChild:node];
     node.zPosition = 10000;
     
-    SKAction *animation = [SKAction animateWithTextures:self.textureManager.iceWizardModel.effect5Arr timePerFrame:0.1];
+    SKAction *animation = [SKAction animateWithTextures:self.textureManager.iceWizardModel.effect5Arr timePerFrame:0.3];
     SKAction *remo = [SKAction removeFromParent];
     
     __weak typeof(self)weakSelf = self;
     [node runAction:[SKAction sequence:@[animation,remo]] completion:^{
         [weakSelf cameBack];
     }];
+    
+  
 }
 
 - (void)cameBack{
-    if (!_archerNode) {
+    if (!_archerNode || _archerNode.state & SpriteState_dead) {
+        _archerNode = nil;
         [self archerNode];
-        [self addChild:_archerNode];
-    }else if(!_ninjaNode){
+        if (!_archerNode.parent) {
+            [self addChild:self.archerNode];
+            self.archerNode.position = CGPointMake(0, 0);
+        }
+    }else if(!_ninjaNode || _ninjaNode.state & SpriteState_dead){
+        _ninjaNode = nil;
         [self ninjaNode];
-        [self addChild:_ninjaNode];
-    }else if(!_kNightNode){
+        if (!_ninjaNode.parent) {
+            [self addChild:self.ninjaNode];
+            self.ninjaNode.position = CGPointMake(0, 0);
+            self.ninjaNode.state = SpriteState_stand;
+        }
+    }else if(!_kNightNode || _kNightNode.state & SpriteState_dead){
+        _kNightNode = nil;
         [self kNightNode];
-        [self addChild:_kNightNode];
+        if (!_kNightNode.parent) {
+            [self addChild:self.kNightNode];
+            self.kNightNode.position = CGPointMake(0, 0);
+        }
     }
 }
 
 - (void)diedAction:(NSNotification *)notification{
     NSString *name = notification.object;
+    
+    if (_diedBlock) {
+        _diedBlock(name);
+    }
+    
     NSDictionary *dic = @{kKinght:@"releaseKnightNode",kArcher:@"releaseArcherNode",kIceWizard:@"releaseIceWizardNode"};
     NSString *selName = dic[name];
     SEL method = NSSelectorFromString(selName);
@@ -88,17 +109,46 @@
     WDBaseNode *location = manager.locationNode;
     manager.mapBigY_Up = 350.f;
     manager.mapBigY_down = 100;
+    
+    manager.mapBigX = 120;
+    manager.mapBigY = 120;
+    
     [self addChild:arrow];
     [self addChild:location];
     
     //_selectNode = self.archerNode;
     //self.archerNode.arrowNode.hidden = NO;
     [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForChangeUser object:self.selectNode.name];
-    
+
 }
 
+- (void)selectUserWithName:(NSString *)name
+{
+    _selectNode.arrowNode.hidden = YES;
+    
+    if ([name isEqualToString:kKinght]) {
+        _selectNode = self.kNightNode;
+    }else if([name isEqualToString:kIceWizard]){
+        _selectNode = self.iceWizardNode;
+    }else if([name isEqualToString:kArcher]){
+        _selectNode = self.archerNode;
+    }else if([name isEqualToString:kNinja]){
+        _selectNode = self.ninjaNode;
+    }
+    
+    [_selectNode selectSpriteAction];
+    [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationForChangeUser object:_selectNode.name];
+}
 
-
+- (void)createSnowEmitter
+{
+    SKEmitterNode *snow = [SKEmitterNode nodeWithFileNamed:@"snow"];
+    snow.zPosition = 100000;
+    [self addChild:snow];
+    
+    snow.position = CGPointMake(0, kScreenHeight);
+    snow.particlePositionRange = CGVectorMake(kScreenWidth * 2.0, 0);
+}
 
 #pragma mark - 物理检测 -
 - (void)didBeginContact:(SKPhysicsContact *)contact{
@@ -114,10 +164,7 @@
 - (void)arrowAction:(CGPoint)pos{
     WDTextureManager *manager = [WDTextureManager shareTextureManager];
     [manager arrowMoveActionWithPos:pos];
-    
     _selectNode.targetMonster = nil;
-    
-
 }
 
 
@@ -162,6 +209,18 @@
     }else if([name isEqualToString:kBoneKnight]){
         //骷髅骑士(boss2)
         [self boneKnightWithPosition:point];
+    }else if([name isEqualToString:kZombie]){
+        //僵尸男(boss3)
+        [self zombieWithPosition:point];
+    }else if([name isEqualToString:kOX]){
+        //牛(boss4)
+        [self oxWithPosition:point];
+    }else if([name isEqualToString:kGhost]){
+        //鬼魂(boss5)
+        [self ghostWithPosition:point];
+    }else if([name isEqualToString:kDog]){
+        //狗(boss6)
+        [self dogWithPosition:point];
     }
 }
 
@@ -195,7 +254,6 @@
 {
     _iceWizardNode = nil;
 }
-
 
 
 - (void)releaseAction
@@ -239,6 +297,7 @@
         _selectLine = [WDBaseNode spriteNodeWithColor:UICOLOR_RGB(255, 227, 132, 1) size:CGSizeMake(50, 50)];
         _selectLine.anchorPoint = CGPointMake(0, 0);
         _selectLine.name = @"selectLine";
+        _selectLine.zPosition = 10;
         [self addChild:_selectLine];
     }
     

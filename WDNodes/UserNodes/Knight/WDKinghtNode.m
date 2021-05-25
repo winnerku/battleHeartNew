@@ -51,6 +51,8 @@
      [self standAction];
     
      [self createRealSizeNode];
+    
+     self.upPositionY = 0;
 }
 
 - (void)observedNode
@@ -61,14 +63,20 @@
         return;
     }
     
+    ///非自动攻击
     if (!self.targetMonster) {
-        WDBaseNode *target = [WDCalculateTool searchMonsterNearNode:self];
-        if (target) {
-            self.targetMonster = target;
-        }
-        [self standAction];
         return;
     }
+    
+    ///自动攻击
+//    if (!self.targetMonster) {
+//        WDBaseNode *target = [WDCalculateTool searchMonsterNearNode:self];
+//        if (target) {
+//            self.targetMonster = target;
+//        }
+//        [self standAction];
+//        return;
+//    }
     
     /// 玩家目标死亡
     if (self.targetMonster.state & SpriteState_dead) {
@@ -85,7 +93,6 @@
 
     
      CGPoint point = [WDCalculateTool calculateUserMovePointWithUserNode:self monsterNode:self.targetMonster];
-    
     
      CGFloat distanceX = self.position.x - point.x;
      CGFloat distanceY = self.position.y - point.y;
@@ -117,11 +124,7 @@
       CGFloat pointX = self.position.x + moveX;
       CGFloat pointY = self.position.y + moveY;
       
-
-      
-      
       self.position = CGPointMake(pointX, pointY);
-           
          
       SKAction *moveAnimation = [self actionForKey:@"moveAnimation"];
       if (!moveAnimation) {
@@ -133,26 +136,74 @@
 
 - (BOOL)canAttack{
    
-    CGPoint point = [WDCalculateTool calculateUserMovePointWithUserNode:self monsterNode:self.targetMonster];
-    point = self.targetMonster.position;
-    CGFloat distanceX = self.position.x - point.x;
-    CGFloat distanceY = self.position.y - point.y;
+    CGPoint monsterPoint = self.targetMonster.position;
+    CGFloat distanceX = self.position.x - monsterPoint.x;
+   // CGFloat distanceY = self.position.y - monsterPoint.y;
     CGFloat minDistance = self.realSize.width / 2.0 + self.targetMonster.realSize.width / 2.0 + self.targetMonster.randomDistanceX;
+
+    /// 额外距离，当图片不处于中心位置时的设置
+    if (self.targetMonster.directionNumber > 0) {
+        /// 正方向
+        if (self.position.x < monsterPoint.x) {
+            minDistance += fabs(self.targetMonster.realCenterX);
+        }else{
+            minDistance -= fabs(self.targetMonster.realCenterX);
+        }
+    }else{
+        /// 反方向
+        if (self.position.x < monsterPoint.x) {
+            minDistance -= fabs(self.targetMonster.realCenterX);
+        }else{
+            minDistance += fabs(self.targetMonster.realCenterX);
+        }
+    }
     
-    if (fabs(distanceX) < minDistance && fabs(distanceY) < 30) {
+    
+    CGFloat floatOptationNumber = arc4random() % 10;
+    
+    if ([self.targetMonster.name isEqualToString:kRedBat]) {
+        floatOptationNumber = 30;
+    }
+    
+    if (fabs(distanceX) <= minDistance && fabs(distanceX) >= minDistance - floatOptationNumber) {
         return YES;
     }else{
         return NO;
     }
 }
 
-- (BOOL)canReduceTargetBlood{
-    CGPoint point = self.targetMonster.position;
-    CGFloat distanceX = self.position.x - point.x;
-    CGFloat distanceY = self.position.y - point.y;
+- (BOOL)canReduceBlood{
     
-    CGFloat mini = self.realSize.width / 2.0 + self.targetMonster.realSize.width / 2.0 + self.targetMonster.randomDistanceX;
-    if (fabs(distanceX) < mini + 10 && fabs(distanceY) < 10) {
+    CGPoint monsterPoint = self.targetMonster.position;
+    CGFloat distanceX = self.position.x - monsterPoint.x;
+   // CGFloat distanceY = self.position.y - monsterPoint.y;
+    CGFloat minDistance = self.realSize.width / 2.0 + self.targetMonster.realSize.width / 2.0 + self.targetMonster.randomDistanceX;
+
+    /// 额外距离，当图片不处于中心位置时的设置
+    if (self.targetMonster.directionNumber > 0) {
+        /// 正方向
+        if (self.position.x < monsterPoint.x) {
+            minDistance += fabs(self.targetMonster.realCenterX);
+        }else{
+            minDistance -= fabs(self.targetMonster.realCenterX);
+        }
+    }else{
+        /// 反方向
+        if (self.position.x < monsterPoint.x) {
+            minDistance -= fabs(self.targetMonster.realCenterX);
+        }else{
+            minDistance += fabs(self.targetMonster.realCenterX);
+        }
+    }
+    
+    
+    CGFloat floatOptationNumber = arc4random() % 10;
+    
+    if ([self.targetMonster.name isEqualToString:kRedBat]) {
+        floatOptationNumber = 30;
+    }
+    
+    if (fabs(distanceX) <= minDistance + floatOptationNumber) {
         return YES;
     }else{
         return NO;
@@ -177,7 +228,7 @@
         }
         
         BOOL isDead = NO;
-        if ([self canReduceTargetBlood]) {
+        if ([self canReduceBlood]) {
            isDead = [weakSelf.targetMonster setBloodNodeNumber:weakSelf.attackNumber];
             if (isDead) {
                 weakSelf.targetMonster = nil;
@@ -187,7 +238,6 @@
         }
         
         //如果之前怪物目标不是玩家，切换下
-        
         if (![weakSelf.targetMonster.targetMonster.name isEqualToString:weakSelf.name] && !isDead) {
             if ([weakSelf.targetMonster.name isEqualToString:kBoss1]) {
                 //不吃仇恨
@@ -249,7 +299,7 @@
     [WDSkillManager endSkillActionWithTarget:self skillType:@"2" time:time];
     
     CGPoint point = CGPointMake(0, 0);
-    CGFloat scale = 2;
+    CGFloat scale = 3;
     NSArray *skillArr = _knightModel.effect2Arr;
     WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:skillArr[0]];
     node.alpha = 0.8;
@@ -283,7 +333,7 @@
     bloodMiniNode.iceWizardReduceAttack = YES;
     
     CGPoint point = CGPointMake(0, 120);
-    CGFloat scale = 1;
+    CGFloat scale = 2;
     NSArray *skillArr = _knightModel.effect3Arr;
     WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:skillArr[0]];
     node.alpha = 0.8;
@@ -311,7 +361,7 @@
     [WDSkillManager endSkillActionWithTarget:self skillType:@"4" time:time];
     
     CGPoint point = CGPointMake(0, 0);
-    CGFloat scale = 1;
+    CGFloat scale = 2;
     NSArray *skillArr = _knightModel.effect4Arr;
     WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:skillArr[0]];
     node.alpha = 0.5;
@@ -331,7 +381,7 @@
 - (void)skill5Action
 {
     CGPoint point = CGPointMake(0, 250);
-    CGFloat scale = 1.5;
+    CGFloat scale = 3;
     NSArray *skillArr = _knightModel.effect5Arr;
     WDBaseNode *node = [WDBaseNode spriteNodeWithTexture:skillArr[0]];
     node.alpha = 1;

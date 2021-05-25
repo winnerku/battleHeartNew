@@ -96,7 +96,7 @@ static WDSkillManager *skillManager = nil;
 - (void)endSkillForIceWizardNode:(WDBaseNode *)node
                        skillType:(int)skillType
 {
-    if (skillType == 1) {
+    if (skillType == 2) {
         node.cureNumber = node.trueCureNumber;
     }else if(skillType == 3){
         WDBaseNode *nodeD = (WDBaseNode *)[node childNodeWithName:@"define"];

@@ -19,8 +19,8 @@
     CADisplayLink *_mapLink;
     LearnSkillNode *_skillNode;
     SKSpriteNode *_ballNode;
-    SKLabelNode  *_ballLabel;
-}
+    SKLabelNode *_ballLabel;
+ }
 
 - (void)didMoveToView:(SKView *)view
 {
@@ -31,7 +31,7 @@
     
     [self createMapPosArr];
     
-    _mapLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(mapMove)];
+    _mapLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(mapMove)]; 
     [_mapLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     
     [self.textureManager.arrowNode removeFromParent];
@@ -41,6 +41,7 @@
     [self.bgNode addChild:self.textureManager.arrowNode];
     [self.bgNode addChild:self.textureManager.locationNode];
 
+    self.bgNode.zPosition = 10;
     
     [self.bgNode addChild:self.iceWizardNode];
     [self.bgNode addChild:self.kNightNode];
@@ -115,7 +116,7 @@
     _ballLabel.text = [NSString stringWithFormat:@"x%ld",ballCount];
     _ballLabel.hidden = NO;
     _ballLabel.position = CGPointMake(kScreenWidth * 2.0 - _ballLabel.fontSize - 30, kScreenHeight * 2.0 - 100);
-    
+    _ballLabel.zPosition = 10000;
     _ballNode.position = CGPointMake(kScreenWidth * 2.0 - _ballLabel.fontSize - 30 - 90, kScreenHeight * 2.0 - 78);
     
 }

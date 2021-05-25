@@ -16,6 +16,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// 首次救回忍者的剧情
 - (void)ninjaMoive;
 
+
+/// 通过关卡的奖励动画
+- (void)bossDeadActionMovie;
+
 @end
 
 NS_ASSUME_NONNULL_END
