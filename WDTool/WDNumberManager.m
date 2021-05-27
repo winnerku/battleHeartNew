@@ -253,7 +253,7 @@
 /// 狗
 + (void)initDog:(WDBaseNode *)node
 {
-    node.name = kGhost;
+    node.name = kDog;
     node.moveSpeed = 300;
     node.blood     = 600000;
     node.lastBlood = 600000;

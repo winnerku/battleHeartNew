@@ -52,8 +52,8 @@
 
     [self createMonsterWithName:kGhost position:CGPointMake(0, 0)];
     
-//    [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
-//    [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
+    [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
+    [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
 
     
     self.passStr = kPassCheckPoint6;

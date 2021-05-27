@@ -212,13 +212,18 @@
             if (i > lastNumber && lastNumber != 6 && lastNumber != 7) {
                 
                 [btn addTarget:self action:@selector(notCompleteAction:) forControlEvents:UIControlEventTouchUpInside];
+
             }else{
                 
-                if ((i == 2 || i == 3)&&(lastNumber == 2 || lastNumber == 3)) {
-                    lastNumber ++;
+                if ((i == 2 || i == 3)&&(lastNumber >= 2 || lastNumber >= 3)){
+                    if (lastNumber == 2 || lastNumber == 3) {
+                        lastNumber ++;
+                    }
+                    //lastNumber ++;
                     lineView.backgroundColor = [UIColor blackColor];
                 }
                 
+
                 
                 if (i == 6 && lastNumber == 7) {
                     lineView.backgroundColor = [UIColor blackColor];
