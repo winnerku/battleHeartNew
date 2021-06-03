@@ -70,6 +70,8 @@
 #define kGhost @"Ghost"
 /// 第六关BOSS(狗...)
 #define kDog @"Dog"
+/// 第七关BOSS(墨鱼丸。。。)
+#define kSquid @"Squid"
 
 //骷髅兵
 #define kBoneSolider @"BoneSolider"

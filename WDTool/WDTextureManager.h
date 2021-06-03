@@ -21,6 +21,7 @@
 #import "Boss4Model.h"
 #import "Boss5Model.h"
 #import "Boss6Model.h"
+#import "Boss7Model.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -59,7 +60,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)Boss5Model *boss5Model;
 /// boss6 狗
 @property (nonatomic,strong)Boss6Model *boss6Model;
-
+/// boss7 墨鱼
+@property (nonatomic,strong)Boss7Model *boss7Model;
 
 /// 骷髅兵
 @property (nonatomic,strong)WDBoneSoliderModel *boneSoliderModel;

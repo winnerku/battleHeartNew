@@ -103,6 +103,19 @@
     [self bossAppearNodeWithName:kDog node:node];
 }
 
+#pragma mark - squid -
+- (void)squidWithPosition:(CGPoint)point
+{
+    point = [self appearPoint:point];
+    
+    WDBoss7Node *node = [WDBoss7Node initWithModel:[WDTextureManager shareTextureManager].boss7Model];
+    node.position = point;
+    node.targetMonster = [self targetNode:point];
+
+    [self addChild:node];
+    [self bossAppearNodeWithName:kSquid node:node];
+}
+
 /// 出场的位置
 - (CGPoint)appearPoint:(CGPoint)point
 {
@@ -182,7 +195,7 @@
     node.directionNumber = -1;
     SKAction *move = [SKAction moveTo:CGPointMake(kScreenWidth - node.realSize.width - 150, 0) duration:2];
     SKAction *animation = [SKAction animateWithTextures:node.model.walkArr timePerFrame:0.1];
-    SKAction *rep = [SKAction repeatAction:animation count:2 / (node.model.walkArr.count * 0.1)];
+    SKAction *rep = [SKAction repeatAction:animation count:2 / (node.model.walkArr.count * 0.1) + 1];
     SKAction *gr = [SKAction group:@[move,rep]];
     __weak typeof(self)weakSelf = self;
     [node runAction:gr completion:^{

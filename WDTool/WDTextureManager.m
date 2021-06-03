@@ -214,6 +214,17 @@ static WDTextureManager *textureManager = nil;
     _boss5Model = nil;
 }
 
+- (void)releaseBoss6Model
+{
+    _boss6Model = nil;
+}
+
+- (void)releaseBoss7Model
+{
+    _boss7Model = nil;
+}
+
+
 - (void)releaseAllModel
 {
     [self releaseKinghtModel];          //骑士
@@ -227,6 +238,9 @@ static WDTextureManager *textureManager = nil;
     [self releaseBoss3Model];           //boss3
     [self releaseBoss4Model];           //boss4
     [self releaseBoss5Model];           //boss5
+    [self releaseBoss6Model];           //boss6
+    [self releaseBoss7Model];           //boss7
+
 }
 
 #pragma mark - 玩家人物 -
@@ -371,6 +385,16 @@ static WDTextureManager *textureManager = nil;
     }
     
     return _boss6Model;
+}
+
+- (Boss7Model *)boss7Model
+{
+    if (!_boss7Model) {
+        _boss7Model = [[Boss7Model alloc] init];
+        [_boss7Model setNormalTexturesWithName:kSquid standNumber:0 runNumber:0 walkNumber:7 diedNumber:6 attack1Number:6];
+    }
+    
+    return _boss7Model;
 }
 
 - (WDBoneSoliderModel *)boneSoliderModel

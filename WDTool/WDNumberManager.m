@@ -255,8 +255,21 @@
 {
     node.name = kDog;
     node.moveSpeed = 300;
-    node.blood     = 600000;
-    node.lastBlood = 600000;
+    node.blood     = 6000;
+    node.lastBlood = 6000;
+    node.attackDistance = 0;
+    node.moveCADisplaySpeed = 2;
+    node.attackNumber = 40;
+    node.isRight = YES;
+    node.floatAttackNumber = 25;
+}
+
++ (void)initSquid:(WDBaseNode *)node
+{
+    node.name = kSquid;
+    node.moveSpeed = 300;
+    node.blood     = 6000;
+    node.lastBlood = 6000;
     node.attackDistance = 0;
     node.moveCADisplaySpeed = 2;
     node.attackNumber = 40;

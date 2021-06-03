@@ -24,6 +24,7 @@
 #import "WDBoss4Node.h"
 #import "WDBoss5Node.h"
 #import "WDBoss6Node.h"
+#import "WDBoss7Node.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

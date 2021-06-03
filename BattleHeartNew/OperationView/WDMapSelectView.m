@@ -107,7 +107,7 @@
     CGFloat width = (kScreenWidth - 300 - 8 * page) / 7.f;
     CGFloat middle = imageView.height / 2.0 - 50;
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, middle + page + width + width / 2.0 + 20 , imageView.width, 30)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, middle + page + width + width / 2.0 + 50 , imageView.width, 30)];
     label.text = @"IceWorld";
     label.textColor = [UIColor blackColor];
     label.font = [UIFont boldSystemFontOfSize:40.f];
@@ -158,7 +158,7 @@
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSArray *keys = @[kPassCheckPoint1,kPassCheckPoint2,kPassCheckPoint3,kPassCheckPoint4,kPassCheckPoint5,kPassCheckPoint6,kPassCheckPoint7,kPassCheckPoint8,kPassCheckPoint9,kPassCheckPoint10,kPassCheckPoint11,kPassCheckPoint12,kPassCheckPoint13];
-    _tipArr = @[@"tips:走位嘲讽很关键哦！",@"tips:白给。。。",@"tips:外强中干，上下不去",@"tips:群体治疗，对抗病毒",@"tips:以其人之道，还治其人之身，方可破盾",@"",@""];
+    _tipArr = @[@"",@"",@"",@"",@"",@"",@"",@""];
     int passNumber = 0;
     int lastNumber = 0;
     for (int i = 0; i < btnFrame.count; i ++) {
@@ -277,7 +277,7 @@
         _selectBtn.backgroundColor = [WDCalculateTool colorFromHexRGB:@"#F5F5F5"];
     }
     
-    NSArray *mapArr = @[@"RedBatScene",@"BoneSoliderScene",@"BoneBossScene",@"ZombieScene",@"OXScene",@"GhostScene",@"DogScene"];
+    NSArray *mapArr = @[@"RedBatScene",@"BoneSoliderScene",@"BoneBossScene",@"ZombieScene",@"OXScene",@"GhostScene",@"DogScene",@"SquidScene"];
     NSString *mapName = mapArr[sender.tag - 100];
     _selectMapName = mapName;
     _selectBtn = sender;

@@ -1,19 +1,20 @@
 //
-//  DogScene.m
+//  SquidScene.m
 //  BattleHeartNew
 //
-//  Created by Mac on 2021/5/25.
+//  Created by Mac on 2021/6/1.
 //  Copyright © 2021 Macdddd. All rights reserved.
 //
 
-#import "DogScene.h"
+#import "SquidScene.h"
 #import "WDBaseScene+Moive.h"
 
-@implementation DogScene
+@implementation SquidScene
 {
-    WDBoss6Node *_boss;
+    WDBoss7Node *_boss;
     BOOL _isBossDead;
 }
+
 - (void)didMoveToView:(SKView *)view
 {
     [super didMoveToView:view];
@@ -48,12 +49,12 @@
     
     self.selectNode = self.archerNode;
 
-    [self createMonsterWithName:kDog position:CGPointMake(0, 0)];
+    [self createMonsterWithName:kSquid position:CGPointMake(0, 0)];
     [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
     [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
     [self createMonsterWithName:kRedBat position:CGPointMake(0, 0)];
 
-    self.passStr = kPassCheckPoint7;
+    self.passStr = kPassCheckPoint8;
     
     [self createSnowEmitter];
 
@@ -71,12 +72,18 @@
             [node releaseAction];
             
             
-            if ([node.name isEqualToString:kDog]) {
+            if ([node.name isEqualToString:kSquid]) {
+                WDBoss7Node *boss = (WDBoss7Node *)node;
+                for (WDWeaponNode *weapon in boss.inkArr) {
+                    [weapon removeAllActions];
+                    [weapon runAction:[SKAction sequence:@[[SKAction fadeAlphaTo:0 duration:2],[SKAction removeFromParent]]] completion:^{
+                                            
+                    }];
+                }
                 _isBossDead = YES;
                 [self bossDeadActionMovie];
                
             }
-            
             
             
             if ([node.name isEqualToString:kRedBat] && !_isBossDead) {
@@ -113,14 +120,14 @@
     __weak typeof(self)weakSelf = self;
   
     for (WDMonsterNode *node in self.monsterArr) {
-        if ([node.name isEqualToString:kDog]) {
-            _boss = (WDBoss6Node *)node;
+        if ([node.name isEqualToString:kSquid]) {
+            _boss = (WDBoss7Node *)node;
             break;
         }
     }
     
     for (WDMonsterNode *node in self.monsterArr) {
-        if (![node.name isEqualToString:kDog]) {
+        if (![node.name isEqualToString:kSquid]) {
             [node releaseAction];
             break;
         }

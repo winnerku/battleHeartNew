@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)oxWithPosition:(CGPoint)point;
 - (void)ghostWithPosition:(CGPoint)point;
 - (void)dogWithPosition:(CGPoint)point;
+- (void)squidWithPosition:(CGPoint)point;
 
 @end
 

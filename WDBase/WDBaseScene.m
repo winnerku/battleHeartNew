@@ -221,6 +221,9 @@
     }else if([name isEqualToString:kDog]){
         //狗(boss6)
         [self dogWithPosition:point];
+    }else if([name isEqualToString:kSquid]){
+        //墨鱼(boss7)
+        [self squidWithPosition:point];
     }
 }
 
